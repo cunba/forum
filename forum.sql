@@ -55,7 +55,7 @@ INSERT INTO `categories` (`id`, `category`) VALUES
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL,
   `comment` varchar(400) NOT NULL,
-  `creation_date` date NOT NULL DEFAULT current_timestamp(),
+  `creation_date` date NOT NULL,
   `topic_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -100,7 +100,7 @@ CREATE TABLE `users` (
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(20) NOT NULL,
   `birthday` date DEFAULT NULL,
-  `creation_date` date NOT NULL DEFAULT current_timestamp()
+  `creation_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

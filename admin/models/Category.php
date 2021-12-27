@@ -19,13 +19,13 @@ class Category
 
             if (gettype($connection) == 'string') {
                 return $connection;
-            } else {
+            }
                 $sql = 'SELECT * FROM categories';
 
                 $response = $connection->prepare($sql);
                 $response->execute();
                 return $response->fetchAll(PDO::FETCH_CLASS, 'Category');
-            }
+
         } catch (PDOException $e) {
             return Connection::messages($e->getCode());
         }
