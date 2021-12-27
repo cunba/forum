@@ -1,4 +1,5 @@
 <?php
+
 if (isset($_POST['submit-login'])) {
     $user = $_POST['user'];
     $password = $_POST['password'];
