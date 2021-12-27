@@ -1,0 +1,210 @@
+@import url('./colors.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --max-width: 1250px;
+    --min-width: 400px;
+    --header-color: var(--Independence);
+    --header-hover-color: var(--Independence-light);
+    --header-text: var(--Eggshell);
+    --background-color: var(--Eggshell);
+    --text: var(--rich-black-fogra-39-light);
+    --button-text: var(--floral-white);
+    --button-color: var(--rich-black-fogra-39-light);
+    --border-color: var(--ash-gray);
+    --text-error-color: var(--Terra-Cotta);
+}
+
+body {
+    color: var(--text);
+    width: 100%;
+    height: auto;
+    background-color: var(--background-color);
+}
+
+h1, h2, h3, p {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* HEADER */
+
+.header-login {
+    display: flex;
+    color: var(--header-text);
+    background-color: var(--header-color);
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    text-align: center;
+}
+
+.header {
+    color: var(--header-text);
+    background-color: var(--header-color);
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+    height: 50px;
+}
+
+.header nav {
+    width: 25%;
+}
+
+.header h1 {
+    width: 50%;
+    text-align: start;
+}
+
+.header div {
+    width: 25%;
+}
+
+#check-menu {
+    position: absolute;
+    left: -100%;
+}
+
+#check-menu:checked ~ .ul-menu {
+    left: 0;
+    width: 100%;
+    height: 90vh;
+}
+
+.btn-menu {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 50px;
+}
+
+.btn-menu:hover {
+    background-color: var(--header-hover-color);
+    cursor: pointer;
+}
+
+.ul-menu {
+    position: absolute;
+    margin: auto;
+    top: 50px;
+    left: -300px;
+    text-align: start;
+    transition: left 1s ease;
+}
+
+.ul-menu > li {
+    display: block;
+    width: 180px;
+    background-color: var(--header-color);
+    border-top: 1px solid var(--header-text);
+    line-height: 40px;
+    list-style: none;
+}
+
+.ul-menu > li > a {
+    display: inline-block;
+    width: 100%;
+    padding: 0 20px;
+    color: var(--header-text);
+}
+
+.ul-menu > li:hover {
+    background-color: var(--header-hover-color);
+}
+
+/* MAIN */
+
+.first {
+    padding-top: 20px;
+}
+
+.form {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 10%;
+}
+
+form h1 {
+    font-size: 50px;
+    padding-bottom: 30px;
+}
+
+input {
+    height: 30px;
+    width: 300px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    border-color: var(--border-color);
+    border-style: solid;
+    border-radius: 2px;
+}
+
+input[type='submit'] {
+    color: var(--button-text);
+    background-color: var(--button-color);
+    border: none;
+}
+
+input[type='submit']:hover {
+    cursor:pointer;
+    background-color: var(--border-color);
+}
+
+.error {
+    color: var(--text-error-color);
+    padding-top: 10px;
+    text-align: start;
+}
+
+.home {
+    max-width: 1000px;
+    min-width: var(--min-width);
+    margin: 0 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.home h1 {
+    padding-bottom: 30px;
+    font-size: 40px;
+}
+
+.home h2 {
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-self: start;
+}
+
+.home p {
+    width: 100%;
+    display: flex;
+    text-align: left;
+    padding-bottom: 20px;
+    font-size: 20px;
+}
