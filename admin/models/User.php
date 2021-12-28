@@ -24,25 +24,29 @@ class User
 
     public static function get_user($user, $password)
     {
-        $password = self::cryptconmd5($password);
-        $connection = Connection::Connection();
+        try {
+            $password = self::cryptconmd5($password);
+            $connection = Connection::Connection();
 
-        if (gettype($connection) == 'string') {
-            return $connection;
-        }
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
 
-        $sql = 'SELECT * FROM users WHERE user = :user AND password = :password';
+            $sql = 'SELECT * FROM users WHERE user = :user AND password = :password';
 
-        $stmt = $connection->prepare($sql);
-        $stmt->execute(array(
-            ':user' => $user,
-            ':password' => $password
-        ));
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':user' => $user,
+                ':password' => $password
+            ));
 
-        if ($stmt->rowCount() == 0) {
-            return false;
-        } else {
-            return $stmt->fetch(PDO::FETCH_OBJ);
+            if ($stmt->rowCount() == 0) {
+                return false;
+            } else {
+                return $stmt->fetch(PDO::FETCH_OBJ);
+            }
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
         }
     }
 

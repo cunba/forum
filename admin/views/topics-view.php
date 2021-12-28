@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-require_once("../controllers/Category_controller.php");
-
 if (!isset($_SESSION['user'])) {
     header('Location:login.php');
 } elseif ($_SESSION['user'] == 'comments-admin') {
@@ -10,12 +8,20 @@ if (!isset($_SESSION['user'])) {
 } elseif ($_SESSION['user'] != 'admin') {
     header('Location:login.php');
 } else {
-    require_once('../controllers/Category_controller.php');
-    include('../controllers/back.php');
 
-    if (isset($_POST['create-category']) || isset($_POST['update-category'])) {
+    include("../controllers/back.php");
+    require_once("../controllers/Category_controller.php");
+    require_once("../controllers/Topic_controller.php");
+
+    if (isset($_POST['create-topic'])) {
+        $topic = $_POST['topic'];
+        $category_id = $_POST['category_id'];
+    }
+
+    if (isset($_POST['update-topic'])) {
         $id = $_POST['id'];
-        $category = $_POST['category'];
+        $topic = $_POST['topic'];
+        $category_id = $_POST['category_id'];
     }
 
     if (isset($_POST['update'])) {
@@ -68,7 +74,7 @@ if (!isset($_SESSION['user'])) {
                     <input type="text" name="category" value="<?php if (isset($category)) echo $category; ?>"
                            placeholder="Categoría">
 
-                    <input type="submit" name="create-category" value="AÑADIR">
+                    <input type="submit" name="create-topic" value="AÑADIR">
                     <input type="submit" name="atras" value="ATRÁS">
                     <?php
                     include("../controllers/validate.php");
@@ -85,7 +91,7 @@ if (!isset($_SESSION['user'])) {
                     <input type="text" name="category" value="<?php if (isset($category)) echo $category; ?>"
                            placeholder="<?php echo $category_update_category; ?>">
 
-                    <input type="submit" name="update-category" value="MODIFICAR">
+                    <input type="submit" name="update-topic" value="MODIFICAR">
                     <input type="submit" name="atras" value="ATRÁS">
                     <?php
                     include("../controllers/validate.php");
