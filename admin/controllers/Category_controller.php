@@ -12,4 +12,8 @@ class Category_controller
     {
         return Category::get_all_categories();
     }
+
+    public static function count_topics($category_id) {
+        return Category::count_topics($category_id);
+    }
 }
