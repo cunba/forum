@@ -26,6 +26,7 @@ if (!isset($_SESSION['user'])) {
                 <li><a href="categories-view.php">Categorías</a></li>
                 <li><a href="topics-view.php">Temas</a></li>
                 <li><a href="comments-view.php">Comentarios</a></li>
+                <li><a href="users-view.php">Usuarios</a></li>
                 <li><a href="user-panel.php">Panel de usuario</a></li>
                 <li><a href="../controllers/logout.php">Cerrar sesión</a></li>
             </ul>
@@ -36,19 +37,25 @@ if (!isset($_SESSION['user'])) {
 </header>
 <section class="first home">
     <h1>Bienvenido a la vista de administrador</h1>
-    <h2>Instrucciones:</h2>
-    <p>Para acceder a la administración de las categorías, los temas y los comentarios pulsa arriba a la izquierda en
-        Menú, aparecerá un menú desplegable con los capartados a los que puedes acceder.</p>
-    <p>En el apartado de CATEGORÍAS se pueden crear nuevas, editar los nombres de las existentes y eliminarlas
-        individualmente.</p>
-    <p>En el apartado de TEMAS se pueden crear nuevos, editar los nombres y a la categoría a la que pertenecen y
-        eliminarlos
-        individualmente</p>
-    <p>En el apartado de COMENTARIOS se pueden eliminar individualmente en caso de que incumplan las normas del foro</p>
-    <p>En el apartado de PERFIL DE USUARIO aparecen los datos de la sesión y se permite cambiar la contrasña. No se
-        recomienda su cambio.</p>
-    <p>En caso de no querer realizar más cambios puedes cerrar la sesión, opción accesible desde cualquier pantalla
-        abriendo el menú desplegable</p>
+    <a class="list-home" href="categories-view.php">
+        <h2>Categorías</h2>
+        <p>Haga click para ver, editar y eliminar las existentes y crear nuevas.</p>
+    </a>
+    <a class="list-home" href="topics-view.php">
+        <h2>Temas</h2>
+        <p>Haga click para ver, editar y eliminar los existentes y crear nuevos.</p>
+    </a>
+    <a class="list-home" href="comments-view.php">
+        <h2>Comentarios</h2>
+        <p>Haga click para administrarlos y eliminar los que incumplan las normas de Meraki</p>
+    </a>
+    <a class="list-home" href="users-view.php">
+        <h2>Usuarios</h2>
+        <p>Haga click para administrarlos y eliminar los que incumplan las normas de Meraki</p>
+    </a>
+    <a class="list-home logout" href="../controllers/logout.php">
+        <h2>Cerrar sesión</h2>
+    </a>
 </section>
 </body>
 </html>

@@ -142,8 +142,9 @@ if (!isset($_SESSION['user'])) {
                         <div class="delete">
                             <p>¿Estás seguro que quieres eliminar la categoría <?php echo $category_delete_category; ?>,
                                 incluyendo sus temas y comentarios?</p>
-                            <a href="<?php Category_controller::delete_category($category_delete_id); ?>">Sí</a>
-                            <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>">No</a>
+                            <a href="<?php Category_controller::delete_category($category_delete_id);
+                            echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>" class="yes">Sí</a>
+                            <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>" class="no">No</a>
                         </div>
                         <?php
                     }

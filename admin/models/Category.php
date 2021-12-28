@@ -115,7 +115,7 @@ class Category
                 return $connection;
             }
 
-            $sql = 'SET DELETE FROM categories WHERE id = :id';
+            $sql = 'DELETE FROM categories WHERE id = :id';
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(

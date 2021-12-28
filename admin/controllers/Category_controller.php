@@ -31,6 +31,5 @@ class Category_controller
     public static function delete_category($id)
     {
         Category::delete_category($id);
-        header('Location:../views/categories-view.php');
     }
 }

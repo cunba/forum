@@ -214,6 +214,50 @@ input[type='submit']:hover {
     font-size: 20px;
 }
 
+.list-home h2 {
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+.list-home {
+    text-decoration: none;
+    color: var(--text);
+    height: 100px;
+    width: 100%;
+    background-color: var(--list-color);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 8%;
+    padding-right: 8%;
+    align-items: center;
+    border-style: outset;
+    border-color: var(--list-shadow);
+    border-width: 3px;
+}
+
+.logout {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 8px;
+    background-color: var(--text-error-color);
+    border-color: var(--delete-button-hover-color);
+    color: var(--text);
+}
+
+.list-home:hover {
+    cursor: pointer;
+    background-color: var(--list-shadow);
+}
+
+.logout:hover {
+    cursor: pointer;
+    background-color: var(--delete-button-hover-color);
+}
 
 /* CATEGORIES VIEW */
 
@@ -339,4 +383,36 @@ form h2 {
     padding-left: 8%;
     padding-right: 8%;
     align-items: center;
+}
+
+.delete {
+    padding-bottom: 20px;
+    padding-left: 8px;
+}
+
+.delete p {
+    padding-bottom: 10px;
+}
+
+.delete a {
+    text-decoration: none;
+    margin-right: 20px;
+    color: var(--header-text);
+    padding: 5px 10px;
+}
+
+.no {
+    background-color: var(--header-color);
+}
+
+.no:hover {
+    background-color: var(--header-hover-color);
+}
+
+.yes {
+    background-color: var(--text-error-color);
+}
+
+.yes:hover {
+    background-color: var(--delete-button-hover-color);
 }
