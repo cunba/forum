@@ -17,7 +17,13 @@
     --button-text: var(--floral-white);
     --button-color: var(--rich-black-fogra-39-light);
     --border-color: var(--ash-gray);
+    --i-hover: var(--ash-gray-dark);
     --text-error-color: var(--Terra-Cotta);
+    --delete-button-hover-color: var(--Terra-Cotta-light);
+    --list-color: var(--Deep-Champagne);
+    --list-shadow: var(--Deep-Champagne-light);
+    --create-color: var(--Green-Sheen);
+    --create-hover-color: var(--Green-Sheen-light);
 }
 
 body {
@@ -25,10 +31,6 @@ body {
     width: 100%;
     height: auto;
     background-color: var(--background-color);
-}
-
-h1, h2, h3, p {
-    text-align: center;
 }
 
 a {
@@ -148,6 +150,7 @@ form {
 }
 
 form h1 {
+    text-align: center;
     font-size: 50px;
     padding-bottom: 30px;
 }
@@ -169,7 +172,7 @@ input[type='submit'] {
 }
 
 input[type='submit']:hover {
-    cursor:pointer;
+    cursor: pointer;
     background-color: var(--border-color);
 }
 
@@ -182,7 +185,8 @@ input[type='submit']:hover {
 .home {
     max-width: 1000px;
     min-width: var(--min-width);
-    margin: 0 20%;
+    margin-left: 20%;
+    margin-right: 20%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -191,6 +195,7 @@ input[type='submit']:hover {
 
 .home h1 {
     padding-bottom: 30px;
+    text-align: center;
     font-size: 40px;
 }
 
@@ -207,4 +212,207 @@ input[type='submit']:hover {
     text-align: left;
     padding-bottom: 20px;
     font-size: 20px;
+}
+
+.list-home h2 {
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+.list-home {
+    text-decoration: none;
+    color: var(--text);
+    height: 100px;
+    width: 100%;
+    background-color: var(--list-color);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 8%;
+    padding-right: 8%;
+    align-items: center;
+    border-style: outset;
+    border-color: var(--list-shadow);
+    border-width: 3px;
+}
+
+.logout {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 8px;
+    background-color: var(--text-error-color);
+    border-color: var(--delete-button-hover-color);
+    color: var(--text);
+}
+
+.list-home:hover {
+    cursor: pointer;
+    background-color: var(--list-shadow);
+}
+
+.logout:hover {
+    cursor: pointer;
+    background-color: var(--delete-button-hover-color);
+}
+
+/* CATEGORIES VIEW */
+
+.categories h1 {
+    font-size: 40px;
+    padding-bottom: 30px;
+    text-align: center;
+}
+
+.categories {
+    margin-left: 20%;
+    margin-right: 20%;
+    width: 60%;
+    max-width: var(--max-width);
+    min-width: var(--min-width);
+}
+
+.new {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.new a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5px;
+    width: 100px;
+    height: 40px;
+    margin-bottom: 10px;
+    background-color: var(--create-color);
+    border-style: outset;
+    border-width: 2px;
+    border-color: var(--create-hover-color);
+    color: var(--text);
+    font-size: 22px;
+}
+
+.new a:hover {
+    background-color: var(--create-hover-color);
+}
+
+.list {
+    height: 80px;
+    width: 100%;
+    background-color: var(--list-color);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 8%;
+    padding-right: 8%;
+    align-items: center;
+    border-style: outset;
+    border-color: var(--list-shadow);
+    border-width: 3px;
+}
+
+.list-information h2 {
+    padding-bottom: 7px;
+}
+
+.icons {
+    font-size: 25px;
+    width: 100px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-end;
+}
+
+.icons form {
+    margin-top: 0;
+}
+
+.icons form input[type='submit'] {
+    height: 30px;
+    width: 80px;
+    margin-bottom: 0;
+    padding-left: 0;
+    border-radius: 2px;
+}
+
+.icons form input[name='update'] {
+    background-color: var(--header-color);
+}
+
+.icons form input[name='update']:hover {
+    background-color: var(--header-hover-color);
+}
+
+.icons form input[name='delete'] {
+    background-color: var(--text-error-color);
+}
+
+.icons form input[name='delete']:hover {
+    background-color: var(--delete-button-hover-color);
+}
+
+i:hover {
+    cursor: pointer;
+    color: var(--i-hover);
+}
+
+form h2 {
+    font-size: 27px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.empty {
+    height: 80px;
+    width: 100%;
+    background-color: var(--list-color);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 8%;
+    padding-right: 8%;
+    align-items: center;
+}
+
+.delete {
+    padding-bottom: 20px;
+    padding-left: 8px;
+}
+
+.delete p {
+    padding-bottom: 10px;
+}
+
+.delete a {
+    text-decoration: none;
+    margin-right: 20px;
+    color: var(--header-text);
+    padding: 5px 10px;
+}
+
+.no {
+    background-color: var(--header-color);
+}
+
+.no:hover {
+    background-color: var(--header-hover-color);
+}
+
+.yes {
+    background-color: var(--text-error-color);
+}
+
+.yes:hover {
+    background-color: var(--delete-button-hover-color);
 }

@@ -1,81 +1,131 @@
 <?php
-include('connection/Connection.php');
+require_once('connection/Connection.php');
 
 class Category
 {
     public $id;
     public $category;
 
-    public function __construct($category)
-    {
-        $this->category = $category;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function get_id()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function set_id($id)
+    public function __construct($id, $category)
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function get_category()
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param mixed $category
-     */
-    public function set_category($category)
-    {
         $this->category = $category;
     }
 
-    public function get_all_categories()
+    public static function get_all_categories()
     {
         try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'SELECT * FROM categories';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute();
+
+            if ($stmt->rowCount() == 0) {
+                return 'No hay categorías';
+            } else {
+                return $stmt->fetchAll(PDO::FETCH_OBJ);
+            }
 
         } catch (PDOException $e) {
             return Connection::messages($e->getCode());
         }
-//        try{
-//            $password = self::cryptconmd5($password);
-//            $conexion = Conectar::Conexion();
-//
-//            //Si $conexion es de tipo String, es porque se produjo una excepción. Para la ejecución de la función devolviendo el mensaje de la excepción.
-//            if(gettype($conexion) == "string"){
-//                return $conexion;
-//            }
-//
-//            $sql = "SELECT USUARIO, NOMBRE, APELLIDO, EMAIL FROM USUARIOS WHERE USUARIO=:usuario AND PASSWORD=:password";
-//            $respuesta = $conexion->prepare($sql);
-//            $respuesta->execute(array(':usuario'=>$alias, ':password'=>$password));
-//            $respuesta = $respuesta->fetch(PDO::FETCH_ASSOC);
-//
-//            // Si el array no está vacío, crea y devuelve un objeto Usuario.
-//            if($respuesta){
-//                $usuario = new Usuarios_modelo($respuesta["USUARIO"], $respuesta["NOMBRE"], $respuesta["APELLIDO"], $respuesta["EMAIL"]);
-//                return $usuario;
-//            }else{
-//                return $usuario = null;
-//            }
-//            $respuesta->closeCursor();
-//            $conexion = null;
-//
-//        }catch(PDOException $e){
-//            return Conectar::mensajes($e->getCode());
-//        }
+    }
+
+    public static function count_topics($category_id)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'SELECT * FROM topics WHERE category_id = :category_id';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':category_id' => $category_id
+            ));
+            return $stmt->rowCount();
+
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
+
+    public static function update_category($id, $category)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'UPDATE categories SET category = :category WHERE id = :id';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':category' => $category,
+                ':id' => $id
+            ));
+
+            return true;
+
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
+
+    public static function create_category($category)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'INSERT INTO categories (category) VALUES (:category)';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':category' => $category
+            ));
+
+            return true;
+
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
+
+    public static function delete_category($id)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'DELETE FROM categories WHERE id = :id';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':id' => $id
+            ));
+
+            return true;
+
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
     }
 }

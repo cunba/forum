@@ -1,20 +1,22 @@
 <?php
 
+require_once('db-properties.php');
+
 class Connection
 {
+    public function __construct()
+    {
+    }
+
     public static function Connection()
     {
         try {
-            if (file_exists('db-properties.php')) {
-                require_once('db-properties.php');
-                $dsn = 'mysql:host=' . HOST . '; dbname=' . DBNAME;
-                $connection = new PDO($dsn, USER, PASSWORD, array(
-                    PDO::ATTR_PERSISTENT => true,
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-                ));
-            } else {
-                return "<p class='error'>No cuenta con los recursos* para conectar con la base de datos.</p>";
-            }
+            $dsn = 'mysql:host=' . HOST . '; dbname=' . DBNAME;
+            $connection = new PDO($dsn, USER, PASSWORD, array(
+                PDO::ATTR_PERSISTENT => true,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            ));
+            return $connection;
         } catch (PDOException $e) {
             return self::messages($e->getCode());
         }
@@ -24,11 +26,7 @@ class Connection
     {
         switch ($e) {
             case "2002":
-                if (file_exists('db-properties.php')) {
-                    return "<p class='error'>Error al conectar!! El host es incorrecto: (" . $e . ")</p>";
-                } else {
-                    return "<p class='warning'>No cuenta con los recursos* para conectar con la base de datos.</p>";
-                }
+                return "<p class='error'>Error al conectar!! El host es incorrecto: (" . $e . ")</p>";
                 break;
             case "1049":
                 return "<p class='error'>Error al conectar!! No se encuentra la Base de datos: (" . $e . ")</p>";
