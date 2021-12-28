@@ -1,4 +1,15 @@
 <?php
+session_start();
+
+if (isset($_SESSION['user'])) {
+    if ($_SESSION['user'] == 'admin') {
+        header('Location:home.php');
+    } elseif ($_SESSION['user'] == 'comments_admin') {
+        header('Location:comments-view.php');
+    } else {
+        session_destroy();
+    }
+}
 
 if (isset($_POST['submit-login'])) {
     $user = $_POST['user'];
