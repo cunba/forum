@@ -1,7 +1,8 @@
 :root {
     --floral-white: #FFFBF5;
     --Eggshell: #F4F1DE;
-    --Terra-Cotta: #e07457;
+    --Terra-Cotta: #e16b4b;
+    --Terra-Cotta-light: #ef8567;
     --Independence: #3D405B;
     --Independence-light: #51557e;
     --Green-Sheen: #81B29A;
@@ -15,5 +16,5 @@
 
     --black-light: rgba(0, 0, 0, 0.568);
     --rich-black-fogra-39-light: #0b0e0cd3;
-    --dark-jungle-grees: #1A2421;
+    --dark-jungle-grees: #23312d;
 }

@@ -19,6 +19,7 @@
     --border-color: var(--ash-gray);
     --i-hover: var(--ash-gray-dark);
     --text-error-color: var(--Terra-Cotta);
+    --delete-button-hover-color: var(--Terra-Cotta-light);
     --list-color: var(--Deep-Champagne);
     --list-shadow: var(--Deep-Champagne-light);
     --create-color: var(--Green-Sheen);
@@ -279,12 +280,40 @@ input[type='submit']:hover {
 
 .icons {
     font-size: 25px;
-    width: 20%;
-
+    width: 100px;
+    height: 100%;
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-end;
+}
+
+.icons form {
+    margin-top: 0;
+}
+
+.icons form input[type='submit'] {
+    height: 30px;
+    width: 80px;
+    margin-bottom: 0;
+    padding-left: 0;
+    border-radius: 2px;
+}
+
+.icons form input[name='update'] {
+    background-color: var(--header-color);
+}
+
+.icons form input[name='update']:hover {
+    background-color: var(--header-hover-color);
+}
+
+.icons form input[name='delete'] {
+    background-color: var(--text-error-color);
+}
+
+.icons form input[name='delete']:hover {
+    background-color: var(--delete-button-hover-color);
 }
 
 i:hover {
@@ -292,10 +321,22 @@ i:hover {
     color: var(--i-hover);
 }
 
-/* FORMULARIO CATEGORIAS */
-
 form h2 {
     font-size: 27px;
     padding-bottom: 20px;
     text-align: center;
+}
+
+.empty {
+    height: 80px;
+    width: 100%;
+    background-color: var(--list-color);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 8%;
+    padding-right: 8%;
+    align-items: center;
 }
