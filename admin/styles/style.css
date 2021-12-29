@@ -404,6 +404,7 @@ form h2 {
 .delete {
     padding-bottom: 20px;
     padding-left: 8px;
+    height: auto;
 }
 
 .delete p {
@@ -418,6 +419,7 @@ form h2 {
 }
 
 .no {
+    margin-left: 80px;
     background-color: var(--header-color);
 }
 

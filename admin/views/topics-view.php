@@ -3,9 +3,10 @@ session_start();
 
 if (!isset($_SESSION['user'])) {
     header('Location:login.php');
-} elseif ($_SESSION['user'] == 'comments-admin') {
+} elseif ($_SESSION['user'] == 'comments_admin') {
     header('Location:comments-view.php');
 } elseif ($_SESSION['user'] != 'admin') {
+    session_destroy();
     header('Location:login.php');
 } else {
 

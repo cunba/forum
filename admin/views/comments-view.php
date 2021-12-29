@@ -3,9 +3,8 @@ session_start();
 
 if (!isset($_SESSION['user'])) {
     header('Location:login.php');
-} elseif ($_SESSION['user'] == 'comments-admin') {
-    header('Location:comments-view.php');
-} elseif ($_SESSION['user'] != 'admin') {
+} elseif ($_SESSION['user'] != 'admin' && $_SESSION['user'] != 'comments_admin') {
+    session_destroy();
     header('Location:login.php');
 } else {
 
@@ -51,11 +50,17 @@ if (!isset($_SESSION['user'])) {
                 <input id="check-menu" type="checkbox">
                 <div class="btn-menu">Menú</div>
                 <ul class="ul-menu">
-                    <li><a href="home.php">Inicio</a></li>
-                    <li><a href="categories-view.php">Categorías</a></li>
-                    <li><a href="topics-view.php">Temas</a></li>
+                    <?php
+                    if (isset($_SESSION['user']) && $_SESSION['user'] == 'admin') {
+                        ?>
+                        <li><a href="home.php">Inicio</a></li>
+                        <li><a href="categories-view.php">Categorías</a></li>
+                        <li><a href="topics-view.php">Temas</a></li>
+                        <li><a href="users-view.php">Usuarios</a></li>
+                        <?php
+                    }
+                    ?>
                     <li><a href="comments-view.php">Comentarios</a></li>
-                    <li><a href="users-view.php">Usuarios</a></li>
                     <li><a href="user-panel.php">Panel de usuario</a></li>
                     <li><a href="../controllers/logout.php">Cerrar sesión</a></li>
                 </ul>
