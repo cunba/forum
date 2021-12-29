@@ -35,7 +35,7 @@ if (isset($_POST['submit-login'])) {
         } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ0-9]{2,100}+$/", $category)) {
             echo '<p class="error">* El campo categoría sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
         } else {
-            if (Category_controller::create_category($category)) {
+            if (Category_controller::create($category)) {
                 header('Location:categories-view.php');
             } else {
                 echo '<p class="error">* No se ha podido crear la categoría, inténtelo de nuevo.</p>';
@@ -47,10 +47,41 @@ if (isset($_POST['submit-login'])) {
         } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ0-9]{2,100}+$/", $category)) {
             echo '<p class="error">* El campo categoría sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
         } else {
-            if (Category_controller::update_category($id, $category)) {
+            if (Category_controller::update($id, $category)) {
                 header('Location:categories-view.php');
             } else {
                 echo '<p class="error">* No se ha podido actualizar la categoría, inténtelo de nuevo.</p>';
+            }
+        }
+    }
+
+    if (isset($_POST['create-topic'])) {
+        if(empty($topic)) {
+            echo "<p class='error'>* El campo tema no puede estar vacío</p>";
+        } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ0-9]{2,100}+$/", $topic)) {
+            echo '<p class="error">* El campo tema sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
+        } elseif(empty($category_id)) {
+            echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
+        } else {
+            $topic = new Topic($topic, $category_id);
+            if (!Topic_controller::create($topic)) {
+                echo '<p class="error">* No se ha podido crear el tema, inténtelo de nuevo.</p>';
+            } else {
+                echo '<p class="success">Modificado con éxito.</p>';
+            }
+        }
+    } elseif (isset($_POST['update-topic'])) {
+        if(empty($topic)) {
+            echo "<p class='error'>* El campo tema no puede estar vacío</p>";
+        } elseif(empty($category_id)) {
+            echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
+        } else {
+            $topic = new Topic($topic, $category_id);
+            $topic->set_id($id);
+            if (Topic_controller::update($topic)) {
+                echo '<p class="success">Modificado con éxito.</p>';
+            } else {
+                echo '<p class="error">* No se ha podido crear el tema, inténtelo de nuevo.</p>';
             }
         }
     }

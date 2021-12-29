@@ -12,13 +12,13 @@ if (!isset($_SESSION['user'])) {
 } else {
     require_once('../controllers/Category_controller.php');
 
+    if (isset($_POST['atras'])) {
+        header('Location:categories-view.php');
+    }
+
     if (isset($_POST['create-category']) || isset($_POST['update-category'])) {
         $id = $_POST['id'];
         $category = $_POST['category'];
-    }
-
-    if (isset($_POST['atras'])) {
-        header('Location:categories-view.php');
     }
 
     if (isset($_POST['update'])) {
@@ -60,7 +60,7 @@ if (!isset($_SESSION['user'])) {
         <h1>MERAKI ADMIN</h1>
         <div></div>
     </header>
-    <section class="first categories">
+    <section class="first list">
         <h1>Categorías</h1>
         <?php
         if (isset($_GET['create'])) {
@@ -85,8 +85,8 @@ if (!isset($_SESSION['user'])) {
                 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update') ?>" method="post">
                     <h2>Añadir nueva categoría</h2>
                     <input type="hidden" name="id" value="<?php echo $category_update_id; ?>">
-                    <input type="text" name="category" value="<?php if (isset($category)) echo $category; ?>"
-                           placeholder="<?php echo $category_update_category; ?>">
+                    <input type="text" name="category"
+                           value="<?php if (isset($category)) echo $category; else echo $category_update_category; ?>">
 
                     <input type="submit" name="update-category" value="MODIFICAR">
                     <input type="submit" name="atras" value="ATRÁS">
@@ -98,11 +98,12 @@ if (!isset($_SESSION['user'])) {
             <?php
         } else {
             ?>
-            <div class="new"><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create'); ?>">Añadir</a>
+            <div class="new">
+                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create'); ?>">Añadir</a>
             </div>
             <?php
-            $categories = Category_controller::get_all_categories();
-            if (gettype($categories) == 'string') {
+            $categories = Category_controller::get_all();
+            if (gettype($categories) == 'boolean') {
                 ?>
                 <div class="empty">
                     <p>No hay categorías para mostrar</p>
@@ -112,7 +113,7 @@ if (!isset($_SESSION['user'])) {
                 foreach ($categories as $category) {
                     $num_topics = Category_controller::count_topics($category->id);
                     ?>
-                    <div class="list">
+                    <div class="list-item">
                         <div class="list-information">
                             <h2><?php echo $category->category; ?></h2>
                             <p><?php echo "Contiene {$num_topics} temas" ?></p>
@@ -142,7 +143,7 @@ if (!isset($_SESSION['user'])) {
                         <div class="delete">
                             <p>¿Estás seguro que quieres eliminar la categoría <?php echo $category_delete_category; ?>,
                                 incluyendo sus temas y comentarios?</p>
-                            <a href="<?php Category_controller::delete_category($category_delete_id);
+                            <a href="<?php Category_controller::delete($category_delete_id);
                             echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>" class="yes">Sí</a>
                             <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>" class="no">No</a>
                         </div>

@@ -8,9 +8,9 @@ class Category_controller
     {
     }
 
-    public static function get_all_categories()
+    public static function get_all()
     {
-        return Category::get_all_categories();
+        return Category::get_all();
     }
 
     public static function count_topics($category_id)
@@ -18,18 +18,18 @@ class Category_controller
         return Category::count_topics($category_id);
     }
 
-    public static function update_category($id, $category)
+    public static function update($id, $category)
     {
-        return Category::update_category($id, $category);
+        return Category::update($id, $category);
     }
 
-    public static function create_category($category)
+    public static function create($category)
     {
-        return Category::create_category($category);
+        return Category::create($category);
     }
 
-    public static function delete_category($id)
+    public static function delete($id)
     {
-        Category::delete_category($id);
+        Category::delete($id);
     }
 }
