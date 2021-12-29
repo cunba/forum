@@ -3,9 +3,10 @@ session_start();
 
 if (!isset($_SESSION['user'])) {
     header('Location:login.php');
-} elseif ($_SESSION['user'] == 'comments-admin') {
+} elseif ($_SESSION['user'] == 'comments_admin') {
     header('Location:comments-view.php');
 } elseif ($_SESSION['user'] != 'admin') {
+    session_destroy();
     header('Location:login.php');
 } else {
 
@@ -66,8 +67,8 @@ if (!isset($_SESSION['user'])) {
                     <li><a href="home.php">Inicio</a></li>
                     <li><a href="categories-view.php">Categorías</a></li>
                     <li><a href="topics-view.php">Temas</a></li>
-                    <li><a href="comments-view.php">Comentarios</a></li>
                     <li><a href="users-view.php">Usuarios</a></li>
+                    <li><a href="comments-view.php">Comentarios</a></li>
                     <li><a href="user-panel.php">Panel de usuario</a></li>
                     <li><a href="../controllers/logout.php">Cerrar sesión</a></li>
                 </ul>
@@ -105,7 +106,8 @@ if (!isset($_SESSION['user'])) {
                                 <input type="hidden" name="category_id_selected" value="<?php echo $category->id; ?>"
                                        placeholder="Categoría">
 
-                                <input type="submit" name="selected" value="<?php echo $category->category; ?>">
+                                <input type="submit" name="selected" value="">
+                                <label><?php echo "<h3>{$category->category}</h3>"; ?></label>
                             </form>
                         </div>
                         <?php

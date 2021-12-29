@@ -1,6 +1,7 @@
 <?php
 
 require_once('../models/Category.php');
+require_once('../models/Topic.php');
 
 class Category_controller
 {
@@ -30,6 +31,10 @@ class Category_controller
 
     public static function delete($id)
     {
+        $topics = Topic::get_by_category($id);
+        foreach($topics as $topic) {
+            Comment::delete($topic->id);
+        }
         Category::delete($id);
     }
 }

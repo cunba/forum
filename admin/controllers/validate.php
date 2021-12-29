@@ -29,59 +29,76 @@ if (isset($_POST['submit-login'])) {
     }
 }
 
-    if (isset($_POST['create-category'])) {
-        if (empty($category)) {
-            echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
-        } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ0-9]{2,100}+$/", $category)) {
-            echo '<p class="error">* El campo categoría sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
+if (isset($_POST['create-category'])) {
+    if (empty($category)) {
+        echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
+    } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ0-9]{3,100}+$/", $category)) {
+        echo '<p class="error">* El campo categoría sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
+    } else {
+        if (Category_controller::create($category)) {
+            header('Location:categories-view.php');
         } else {
-            if (Category_controller::create($category)) {
-                header('Location:categories-view.php');
-            } else {
-                echo '<p class="error">* No se ha podido crear la categoría, inténtelo de nuevo.</p>';
-            }
-        }
-    } elseif (isset($_POST['update-category'])) {
-        if (empty($category)) {
-            echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
-        } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ0-9]{2,100}+$/", $category)) {
-            echo '<p class="error">* El campo categoría sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
-        } else {
-            if (Category_controller::update($id, $category)) {
-                header('Location:categories-view.php');
-            } else {
-                echo '<p class="error">* No se ha podido actualizar la categoría, inténtelo de nuevo.</p>';
-            }
+            echo '<p class="error">* No se ha podido crear la categoría, inténtelo de nuevo.</p>';
         }
     }
+} elseif (isset($_POST['update-category'])) {
+    if (empty($category)) {
+        echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
+    } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ0-9]{3,100}+$/", $category)) {
+        echo '<p class="error">* El campo categoría sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
+    } else {
+        if (Category_controller::update($id, $category)) {
+            header('Location:categories-view.php');
+        } else {
+            echo '<p class="error">* No se ha podido actualizar la categoría, inténtelo de nuevo.</p>';
+        }
+    }
+}
 
-    if (isset($_POST['create-topic'])) {
-        if(empty($topic)) {
-            echo "<p class='error'>* El campo tema no puede estar vacío</p>";
-        } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ0-9]{2,100}+$/", $topic)) {
-            echo '<p class="error">* El campo tema sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
-        } elseif(empty($category_id)) {
-            echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
+if (isset($_POST['create-topic'])) {
+    if (empty($topic)) {
+        echo "<p class='error'>* El campo tema no puede estar vacío</p>";
+    } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ0-9]{3,200}+$/", $topic)) {
+        echo '<p class="error">* El campo tema sólo permite letras y números (mínimo 3 y máximo 200 caracteres)</p>';
+    } elseif (empty($category_id)) {
+        echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
+    } else {
+        $topic = new Topic($topic, $category_id);
+        if (!Topic_controller::create($topic)) {
+            echo '<p class="error">* No se ha podido crear el tema, inténtelo de nuevo.</p>';
         } else {
-            $topic = new Topic($topic, $category_id);
-            if (!Topic_controller::create($topic)) {
-                echo '<p class="error">* No se ha podido crear el tema, inténtelo de nuevo.</p>';
-            } else {
-                echo '<p class="success">Modificado con éxito.</p>';
-            }
-        }
-    } elseif (isset($_POST['update-topic'])) {
-        if(empty($topic)) {
-            echo "<p class='error'>* El campo tema no puede estar vacío</p>";
-        } elseif(empty($category_id)) {
-            echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
-        } else {
-            $topic = new Topic($topic, $category_id);
-            $topic->set_id($id);
-            if (Topic_controller::update($topic)) {
-                echo '<p class="success">Modificado con éxito.</p>';
-            } else {
-                echo '<p class="error">* No se ha podido crear el tema, inténtelo de nuevo.</p>';
-            }
+            echo '<p class="success">Tema creado con éxito.</p>';
         }
     }
+} elseif (isset($_POST['update-topic'])) {
+    if (empty($topic)) {
+        echo "<p class='error'>* El campo tema no puede estar vacío</p>";
+    } elseif (empty($category_id)) {
+        echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
+    } else {
+        $topic = new Topic($topic, $category_id);
+        $topic->set_id($id);
+        if (Topic_controller::update($topic)) {
+            echo '<p class="success">Tema modificado con éxito.</p>';
+        } else {
+            echo '<p class="error">* No se ha podido crear el tema, inténtelo de nuevo.</p>';
+        }
+    }
+}
+
+if (isset($_POST['create-comment'])) {
+    if (empty($comment)) {
+        echo "<p class='error'>* El campo comentario no puede estar vacío</p>";
+    } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ!-?]{2,400}+$/", $comment)) {
+        echo '<p class="error">* El campo comentario tiene un mínimo de 3 y</p><p class="error">máximo de 400 caracteres</p>';
+    } elseif (empty($topic_id)) {
+        echo "<p class='error'>* El campo tema no puede estar vacío</p>";
+    } else {
+        $comment = new Comment($comment, $topic_id);
+        if (!Comment_controller::create($comment)) {
+            echo '<p class="error">* No se ha podido crear el comentario, inténtelo de nuevo.</p>';
+        } else {
+            echo '<p class="success">Comentario creado con éxito.</p>';
+        }
+    }
+}

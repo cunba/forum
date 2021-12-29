@@ -5,9 +5,10 @@ require_once("../controllers/Category_controller.php");
 
 if (!isset($_SESSION['user'])) {
     header('Location:login.php');
-} elseif ($_SESSION['user'] == 'comments-admin') {
+} elseif ($_SESSION['user'] == 'comments_admin') {
     header('Location:comments-view.php');
 } elseif ($_SESSION['user'] != 'admin') {
+    session_destroy();
     header('Location:login.php');
 } else {
     require_once('../controllers/Category_controller.php');
@@ -50,15 +51,17 @@ if (!isset($_SESSION['user'])) {
                     <li><a href="home.php">Inicio</a></li>
                     <li><a href="categories-view.php">Categorías</a></li>
                     <li><a href="topics-view.php">Temas</a></li>
-                    <li><a href="comments-view.php">Comentarios</a></li>
                     <li><a href="users-view.php">Usuarios</a></li>
+                    <li><a href="comments-view.php">Comentarios</a></li>
                     <li><a href="user-panel.php">Panel de usuario</a></li>
                     <li><a href="../controllers/logout.php">Cerrar sesión</a></li>
                 </ul>
             </label>
         </nav>
         <h1>MERAKI ADMIN</h1>
-        <div></div>
+        <div>
+
+        </div>
     </header>
     <section class="first list">
         <h1>Categorías</h1>
@@ -143,8 +146,7 @@ if (!isset($_SESSION['user'])) {
                         <div class="delete">
                             <p>¿Estás seguro que quieres eliminar la categoría <?php echo $category_delete_category; ?>,
                                 incluyendo sus temas y comentarios?</p>
-                            <a href="<?php Category_controller::delete($category_delete_id);
-                            echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>" class="yes">Sí</a>
+                            <a href="<?php Category_controller::delete($category_delete_id); ?>" class="yes">Sí</a>
                             <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>" class="no">No</a>
                         </div>
                         <?php
