@@ -9,13 +9,19 @@ if (!isset($_SESSION['user'])) {
     header('Location:login.php');
 } else {
 
-    include("../controllers/back.php");
     require_once("../controllers/Category_controller.php");
     require_once("../controllers/Topic_controller.php");
+
+    $category_id_selected = 1;
+
+    if (isset($_POST['atras'])) {
+        header('Location:topics-view.php');
+    }
 
     if (isset($_POST['create-topic'])) {
         $topic = $_POST['topic'];
         $category_id = $_POST['category_id'];
+        $category_id_selected = $category_id;
     }
 
     if (isset($_POST['update-topic'])) {
@@ -25,13 +31,20 @@ if (!isset($_SESSION['user'])) {
     }
 
     if (isset($_POST['update'])) {
-        $category_update_id = $_POST['category_update_id'];
-        $category_update_category = $_POST['category_update_category'];
+        $category_id_selected = $_POST['selected_category_id'];
+        $topic_update_id = $_POST['topic_update_id'];
+        $topic_update_topic = $_POST['topic_update_topic'];
+
     }
 
     if (isset($_POST['delete'])) {
-        $category_delete_id = $_POST['category_delete_id'];
-        $category_delete_category = $_POST['category_delete_category'];
+        $category_id_selected = $_POST['selected_category_id'];
+        $topic_delete_id = $_POST['topic_delete_id'];
+        $topic_delete_topic = $_POST['topic_delete_topic'];
+    }
+
+    if (isset($_POST['selected'])) {
+        $category_id_selected = $_POST['category_id_selected'];
     }
     ?>
 
@@ -63,46 +76,9 @@ if (!isset($_SESSION['user'])) {
         <h1>MERAKI ADMIN</h1>
         <div></div>
     </header>
-    <section class="first categories">
-        <h1>Categorías</h1>
-        <?php
-        if (isset($_GET['create'])) {
-            ?>
-            <div class="form">
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create') ?>" method="post">
-                    <h2>Añadir nueva categoría</h2>
-                    <input type="text" name="category" value="<?php if (isset($category)) echo $category; ?>"
-                           placeholder="Categoría">
-
-                    <input type="submit" name="create-topic" value="AÑADIR">
-                    <input type="submit" name="atras" value="ATRÁS">
-                    <?php
-                    include("../controllers/validate.php");
-                    ?>
-                </form>
-            </div>
-            <?php
-        } elseif (isset($_GET['update'])) {
-            ?>
-            <div class="form">
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update') ?>" method="post">
-                    <h2>Añadir nueva categoría</h2>
-                    <input type="hidden" name="id" value="<?php echo $category_update_id; ?>">
-                    <input type="text" name="category" value="<?php if (isset($category)) echo $category; ?>"
-                           placeholder="<?php echo $category_update_category; ?>">
-
-                    <input type="submit" name="update-topic" value="MODIFICAR">
-                    <input type="submit" name="atras" value="ATRÁS">
-                    <?php
-                    include("../controllers/validate.php");
-                    ?>
-                </form>
-            </div>
-            <?php
-        } else {
-            ?>
-            <div class="new"><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create'); ?>">Añadir</a>
-            </div>
+    <section class="first left">
+        <div class="left-list">
+            <h1>Categorías</h1>
             <?php
             $categories = Category_controller::get_all();
             if (gettype($categories) == 'boolean') {
@@ -114,47 +90,171 @@ if (!isset($_SESSION['user'])) {
             } else {
                 foreach ($categories as $category) {
                     $num_topics = Category_controller::count_topics($category->id);
-                    ?>
-                    <div class="list">
-                        <div class="list-information">
-                            <h2><?php echo $category->category; ?></h2>
-                            <p><?php echo "Contiene {$num_topics} temas" ?></p>
-                        </div>
-                        <div class="icons">
-                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update') ?>"
-                                  method="post">
-                                <input type="hidden" name="category_update_id" value="<?php echo $category->id; ?>">
-                                <input type="hidden" name="category_update_category"
-                                       value="<?php echo $category->category; ?>">
 
-                                <input type="submit" name="update" value="MODIFICAR">
-                            </form>
-                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
-                                  method="post">
-                                <input type="hidden" name="category_delete_id" value="<?php echo $category->id; ?>">
-                                <input type="hidden" name="category_delete_category"
-                                       value="<?php echo $category->category; ?>">
-
-                                <input type="submit" name="delete" value="ELIMINAR">
-                            </form>
-                        </div>
-                    </div>
-                    <?php
-                    if (isset($_GET['delete']) && $category_delete_id == $category->id) {
+                    if ($category_id_selected == $category->id) {
                         ?>
-                        <div class="delete">
-                            <p>¿Estás seguro que quieres eliminar la categoría <?php echo $category_delete_category; ?>,
-                                incluyendo sus temas y comentarios?</p>
-                            <a href="<?php Category_controller::delete($category_delete_id);
-                            echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>" class="yes">Sí</a>
-                            <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>" class="no">No</a>
+                        <div class="left-list-item selected">
+                            <h2><?php echo $category->category; ?></h2>
+                        </div>
+                        <?php
+                    } else {
+                        ?>
+                        <div class="left-list-item">
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?selected') ?>"
+                                  method="post">
+                                <input type="hidden" name="category_id_selected" value="<?php echo $category->id; ?>"
+                                       placeholder="Categoría">
+
+                                <input type="submit" name="selected" value="<?php echo $category->category; ?>">
+                            </form>
                         </div>
                         <?php
                     }
                 }
             }
-        }
-        ?>
+            ?>
+        </div>
+        <div class="right-list">
+            <h1>Temas</h1>
+            <?php
+            if (isset($_GET['create'])) {
+                ?>
+                <div class="form">
+                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create') ?>" method="post">
+                        <h2>Añadir nuevo tema</h2>
+                        <input type="text" name="topic" value="<?php if (isset($topic)) echo $topic; ?>"
+                               placeholder="Categoría">
+                        <select name="category_id">
+                            <?php
+                            $categories = Category_controller::get_all();
+                            if (gettype($categories) == 'boolean') {
+                                ?>
+                                <option value="">No hay categorías</option>
+                                <?php
+                            } else {
+                                foreach ($categories as $category) {
+                                    ?>
+                                    <option value="<?php echo $category->id ?>"><?php echo $category->category ?></option>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </select>
+
+                        <input type="submit" name="create-topic" value="AÑADIR">
+                        <input type="submit" name="atras" value="ATRÁS">
+                        <?php
+                        include("../controllers/validate.php");
+                        ?>
+                    </form>
+                </div>
+                <?php
+            } elseif (isset($_GET['update'])) {
+                ?>
+                <div class="form">
+                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update') ?>" method="post">
+                        <h2>Añadir nueva categoría</h2>
+                        <input type="hidden" name="id" value="<?php echo $topic_update_id; ?>">
+                        <input type="text" name="topic"
+                               value="<?php if (isset($topic)) echo $topic; else echo $topic_update_topic; ?>">
+                        <select name="category_id">
+                            <?php
+                            $categories = Category_controller::get_all();
+                            if (gettype($categories) == 'boolean') {
+                                ?>
+                                <option value="">No hay categorías</option>
+                                <?php
+                            } else {
+                                foreach ($categories as $category) {
+                                    if ($category_id_selected == $category->id) {
+                                        ?>
+                                        <option value="<?php echo $category->id ?>"><?php echo $category->category ?></option>
+                                        <?php
+                                    }
+                                }
+                                foreach ($categories as $category) {
+                                    if (!($category_id_selected == $category->id)) {
+                                        ?>
+                                        <option value="<?php echo $category->id ?>"><?php echo $category->category ?></option>
+                                        <?php
+                                    }
+                                }
+                            }
+                            ?>
+                        </select>
+
+                        <input type="submit" name="update-topic" value="MODIFICAR">
+                        <input type="submit" name="atras" value="ATRÁS">
+                        <?php
+                        include("../controllers/validate.php");
+                        ?>
+                    </form>
+                </div>
+                <?php
+            } else {
+                ?>
+                <div class="new"><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create'); ?>">Añadir</a>
+                </div>
+                <?php
+                $topics = Topic_controller::get_by_category($category_id_selected);
+                if (gettype($topics) == 'boolean') {
+                    ?>
+                    <div class="empty">
+                        <p>No hay categorías para mostrar</p>
+                    </div>
+                    <?php
+                } else {
+                    foreach ($topics as $topic) {
+                        $num_topics = Topic_controller::count_comments($topic->id);
+                        ?>
+                        <div class="list-item">
+                            <div class="list-information">
+                                <h2><?php echo $topic->topic; ?></h2>
+                                <p><?php echo "Contiene {$num_topics} comentarios" ?></p>
+                            </div>
+                            <div class="icons">
+                                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update') ?>"
+                                      method="post">
+                                    <input type="hidden" name="topic_update_id" value="<?php echo $topic->id; ?>">
+                                    <input type="hidden" name="topic_update_topic"
+                                           value="<?php echo $topic->topic; ?>">
+                                    <input type="hidden" name="selected_category_id"
+                                           value="<?php echo $category_id_selected ?>">
+
+                                    <input type="submit" name="update" value="MODIFICAR">
+                                </form>
+                                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
+                                      method="post">
+                                    <input type="hidden" name="topic_delete_id" value="<?php echo $topic->id; ?>">
+                                    <input type="hidden" name="topic_delete_topic"
+                                           value="<?php echo $topic->topic; ?>">
+                                    <input type="hidden" name="selected_category_id"
+                                           value="<?php echo $category_id_selected ?>">
+
+                                    <input type="submit" name="delete" value="ELIMINAR">
+                                </form>
+                            </div>
+                        </div>
+                        <?php
+                        if (isset($_GET['delete']) && $topic_delete_id == $topic->id) {
+                            ?>
+                            <div class="delete">
+                                <p>¿Estás seguro que quieres eliminar la
+                                    categoría <?php echo $topic_delete_topic; ?>,
+                                    incluyendo sus temas y comentarios?</p>
+                                <a href="<?php Topic_controller::delete($topic_delete_id);
+                                echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>"
+                                   class="yes">Sí</a>
+                                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>"
+                                   class="no">No</a>
+                            </div>
+                            <?php
+                        }
+                    }
+                }
+            }
+            ?>
+        </div>
     </section>
     </body>
     </html>

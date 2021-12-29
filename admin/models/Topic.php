@@ -12,6 +12,11 @@ class Topic
         $this->category_id = $category_id;
     }
 
+    public function set_id($id)
+    {
+        $this->id = $id;
+    }
+
     public static function get_by_category($category_id)
     {
         try {
@@ -31,7 +36,7 @@ class Topic
             if ($stmt->rowCount() == 0) {
                 return false;
             } else {
-                return $stmt->fetch(PDO::FETCH_OBJ);
+                return $stmt->fetchAll(PDO::FETCH_OBJ);
             }
         } catch (PDOException $e) {
             return Connection::messages($e->getCode());
@@ -73,9 +78,9 @@ class Topic
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(
-                ':topic' => $topic->get_topic(),
-                ':category_id' => $topic->get_category_id(),
-                ':id' => $topic->get_id()
+                ':topic' => $topic->topic,
+                ':category_id' => $topic->category_id,
+                ':id' => $topic->id
             ));
 
             return true;
@@ -98,8 +103,8 @@ class Topic
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(
-                ':topic' => $topic->get_topic(),
-                ':category_id' => $topic->get_category_id()
+                ':topic' => $topic->topic,
+                ':category_id' => $topic->category_id
             ));
 
             return true;

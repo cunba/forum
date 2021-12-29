@@ -24,6 +24,7 @@
     --list-shadow: var(--Deep-Champagne-light);
     --create-color: var(--Green-Sheen);
     --create-hover-color: var(--Green-Sheen-light);
+    --succes-text-color: var(--Green-Sheen-dark);
 }
 
 body {
@@ -155,7 +156,7 @@ form h1 {
     padding-bottom: 30px;
 }
 
-input {
+input, select {
     height: 30px;
     width: 300px;
     margin-bottom: 15px;
@@ -178,6 +179,12 @@ input[type='submit']:hover {
 
 .error {
     color: var(--text-error-color);
+    padding-top: 10px;
+    text-align: start;
+}
+
+.success {
+    color: var(--succes-text-color);
     padding-top: 10px;
     text-align: start;
 }
@@ -259,15 +266,15 @@ input[type='submit']:hover {
     background-color: var(--delete-button-hover-color);
 }
 
-/* CATEGORIES VIEW */
+/* LIST VIEW */
 
-.categories h1 {
+.list h1 {
     font-size: 40px;
     padding-bottom: 30px;
     text-align: center;
 }
 
-.categories {
+.list {
     margin-left: 20%;
     margin-right: 20%;
     width: 60%;
@@ -301,8 +308,8 @@ input[type='submit']:hover {
     background-color: var(--create-hover-color);
 }
 
-.list {
-    height: 80px;
+.list-item {
+    height: auto;
     width: 100%;
     background-color: var(--list-color);
     margin-bottom: 20px;
@@ -322,9 +329,14 @@ input[type='submit']:hover {
     padding-bottom: 7px;
 }
 
+.list-information {
+    width: 80%;
+    padding-right: 10px;
+}
+
 .icons {
     font-size: 25px;
-    width: 100px;
+    width: 20%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -346,6 +358,7 @@ input[type='submit']:hover {
 
 .icons form input[name='update'] {
     background-color: var(--header-color);
+    margin-bottom: 5px;
 }
 
 .icons form input[name='update']:hover {
@@ -416,3 +429,85 @@ form h2 {
 .yes:hover {
     background-color: var(--delete-button-hover-color);
 }
+
+/* LEFT LIST */
+
+.left {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 0;
+}
+
+.left-list h1 {
+    font-size: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+}
+
+.left-list {
+    width: 350px;
+    height: 100%;
+    padding-top: 20px;
+    border-right-color: var(--header-color);
+    border-right-width: 3px;
+    border-right-style: solid;
+    margin-left: 2%;
+    padding-right: 2%
+}
+
+.left-list-item {
+    height: auto;
+    width: 100%;
+    background-color: var(--list-color);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.left-list-item form {
+    margin-top: 0;
+    justify-content: flex-start;
+    padding-top: 5px;
+}
+
+.left-list-item form input[type="submit"] {
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-size: 25px;
+    color: var(--text);
+    background-color: var(--list-color);
+}
+
+.left-list-item form input[type="submit"]:hover {
+    cursor: pointer;
+}
+
+.selected {
+    border-style: outset;
+    border-color: var(--list-shadow);
+    border-width: 3px;
+}
+
+.right-list h1 {
+    font-size: 40px;
+    padding-bottom: 30px;
+    text-align: center
+}
+
+.right-list {
+    padding-top: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 60%;
+    max-width: var(--max-width);
+    min-width: var(--min-width);
+}
+
