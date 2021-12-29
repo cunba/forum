@@ -67,8 +67,8 @@ if (!isset($_SESSION['user'])) {
                     <li><a href="home.php">Inicio</a></li>
                     <li><a href="categories-view.php">Categorías</a></li>
                     <li><a href="topics-view.php">Temas</a></li>
-                    <li><a href="comments-view.php">Comentarios</a></li>
                     <li><a href="users-view.php">Usuarios</a></li>
+                    <li><a href="comments-view.php">Comentarios</a></li>
                     <li><a href="user-panel.php">Panel de usuario</a></li>
                     <li><a href="../controllers/logout.php">Cerrar sesión</a></li>
                 </ul>
