@@ -105,7 +105,8 @@ if (!isset($_SESSION['user'])) {
                                 <input type="hidden" name="category_id_selected" value="<?php echo $category->id; ?>"
                                        placeholder="Categoría">
 
-                                <input type="submit" name="selected" value="<?php echo $category->category; ?>">
+                                <input type="submit" name="selected" value="">
+                                <label><?php echo "<h3>{$category->category}</h3>"; ?></label>
                             </form>
                         </div>
                         <?php
