@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-require_once("../controllers/Category_controller.php");
-
 if (!isset($_SESSION['user'])) {
     header('Location:login.php');
 } elseif ($_SESSION['user'] == 'comments_admin') {
@@ -13,7 +11,7 @@ if (!isset($_SESSION['user'])) {
 } else {
     require_once('../controllers/Category_controller.php');
 
-    if (isset($_POST['atras'])) {
+    if (isset($_POST['back'])) {
         header('Location:categories-view.php');
     }
 
@@ -27,9 +25,15 @@ if (!isset($_SESSION['user'])) {
         $category_update_category = $_POST['category_update_category'];
     }
 
-    if (isset($_POST['delete'])) {
+    if (isset($_POST['delete-category-form'])) {
         $category_delete_id = $_POST['category_delete_id'];
         $category_delete_category = $_POST['category_delete_category'];
+    }
+
+    if (isset($_POST['delete'])) {
+        $category_delete_id = $_POST['id'];
+        Category_controller::delete($category_delete_id);
+        header('Location:categories-view.php');
     }
     ?>
 
@@ -75,7 +79,7 @@ if (!isset($_SESSION['user'])) {
                            placeholder="Categoría">
 
                     <input type="submit" name="create-category" value="AÑADIR">
-                    <input type="submit" name="atras" value="ATRÁS">
+                    <input type="submit" name="back" value="ATRÁS">
                     <?php
                     include("../controllers/validate.php");
                     ?>
@@ -92,7 +96,7 @@ if (!isset($_SESSION['user'])) {
                            value="<?php if (isset($category)) echo $category; else echo $category_update_category; ?>">
 
                     <input type="submit" name="update-category" value="MODIFICAR">
-                    <input type="submit" name="atras" value="ATRÁS">
+                    <input type="submit" name="back" value="ATRÁS">
                     <?php
                     include("../controllers/validate.php");
                     ?>
@@ -130,25 +134,32 @@ if (!isset($_SESSION['user'])) {
 
                                 <input type="submit" name="update" value="MODIFICAR">
                             </form>
-                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete-category-form') ?>"
                                   method="post">
                                 <input type="hidden" name="category_delete_id" value="<?php echo $category->id; ?>">
                                 <input type="hidden" name="category_delete_category"
                                        value="<?php echo $category->category; ?>">
 
-                                <input type="submit" name="delete" value="ELIMINAR">
+                                <input type="submit" name="delete-category-form" value="ELIMINAR">
                             </form>
                         </div>
                     </div>
                     <?php
-                    if (isset($_GET['delete']) && $category_delete_id == $category->id) {
+                    if (isset($_GET['delete-category-form']) && $category_delete_id == $category->id) {
                         ?>
-                        <div class="delete">
-                            <p>¿Estás seguro que quieres eliminar la categoría <?php echo $category_delete_category; ?>,
-                                incluyendo sus temas y comentarios?</p>
-                            <a href="<?php Category_controller::delete($category_delete_id); ?>" class="yes">Sí</a>
-                            <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>" class="no">No</a>
-                        </div>
+                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>" method="post">
+                            <div class="delete">
+                                <p>¿Estás seguro que quieres eliminar la
+                                    categoría <?php echo $category_delete_category; ?>,
+                                    incluyendo sus temas y comentarios?</p>
+                                <input type="hidden" name="id" value="<?php echo $category->id; ?>">
+
+                                <div class='buttons'>
+                                    <input type="submit" name="delete" value="SÍ">
+                                    <input type="submit" name="back" value="NO">
+                                </div>
+                            </div>
+                        </form>
                         <?php
                     }
                 }

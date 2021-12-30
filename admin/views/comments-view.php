@@ -11,6 +11,7 @@ if (!isset($_SESSION['user'])) {
     require_once("../controllers/Comment_controller.php");
     require_once("../controllers/Topic_controller.php");
     require_once("../controllers/Category_controller.php");
+    require_once("../controllers/User_controller.php");
 
     $topic_id_selected = 1;
 
@@ -24,7 +25,7 @@ if (!isset($_SESSION['user'])) {
         $topic_id_selected = $topic_id;
     }
 
-    if (isset($_POST['delete'])) {
+    if (isset($_POST['delete-comment-form'])) {
         $topic_id_selected = $_POST['selected_topic_id'];
         $comment_delete_id = $_POST['comment_delete_id'];
         $comment_delete_comment = $_POST['comment_delete_comment'];
@@ -32,6 +33,12 @@ if (!isset($_SESSION['user'])) {
 
     if (isset($_POST['selected'])) {
         $topic_id_selected = $_POST['topic_id_selected'];
+    }
+
+    if (isset($_POST['delete'])) {
+        $comment_delete_id = $_POST['id'];
+        Comment_controller::delete($comment_delete_id);
+        header('Location:comments-view.php');
     }
     ?>
 
@@ -136,9 +143,7 @@ if (!isset($_SESSION['user'])) {
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create') ?>"
                           method="post">
                         <h2>Añadir nuevo comentario</h2>
-                        <textarea type="text" name="comment" placeholder="Commentario">
-                            <?php if (!empty($comment)) echo $comment; ?>
-                        </textarea>
+                        <textarea type="text" name="comment" placeholder="Comentario"></textarea>
                         <select name="topic_id">
                             <?php
                             $topics = Topic_controller::get_all();
@@ -179,37 +184,43 @@ if (!isset($_SESSION['user'])) {
                     <?php
                 } else {
                     foreach ($comments as $comment) {
+                        $user = User_controller::get_by_id($comment->user_id);
                         ?>
-                        <div class="list-item">
-                            <div class="list-information">
-                                <p><?php echo $comment->comment; ?></p>
-                            </div>
-                            <div class="icons">
-                                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
-                                      method="post">
-                                    <input type="hidden" name="comment_delete_id"
-                                           value="<?php echo $comment->id; ?>">
-                                    <input type="hidden" name="comment_delete_comment"
-                                           value="<?php echo $comment->comment; ?>">
-                                    <input type="hidden" name="selected_topic_id"
-                                           value="<?php echo $topic_id_selected ?>">
+                        <div class="list-item comment">
+                            <div class="comment-header">
+                                <h3><?php echo $user->user ?></h3>
+                                <div class="icons">
+                                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete-comment-form') ?>"
+                                          method="post">
+                                        <input type="hidden" name="comment_delete_id"
+                                               value="<?php echo $comment->id; ?>">
+                                        <input type="hidden" name="comment_delete_comment"
+                                               value="<?php echo $comment->comment; ?>">
+                                        <input type="hidden" name="selected_topic_id"
+                                               value="<?php echo $topic_id_selected ?>">
 
-                                    <input type="submit" name="delete" value="ELIMINAR">
-                                </form>
+                                        <input type="submit" name="delete-comment-form" value="ELIMINAR">
+                                    </form>
+                                </div>
+                                <h4><?php echo $comment->creation_date; ?></h4>
                             </div>
+                            <p><?php echo $comment->comment; ?></p>
                         </div>
                         <?php
-                        if (isset($_GET['delete']) && $comment_delete_id == $comment->id) {
+                        if (isset($_GET['delete-comment-form']) && $comment_delete_id == $comment->id) {
                             ?>
-                            <div class="delete">
-                                <p>¿Estás seguro que quieres eliminar el
-                                    comentario?</p>
-                                <a href="<?php Comment_controller::delete($comment_delete_id);
-                                echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>"
-                                   class="yes">Sí</a>
-                                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>"
-                                   class="no">No</a>
-                            </div>
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
+                                  method="post">
+                                <div class="delete">
+                                    <p>¿Estás seguro que quieres eliminar el comentario?</p>
+                                    <input type="hidden" name="id" value="<?php echo $comment->id; ?>">
+
+                                    <div class='buttons'>
+                                        <input type="submit" name="delete" value="SÍ">
+                                        <input type="submit" name="back" value="NO">
+                                    </div>
+                                </div>
+                            </form>
                             <?php
                         }
                     }

@@ -33,7 +33,7 @@ class Category_controller
     {
         $topics = Topic::get_by_category($id);
         foreach($topics as $topic) {
-            Comment::delete($topic->id);
+            Topic::delete($topic->id);
         }
         Category::delete($id);
     }

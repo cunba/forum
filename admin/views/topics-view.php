@@ -38,7 +38,7 @@ if (!isset($_SESSION['user'])) {
 
     }
 
-    if (isset($_POST['delete'])) {
+    if (isset($_POST['delete-topic-form'])) {
         $category_id_selected = $_POST['selected_category_id'];
         $topic_delete_id = $_POST['topic_delete_id'];
         $topic_delete_topic = $_POST['topic_delete_topic'];
@@ -46,6 +46,12 @@ if (!isset($_SESSION['user'])) {
 
     if (isset($_POST['selected'])) {
         $category_id_selected = $_POST['category_id_selected'];
+    }
+
+    if (isset($_POST['delete'])) {
+        $topic_delete_id = $_POST['id'];
+        Topic_controller::delete($topic_delete_id);
+        header('Location:topics-view.php');
     }
     ?>
 
@@ -225,7 +231,7 @@ if (!isset($_SESSION['user'])) {
 
                                     <input type="submit" name="update" value="MODIFICAR">
                                 </form>
-                                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
+                                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete-topic-form') ?>"
                                       method="post">
                                     <input type="hidden" name="topic_delete_id" value="<?php echo $topic->id; ?>">
                                     <input type="hidden" name="topic_delete_topic"
@@ -233,23 +239,26 @@ if (!isset($_SESSION['user'])) {
                                     <input type="hidden" name="selected_category_id"
                                            value="<?php echo $category_id_selected ?>">
 
-                                    <input type="submit" name="delete" value="ELIMINAR">
+                                    <input type="submit" name="delete-topic-form" value="ELIMINAR">
                                 </form>
                             </div>
                         </div>
                         <?php
-                        if (isset($_GET['delete']) && $topic_delete_id == $topic->id) {
+                        if (isset($_GET['delete-topic-form']) && $topic_delete_id == $topic->id) {
                             ?>
-                            <div class="delete">
-                                <p>¿Estás seguro que quieres eliminar la
-                                    categoría <?php echo $topic_delete_topic; ?>,
-                                    incluyendo sus temas y comentarios?</p>
-                                <a href="<?php Topic_controller::delete($topic_delete_id);
-                                echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>"
-                                   class="yes">Sí</a>
-                                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . ''); ?>"
-                                   class="no">No</a>
-                            </div>
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
+                                  method="post">
+                                <div class="delete">
+                                    <p>¿Estás seguro que quieres eliminar el tema <?php echo $topic->topic ?>,
+                                        incluyendo los comentarios añadidos?</p>
+                                    <input type="hidden" name="id" value="<?php echo $topic->id; ?>">
+
+                                    <div class='buttons'>
+                                        <input type="submit" name="delete" value="SÍ">
+                                        <input type="submit" name="back" value="NO">
+                                    </div>
+                                </div>
+                            </form>
                             <?php
                         }
                     }
