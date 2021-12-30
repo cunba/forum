@@ -17,6 +17,8 @@ if (isset($_POST['submit-login'])) {
                 session_start();
                 $_SESSION['user'] = $user;
                 $_SESSION['password'] = $password;
+                $_SESSION['category_id_selected'] = 1;
+                $_SESSION['topic_id_selected'] = 1;
 
                 if ($user == 'admin') {
                     header("Location:home.php");

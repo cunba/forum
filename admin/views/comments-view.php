@@ -13,8 +13,6 @@ if (!isset($_SESSION['user'])) {
     require_once("../controllers/Category_controller.php");
     require_once("../controllers/User_controller.php");
 
-    $topic_id_selected = 1;
-
     if (isset($_POST['atras'])) {
         header('Location:comments-view.php');
     }
@@ -22,17 +20,17 @@ if (!isset($_SESSION['user'])) {
     if (isset($_POST['create-comment'])) {
         $comment = $_POST['comment'];
         $topic_id = $_POST['topic_id'];
-        $topic_id_selected = $topic_id;
+        $_SESSION['topic_id_selected'] = $topic_id;
     }
 
     if (isset($_POST['delete-comment-form'])) {
-        $topic_id_selected = $_POST['selected_topic_id'];
+        $_SESSION['topic_id_selected'] = $_POST['selected_topic_id'];
         $comment_delete_id = $_POST['comment_delete_id'];
         $comment_delete_comment = $_POST['comment_delete_comment'];
     }
 
     if (isset($_POST['selected'])) {
-        $topic_id_selected = $_POST['topic_id_selected'];
+        $_SESSION['topic_id_selected'] = $_POST['topic_id_selected'];
     }
 
     if (isset($_POST['delete'])) {
@@ -103,7 +101,7 @@ if (!isset($_SESSION['user'])) {
                         <?php
                     } else {
                         foreach ($topics as $topic) {
-                            if ($topic_id_selected == $topic->id) {
+                            if ($_SESSION['topic_id_selected'] == $topic->id) {
                                 ?>
                                 <div class="subitem">
                                     <div class="left-list-item selected">
@@ -153,9 +151,18 @@ if (!isset($_SESSION['user'])) {
                                 <?php
                             } else {
                                 foreach ($topics as $topic) {
-                                    ?>
-                                    <option value="<?php echo $topic->id ?>"><?php echo $topic->topic ?></option>
-                                    <?php
+                                    if ($_SESSION['topic_id_selected'] == $topic->id) {
+                                        ?>
+                                        <option value="<?php echo $topic->id ?>"><?php echo $topic->topic ?></option>
+                                        <?php
+                                    }
+                                }
+                                foreach ($topics as $topic) {
+                                    if (!($_SESSION['topic_id_selected'] == $topic->id)) {
+                                        ?>
+                                        <option value="<?php echo $topic->id ?>"><?php echo $topic->topic ?></option>
+                                        <?php
+                                    }
                                 }
                             }
                             ?>
@@ -175,7 +182,7 @@ if (!isset($_SESSION['user'])) {
                             href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create'); ?>">Añadir</a>
                 </div>
                 <?php
-                $comments = Comment_controller::get_by_topic($topic_id_selected);
+                $comments = Comment_controller::get_by_topic($_SESSION['topic_id_selected']);
                 if (gettype($comments) == 'boolean') {
                     ?>
                     <div class="empty">
@@ -197,7 +204,7 @@ if (!isset($_SESSION['user'])) {
                                         <input type="hidden" name="comment_delete_comment"
                                                value="<?php echo $comment->comment; ?>">
                                         <input type="hidden" name="selected_topic_id"
-                                               value="<?php echo $topic_id_selected ?>">
+                                               value="<?php echo $_SESSION['topic_id_selected'] ?>">
 
                                         <input type="submit" name="delete-comment-form" value="ELIMINAR">
                                     </form>

@@ -22,8 +22,10 @@
     --login-register-color: var(--Ash-Gray);
     --login-register-hover-color: var(--Ash-Gray-light);
     --text-color: var(--Rich-Black-Fogra-39);
-    --list-item-color: var(--Ash-Gray);
-    --list_subitem-color: var(--Ash-Gray-light);
+    --left-list-color: var(--Ash-Gray);
+    --list-item-text-color: var(--Floral-White);
+    --list-subitem-color: var(--Ash-Gray-light);
+    --list-empty-color: var(--Ash-Gray-light-translucid);
 }
 
 body {
@@ -67,6 +69,7 @@ a {
 
 .header h1 {
     position: absolute;
+    padding-top: 5px;
     left: 40%;
     right: 40%;
 }
@@ -245,18 +248,17 @@ input[type='submit']:hover {
     width: 350px;
     height: 100%;
     padding-top: 20px;
+    background-color: var(--left-list-color);
     border-right-color: var(--header-color);
     border-right-width: 3px;
     border-right-style: solid;
-    margin-left: 2%;
+    padding-left: 2%;
     padding-right: 2%
 }
 
 .left-list-item {
     height: auto;
     width: 100%;
-    background-color: var(--list-item-color);
-    color: var(--list-item-text-color);
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
@@ -279,7 +281,6 @@ input[type='submit']:hover {
     width: auto;
     height: auto;
     font-size: 25px;
-    background-color: var(--list-item-color);
 }
 
 .left-list-item form input[type="submit"]:hover {
@@ -288,10 +289,11 @@ input[type='submit']:hover {
 
 .subitem {
     margin-left: 10%;
+    color: var(--text-color);
 }
 
 .color {
-    background-color: var(--list_subitem-color);
+    background-color: var(--list-subitem-color);
 }
 
 .left-list-item form input[type="submit"] {
@@ -314,6 +316,22 @@ input[type='submit']:hover {
     border-width: 3px;
     font-size: 20px;
 }
+
+.empty {
+    height: 80px;
+    width: 100%;
+    background-color: var(--list-empty-color);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 8%;
+    padding-right: 8%;
+    align-items: center;
+}
+
+/* RIGHT LIST */
 
 .right-list h1 {
     font-size: 40px;

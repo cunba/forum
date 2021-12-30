@@ -3,11 +3,13 @@
 :root {
     --Floral-White: #FFFBF5;
     --Ash-Gray: #a1ada4;
-    --Ash-Gray-light: #c5cbc6;
+    --Ash-Gray-dark: #859188;
+    --Ash-Gray-light: #b5bdb7;
+    --Ash-Gray-light-translucid: rgba(181, 189, 183, 0.73);
     --Black-light: rgba(0, 0, 0, 0.568);
     --Rich-Black-Fogra-39: #0B0E0C;
     --Rich-Black-Fogra-39-light: rgb(60, 63, 61);
-    --Dark-Jungle-Grees: #1A2421;
+    --Dark-Jungle-Grees: #35493e;
 
     --Terra-Cotta: #e16b4b;
     --Green-Sheen-dark: #478668;
