@@ -15,7 +15,11 @@ if (!isset($_SESSION['user'])) {
         header('Location:categories-view.php');
     }
 
-    if (isset($_POST['create-category']) || isset($_POST['update-category'])) {
+    if (isset($_POST['create-category'])) {
+        $category = $_POST['category'];
+    }
+
+    if (isset($_POST['update-category'])) {
         $id = $_POST['id'];
         $category = $_POST['category'];
     }
