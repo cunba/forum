@@ -19,6 +19,11 @@
     --button-text-color: var(--Floral-White);
     --text-error-color: var(--Terra-Cotta);
     --text-success-color: var(--Green-Sheen-dark);
+    --login-register-color: var(--Ash-Gray);
+    --login-register-hover-color: var(--Ash-Gray-light);
+    --text-color: var(--Rich-Black-Fogra-39);
+    --list-item-color: var(--Ash-Gray);
+    --list_subitem-color: var(--Ash-Gray-light);
 }
 
 body {
@@ -45,28 +50,64 @@ a {
 }
 
 .header {
-    color: var(--header-text);
+    color: var(--header-text-color);
     background-color: var(--header-color);
     display: flex;
     width: 100%;
     flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: baseline;
     height: 50px;
 }
 
 .header nav {
-    width: 25%;
+    width: 10%;
 }
 
 .header h1 {
-    width: 50%;
-    text-align: start;
+    position: absolute;
+    left: 40%;
+    right: 40%;
 }
 
-.header div {
+.login-register {
     width: 25%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+}
+
+.login {
+    background-color: var(--login-register-color);
+    width: 110px;
+    height: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+}
+
+.register {
+    background-color: var(--login-register-color);
+    width: 90px;
+    height: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+}
+
+.login:hover, .register:hover {
+    background-color: var(--login-register-hover-color);
+}
+
+.login a, .register a {
+    color: var(--text-color);
 }
 
 #check-menu {
@@ -108,7 +149,7 @@ a {
     display: block;
     width: 180px;
     background-color: var(--header-color);
-    border-top: 1px solid var(--header-text);
+    border-top: 1px solid var(--header-text-color);
     line-height: 40px;
     list-style: none;
 }
@@ -117,7 +158,7 @@ a {
     display: inline-block;
     width: 100%;
     padding: 0 20px;
-    color: var(--header-text);
+    color: var(--header-text-color);
 }
 
 .ul-menu > li:hover {
@@ -183,4 +224,108 @@ input[type='submit']:hover {
     color: var(--text-success-color);
     padding-top: 10px;
     text-align: start;
+}
+
+/* LEFT LIST */
+
+.left {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 0;
+}
+
+.left-list h1 {
+    font-size: 30px;
+    padding-bottom: 30px;
+    text-align: center;
+}
+
+.left-list {
+    width: 350px;
+    height: 100%;
+    padding-top: 20px;
+    border-right-color: var(--header-color);
+    border-right-width: 3px;
+    border-right-style: solid;
+    margin-left: 2%;
+    padding-right: 2%
+}
+
+.left-list-item {
+    height: auto;
+    width: 100%;
+    background-color: var(--list-item-color);
+    color: var(--list-item-text-color);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.left-list-item form {
+    margin-top: 0;
+    justify-content: flex-start;
+    padding-top: 5px;
+}
+
+.left-list-item form input[type="submit"] {
+    display: flex;
+    width: auto;
+    height: auto;
+    font-size: 25px;
+    background-color: var(--list-item-color);
+}
+
+.left-list-item form input[type="submit"]:hover {
+    cursor: pointer;
+}
+
+.subitem {
+    margin-left: 10%;
+}
+
+.color {
+    background-color: var(--list_subitem-color);
+}
+
+.left-list-item form input[type="submit"] {
+    position: absolute;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0);
+    width: 250px;
+    height: border-box;
+}
+
+.left-list-item form label {
+    position: relative;
+    z-index: 0
+}
+
+.selected {
+    height: auto;
+    border-style: outset;
+    border-color: var(--list-shadow);
+    border-width: 3px;
+    font-size: 20px;
+}
+
+.right-list h1 {
+    font-size: 40px;
+    padding-bottom: 30px;
+    text-align: center
+}
+
+.right-list {
+    padding-top: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 60%;
+    max-width: var(--max-width);
+    min-width: var(--min-width);
 }
