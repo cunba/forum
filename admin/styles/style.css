@@ -1,4 +1,4 @@
-@import url('./colors.css');
+@import url('colors-admin.css');
 
 * {
     margin: 0;
@@ -13,11 +13,11 @@
     --header-hover-color: var(--Independence-light);
     --header-text: var(--Eggshell);
     --background-color: var(--Eggshell);
-    --text: var(--rich-black-fogra-39-light);
-    --button-text: var(--floral-white);
-    --button-color: var(--rich-black-fogra-39-light);
-    --border-color: var(--ash-gray);
-    --i-hover: var(--ash-gray-dark);
+    --text: var(--rich-black-fogra-39-light-admin);
+    --button-text: var(--floral-white-admin);
+    --button-color: var(--rich-black-fogra-39-light-admin);
+    --border-color: var(--ash-gray-admin);
+    --i-hover: var(--ash-gray-dark-admin);
     --text-error-color: var(--Terra-Cotta);
     --delete-button-hover-color: var(--Terra-Cotta-light);
     --list-color: var(--Deep-Champagne);
