@@ -13,8 +13,6 @@ if (!isset($_SESSION['user'])) {
     require_once("../controllers/Category_controller.php");
     require_once("../controllers/Topic_controller.php");
 
-    $category_id_selected = 1;
-
     if (isset($_POST['atras'])) {
         header('Location:topics-view.php');
     }
@@ -22,7 +20,7 @@ if (!isset($_SESSION['user'])) {
     if (isset($_POST['create-topic'])) {
         $topic = $_POST['topic'];
         $category_id = $_POST['category_id'];
-        $category_id_selected = $category_id;
+        $_SESSION['category_id_selected'] = $category_id;
     }
 
     if (isset($_POST['update-topic'])) {
@@ -32,20 +30,20 @@ if (!isset($_SESSION['user'])) {
     }
 
     if (isset($_POST['update'])) {
-        $category_id_selected = $_POST['selected_category_id'];
+        $_SESSION['category_id_selected'] = $_POST['selected_category_id'];
         $topic_update_id = $_POST['topic_update_id'];
         $topic_update_topic = $_POST['topic_update_topic'];
 
     }
 
     if (isset($_POST['delete-topic-form'])) {
-        $category_id_selected = $_POST['selected_category_id'];
+        $_SESSION['category_id_selected'] = $_POST['selected_category_id'];
         $topic_delete_id = $_POST['topic_delete_id'];
         $topic_delete_topic = $_POST['topic_delete_topic'];
     }
 
     if (isset($_POST['selected'])) {
-        $category_id_selected = $_POST['category_id_selected'];
+        $_SESSION['category_id_selected'] = $_POST['category_id_selected'];
     }
 
     if (isset($_POST['delete'])) {
@@ -98,7 +96,7 @@ if (!isset($_SESSION['user'])) {
                 foreach ($categories as $category) {
                     $num_topics = Category_controller::count_topics($category->id);
 
-                    if ($category_id_selected == $category->id) {
+                    if ($_SESSION['category_id_selected'] == $category->id) {
                         ?>
                         <div class="left-list-item selected">
                             <h2><?php echo $category->category; ?></h2>
@@ -128,35 +126,44 @@ if (!isset($_SESSION['user'])) {
             if (isset($_GET['create'])) {
                 ?>
                 <div class="form">
-                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create') ?>" method="post">
-                        <h2>Añadir nuevo tema</h2>
-                        <input type="text" name="topic" value="<?php if (isset($topic)) echo $topic; ?>"
-                               placeholder="Categoría">
-                        <select name="category_id">
-                            <?php
-                            $categories = Category_controller::get_all();
-                            if (gettype($categories) == 'boolean') {
-                                ?>
-                                <option value="">No hay categorías</option>
-                                <?php
-                            } else {
-                                foreach ($categories as $category) {
-                                    ?>
-                                    <option value="<?php echo $category->id ?>"><?php echo $category->category ?></option>
-                                    <?php
-                                }
-                            }
-                            ?>
-                        </select>
-
-                        <input type="submit" name="create-topic" value="AÑADIR">
-                        <input type="submit" name="atras" value="ATRÁS">
-                        <?php
-                        include("../controllers/validate.php");
-                        ?>
-                    </form>
-                </div>
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create') ?>" method="post">
+                <h2>Añadir nuevo tema</h2>
+                <input type="text" name="topic" value="<?php if (isset($topic)) echo $topic; ?>"
+                       placeholder="Categoría">
+                <select name="category_id">
                 <?php
+                $categories = Category_controller::get_all();
+                if (gettype($categories) == 'boolean') {
+                    ?>
+                    <option value="">No hay categorías</option>
+                    <?php
+                } else {
+                    foreach ($categories as $category) {
+                        if ($category->id == $_SESSION['category_id_selected']) {
+                            ?>
+                            <option value="<?php echo $category->id ?>"><?php echo $category->category ?></option>
+                            <?php
+                        }
+                    }
+                    foreach ($categories as $category) {
+                        if (!($category->id == $_SESSION['category_id_selected'])) {
+                            ?>
+                            <option value="<?php echo $category->id ?>"><?php echo $category->category ?></option>
+                            <?php
+                        }
+                    }
+                    ?>
+                    </select>
+
+                    <input type="submit" name="create-topic" value="AÑADIR">
+                    <input type="submit" name="atras" value="ATRÁS">
+                    <?php
+                    include("../controllers/validate.php");
+                    ?>
+                    </form>
+                    </div>
+                    <?php
+                }
             } elseif (isset($_GET['update'])) {
                 ?>
                 <div class="form">
@@ -174,14 +181,14 @@ if (!isset($_SESSION['user'])) {
                                 <?php
                             } else {
                                 foreach ($categories as $category) {
-                                    if ($category_id_selected == $category->id) {
+                                    if ($_SESSION['category_id_selected'] == $category->id) {
                                         ?>
                                         <option value="<?php echo $category->id ?>"><?php echo $category->category ?></option>
                                         <?php
                                     }
                                 }
                                 foreach ($categories as $category) {
-                                    if (!($category_id_selected == $category->id)) {
+                                    if (!($_SESSION['category_id_selected'] == $category->id)) {
                                         ?>
                                         <option value="<?php echo $category->id ?>"><?php echo $category->category ?></option>
                                         <?php
@@ -204,7 +211,7 @@ if (!isset($_SESSION['user'])) {
                 <div class="new"><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create'); ?>">Añadir</a>
                 </div>
                 <?php
-                $topics = Topic_controller::get_by_category($category_id_selected);
+                $topics = Topic_controller::get_by_category($_SESSION['category_id_selected']);
                 if (gettype($topics) == 'boolean') {
                     ?>
                     <div class="empty">
@@ -227,7 +234,7 @@ if (!isset($_SESSION['user'])) {
                                     <input type="hidden" name="topic_update_topic"
                                            value="<?php echo $topic->topic; ?>">
                                     <input type="hidden" name="selected_category_id"
-                                           value="<?php echo $category_id_selected ?>">
+                                           value="<?php echo $_SESSION['category_id_selected'] ?>">
 
                                     <input type="submit" name="update" value="MODIFICAR">
                                 </form>
@@ -237,7 +244,7 @@ if (!isset($_SESSION['user'])) {
                                     <input type="hidden" name="topic_delete_topic"
                                            value="<?php echo $topic->topic; ?>">
                                     <input type="hidden" name="selected_category_id"
-                                           value="<?php echo $category_id_selected ?>">
+                                           value="<?php echo $_SESSION['category_id_selected'] ?>">
 
                                     <input type="submit" name="delete-topic-form" value="ELIMINAR">
                                 </form>
