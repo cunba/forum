@@ -13,10 +13,13 @@ if (isset($_SESSION['user'])) {
     require_once("../controllers/Category_controller.php");
     require_once("../controllers/User_controller.php");
 
-    $topic_id_selected = 1;
-
     if (isset($_POST['selected'])) {
-        $topic_id_selected = $_POST['topic_id_selected'];
+        $_SESSION['topic_id_selected'] = $_POST['topic_id_selected'];
+    }
+
+    if (isset($_POST['comment'])) {
+        $comment = $_POST['comment'];
+        $topic_id = $_SESSION['topic_id_selected'];
     }
     ?>
 
@@ -94,7 +97,7 @@ if (isset($_SESSION['user'])) {
                         <?php
                     } else {
                         foreach ($topics as $topic) {
-                            if ($topic_id_selected == $topic->id) {
+                            if ($_SESSION['topic_id_selected'] == $topic->id) {
                                 ?>
                                 <div class="subitem">
                                     <div class="left-list-item color selected">
@@ -128,11 +131,21 @@ if (isset($_SESSION['user'])) {
         <div class="right-list">
             <h1>Comentarios</h1>
             <?php
-            $comments = Comment_controller::get_by_topic($topic_id_selected);
+            $comments = Comment_controller::get_by_topic($_SESSION['topic_id_selected']);
             if (gettype($comments) == 'boolean') {
                 ?>
                 <div class="empty">
-                    <p>No hay comentarios para mostrar</p>
+                    <?php
+                    if (isset($_SESSION['user'])) {
+                        ?>
+                        <p>No hay comentarios para mostrar</p>
+                        <?php
+                    } else {
+                        ?>
+                        <p>!Sé el primero en comentar!</p>
+                        <?php
+                    }
+                    ?>
                 </div>
                 <?php
             } else {
@@ -153,7 +166,7 @@ if (isset($_SESSION['user'])) {
                                         <input type="hidden" name="comment_delete_comment"
                                                value="<?php echo $comment->comment; ?>">
                                         <input type="hidden" name="selected_topic_id"
-                                               value="<?php echo $topic_id_selected ?>">
+                                               value="<?php echo $_SESSION['topic_id_selected'] ?>">
 
                                         <input type="submit" name="delete-comment-form" value="ELIMINAR">
                                     </form>
@@ -167,6 +180,19 @@ if (isset($_SESSION['user'])) {
                     </div>
                     <?php
                 }
+            }
+            if (isset($_SESSION['user'])) {
+                ?>
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?comment') ?>"
+                      method="post">
+                    <textarea type="text" name="comment" placeholder="Comentario"></textarea>
+
+                    <input type="submit" name="comment" value="AÑADIR COMENTARIO">
+                    <?php
+                    include("../controllers/validate.php");
+                    ?>
+                </form>
+                <?php
             }
             ?>
         </div>
