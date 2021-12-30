@@ -1,0 +1,186 @@
+@import url('./colors.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --max-width: 1250px;
+    --min-width: 400px;
+    --background-color: var(--Floral-White);
+    --header-color: var(--Rich-Black-Fogra-39);
+    --header-text-color: var(--Floral-White);
+    --header-hover-color: var(--Rich-Black-Fogra-39-light);
+    --border-color: var(--Rich-Black-Fogra-39-light);
+    --button-color: var(--Rich-Black-Fogra-39);
+    --button-color-hover: var(--Rich-Black-Fogra-39-light);
+    --button-text-color: var(--Floral-White);
+    --text-error-color: var(--Terra-Cotta);
+    --text-success-color: var(--Green-Sheen-dark);
+}
+
+body {
+    color: var(--text);
+    width: 100%;
+    height: auto;
+    background-color: var(--background-color);
+}
+
+a {
+    text-decoration: none;
+}
+
+/* HEADER */
+
+.header-login {
+    display: flex;
+    color: var(--header-text-color);
+    background-color: var(--header-color);
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    text-align: center;
+}
+
+.header {
+    color: var(--header-text);
+    background-color: var(--header-color);
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+    height: 50px;
+}
+
+.header nav {
+    width: 25%;
+}
+
+.header h1 {
+    width: 50%;
+    text-align: start;
+}
+
+.header div {
+    width: 25%;
+}
+
+#check-menu {
+    position: absolute;
+    left: -100%;
+}
+
+#check-menu:checked ~ .ul-menu {
+    left: 0;
+    width: 100%;
+    height: 90vh;
+}
+
+.btn-menu {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 50px;
+}
+
+.btn-menu:hover {
+    background-color: var(--header-hover-color);
+    cursor: pointer;
+}
+
+.ul-menu {
+    position: absolute;
+    margin: auto;
+    top: 50px;
+    left: -300px;
+    text-align: start;
+    transition: left 1s ease;
+    z-index: 2;
+}
+
+.ul-menu > li {
+    display: block;
+    width: 180px;
+    background-color: var(--header-color);
+    border-top: 1px solid var(--header-text);
+    line-height: 40px;
+    list-style: none;
+}
+
+.ul-menu > li > a {
+    display: inline-block;
+    width: 100%;
+    padding: 0 20px;
+    color: var(--header-text);
+}
+
+.ul-menu > li:hover {
+    background-color: var(--header-hover-color);
+}
+
+/* MAIN */
+
+.first {
+    padding-top: 20px;
+}
+
+.form {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 10%;
+}
+
+form h1 {
+    text-align: center;
+    font-size: 50px;
+    padding-bottom: 30px;
+}
+
+input, select {
+    height: 30px;
+    width: 300px;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    border-color: var(--border-color);
+    border-style: solid;
+    border-radius: 2px;
+}
+
+input[type='submit'] {
+    color: var(--button-text-color);
+    background-color: var(--button-color);
+    border: none;
+}
+
+input[type='submit']:hover {
+    cursor: pointer;
+    background-color: var(--button-color-hover);
+}
+
+.error {
+    color: var(--text-error-color);
+    padding-top: 10px;
+    text-align: start;
+    width: border-box;
+}
+
+.success {
+    color: var(--text-success-color);
+    padding-top: 10px;
+    text-align: start;
+}
