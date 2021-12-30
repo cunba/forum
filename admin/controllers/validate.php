@@ -15,7 +15,8 @@ if (isset($_POST['submit-login'])) {
                 echo "<p class='error'>* Contraseña incorrecta</p>";
             } else {
                 session_start();
-                $_SESSION['user'] = $_POST['user'];
+                $_SESSION['user'] = $user;
+                $_SESSION['password'] = $password;
 
                 if ($user == 'admin') {
                     header("Location:home.php");
@@ -99,6 +100,27 @@ if (isset($_POST['create-comment'])) {
             echo '<p class="error">* No se ha podido crear el comentario, inténtelo de nuevo.</p>';
         } else {
             echo '<p class="success">Comentario creado con éxito.</p>';
+        }
+    }
+}
+
+if (isset($_POST['update-password'])) {
+    if (empty($old_password) || empty($new_password) || empty($confirmation_password)) {
+        echo "<p class='error'>* Los campos no pueden estar vacíos</p>";
+    } elseif (!($_SESSION['password'] == $old_password)) {
+        echo "<p class='error'>* Contraseña actual incorrecta</p>";
+    } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ!-?]{4,20}+$/", $new_password)) {
+        echo "<p class='error'>* La nueva contraseña debe tener entre 4 y 20 caracteres</p>";
+    } elseif (!($new_password == $confirmation_password)) {
+        echo "<p class='error'>* Las contraseñas nueva y de confirmación deben coincidir</p>";
+    } elseif ($old_password == $new_password) {
+        echo "<p class='error'>* Introduzca una contraseña diferente a la actual</p>";
+    } else {
+        if (User_controller::update_password($user->id, $new_password)) {
+            echo '<p class="success">Contraseña modificada con éxito.</p>';
+            $_SESSION['password'] = $new_password;
+        } else {
+            echo '<p class="error">* No se ha podido modificar la contraseña, inténtelo de nuevo.</p>';
         }
     }
 }

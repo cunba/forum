@@ -590,3 +590,50 @@ textarea {
     align-items: center;
     margin-top: -10px;
 }
+
+/* PANEL DE USUARIO */
+
+.information h1 {
+    position: absolute;
+    right: 30%;
+    left: 30%;
+}
+
+.information-user-first {
+    padding-top: 70px;
+}
+
+.information-user {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: left;
+    padding-bottom: 20px;
+    left: 30%;
+}
+
+.information-user p {
+    padding-left: 30px;
+}
+
+.information-user h3 {
+    text-align: right;
+}
+
+.update {
+    color: var(--button-text);
+    background-color: var(--button-color);
+    border: none;
+    height: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.update a {
+    color: var(--header-text);
+}
