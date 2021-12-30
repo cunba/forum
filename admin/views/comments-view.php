@@ -179,7 +179,7 @@ if (!isset($_SESSION['user'])) {
                 if (gettype($comments) == 'boolean') {
                     ?>
                     <div class="empty">
-                        <p>No hay categorías para mostrar</p>
+                        <p>No hay comentarios para mostrar</p>
                     </div>
                     <?php
                 } else {
@@ -202,7 +202,7 @@ if (!isset($_SESSION['user'])) {
                                         <input type="submit" name="delete-comment-form" value="ELIMINAR">
                                     </form>
                                 </div>
-                                <h4><?php echo $comment->creation_date; ?></h4>
+                                <h4><?php echo date('H:i d/m/Y', strtotime($comment->creation_date)); ?></h4>
                             </div>
                             <p><?php echo $comment->comment; ?></p>
                         </div>

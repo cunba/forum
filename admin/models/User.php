@@ -123,22 +123,22 @@ class User
         }
     }
 
-    public static function update_password($user)
+    public static function update_password($id, $password)
     {
         try {
-            $password = self::cryptconmd5($user->get_password());
+            $password = self::cryptconmd5($password);
             $connection = Connection::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
             }
 
-            $sql = 'UPDATE user SET password = :password WHERE id = :id';
+            $sql = 'UPDATE users SET password = :password WHERE id = :id';
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(
                 ':password' => $password,
-                ':id' => $user->get_id()
+                ':id' => $id
             ));
 
             return true;

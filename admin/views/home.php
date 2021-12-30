@@ -48,16 +48,20 @@ if (!isset($_SESSION['user'])) {
             <h2>Temas</h2>
             <p>Haga click para ver, editar y eliminar los existentes y crear nuevos.</p>
         </a>
-        <a class="list-home" href="comments-view.php">
-            <h2>Comentarios</h2>
-            <p>Haga click para administrarlos y eliminar los que incumplan las normas de Meraki</p>
-        </a>
         <a class="list-home" href="users-view.php">
             <h2>Usuarios</h2>
-            <p>Haga click para administrarlos y eliminar los que incumplan las normas de Meraki</p>
+            <p>Haga click para administrarlos y eliminar los que hayan incumplido las normas de Meraki</p>
+        </a>
+        <a class="list-home" href="comments-view.php">
+            <h2>Comentarios</h2>
+            <p>Haga click para supervisarlos y eliminar los que incumplan las normas de Meraki</p>
+        </a>
+        <a class="list-home" href="user-panel.php">
+            <h2>Panel de usuario</h2>
+            <p>Haga click para ver los detalles de usuario y cambiar la contraseña</p>
         </a>
         <a class="list-home logout" href="../controllers/logout.php">
-            <h2>Cerrar sesión</h2>
+            <h2>CERRAR SESIÓN</h2>
         </a>
     </section>
     </body>

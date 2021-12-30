@@ -19,6 +19,11 @@ class User_controller
         }
     }
 
+    public static function get_user($user, $password)
+    {
+        return User::get_user($user, $password);
+    }
+
     public static function get_by_id($id)
     {
         return User::get_by_id($id);
@@ -29,9 +34,9 @@ class User_controller
         return User::get_all();
     }
 
-    public static function update_password($user)
+    public static function update_password($id, $password)
     {
-        return User::update_password($user);
+        return User::update_password($id, $password);
     }
 
     public static function delete($id)
