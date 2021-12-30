@@ -21,6 +21,11 @@ class User
         $this->birthday = $birthday;
     }
 
+    public function set_id($id)
+    {
+        $this->id = $id;
+    }
+
     public static function get_user($user, $password)
     {
         try {
@@ -49,7 +54,29 @@ class User
         }
     }
 
-    public static function get_all_users()
+    public static function get_by_id($id)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'SELECT * FROM users WHERE id = :id';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':id' => $id
+            ));
+
+            return $stmt->fetch(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
+
+    public static function get_all()
     {
         try {
             $connection = Connection::Connection();
@@ -64,7 +91,7 @@ class User
             $stmt->execute();
 
             if ($stmt->rowCount() == 0) {
-                return 'No hay usuarios';
+                return false;
             } else {
                 return $stmt->fetchAll(PDO::FETCH_OBJ);
             }
@@ -121,7 +148,7 @@ class User
         }
     }
 
-    public static function delete_user($id)
+    public static function delete($id)
     {
         try {
             $connection = Connection::Connection();

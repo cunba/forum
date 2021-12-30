@@ -368,11 +368,13 @@ input[type='submit']:hover {
     background-color: var(--header-hover-color);
 }
 
-.icons form input[name='delete'] {
+.icons form input[name='delete-category-form'], input[name='delete-topic-form'],
+input[name='delete-comment-form'], input[name='delete-user-form'] {
     background-color: var(--text-error-color);
 }
 
-.icons form input[name='delete']:hover {
+.icons form input[name='delete-category-form']:hover, input[name='delete-topic-form']:hover,
+input[name='delete-comment-form']:hover, input[name='delete-user-form']:hover {
     background-color: var(--delete-button-hover-color);
 }
 
@@ -402,9 +404,24 @@ form h2 {
 }
 
 .delete {
+    margin-top: -30px;
     padding-bottom: 20px;
     padding-left: 8px;
-    height: auto;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 50%;
+    height: 50px;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .delete p {
@@ -418,20 +435,24 @@ form h2 {
     padding: 5px 10px;
 }
 
-.no {
+.buttons input[name='back'] {
+    width: 50px;
     margin-left: 80px;
+    padding-right: 5px;
     background-color: var(--header-color);
 }
 
-.no:hover {
+.buttons input[name='back']:hover {
     background-color: var(--header-hover-color);
 }
 
-.yes {
+.buttons input[name='delete'] {
+    width: 50px;
+    padding-right: 5px;
     background-color: var(--text-error-color);
 }
 
-.yes:hover {
+.buttons input[name='delete']:hover {
     background-color: var(--delete-button-hover-color);
 }
 
@@ -502,7 +523,7 @@ form h2 {
 .left-list-item form input[type="submit"] {
     position: absolute;
     z-index: 1;
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
     width: 250px;
     height: border-box;
 }
@@ -547,4 +568,25 @@ textarea {
     border-color: var(--border-color);
     border-style: solid;
     border-radius: 2px;
+}
+
+.comment {
+    flex-direction: column;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.comment p {
+    align-self: start;
+    padding-bottom: 20px;
+}
+
+.comment-header {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -10px;
 }
