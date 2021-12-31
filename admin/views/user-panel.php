@@ -8,10 +8,10 @@ if (!isset($_SESSION['user'])) {
     header('Location:login.php');
 } else {
 
-    require_once('../controllers/User_controller.php');
-    require_once('../models/User.php');
+    require_once('../controllers/User_controller_admin.php');
+    require_once('../models/User_admin.php');
 
-    $user = User_controller::get_user($_SESSION['user'], $_SESSION['password']);
+    $user = User_controller_admin::get_user($_SESSION['user'], $_SESSION['password']);
 
     if (isset($_POST['back'])) {
         header('Location:user-panel.php');
@@ -93,7 +93,7 @@ if (!isset($_SESSION['user'])) {
                     <input type="submit" name="update-password" value="MODIFICAR CONTRASEÑA">
                     <input type="submit" name="back" value="ATRÁS">
                     <?php
-                    include("../controllers/validate.php");
+                    include("../controllers/validate_admin.php");
                     ?>
                 </form>
             </div>

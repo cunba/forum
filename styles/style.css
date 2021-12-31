@@ -23,9 +23,9 @@
     --login-register-hover-color: var(--Ash-Gray-light);
     --text-color: var(--Rich-Black-Fogra-39);
     --left-list-color: var(--Ash-Gray);
-    --list-item-text-color: var(--Floral-White);
-    --list-subitem-color: var(--Ash-Gray-light);
+    --list-subitem-color: var(--Floral-White-light);
     --list-empty-color: var(--Ash-Gray-light-translucid);
+    --border-color-left-list: var(--Ash-Gray-dark)
 }
 
 body {
@@ -220,7 +220,7 @@ input[type='submit']:hover {
     color: var(--text-error-color);
     padding-top: 10px;
     text-align: start;
-    width: border-box;
+    width: 300px;
 }
 
 .success {
@@ -312,8 +312,8 @@ input[type='submit']:hover {
 .selected {
     height: auto;
     border-style: outset;
-    border-color: var(--list-shadow);
-    border-width: 3px;
+    border-color: var(--border-color-left-list);
+    border-width: 5px;
     font-size: 20px;
 }
 

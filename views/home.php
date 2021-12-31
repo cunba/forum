@@ -64,7 +64,7 @@ if (isset($_SESSION['user'])) {
             if (!(isset($_SESSION['user']))) {
                 ?>
                 <div class="login"><a href="login.php">Iniciar sesión</a></div>
-                <div class="register"><a href="register.php">Regístrarse</a></div>
+                <div class="register"><a href="register.php">Registrarse</a></div>
                 <?php
             }
             ?>
@@ -142,7 +142,7 @@ if (isset($_SESSION['user'])) {
                         <?php
                     } else {
                         ?>
-                        <p>!Sé el primero en comentar!</p>
+                        <p>¡Sé el primero en comentar!</p>
                         <?php
                     }
                     ?>

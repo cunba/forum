@@ -1,15 +1,20 @@
 <?php
-require_once('connection/Connection.php');
 
-class Category
+class Topic_admin
 {
     public $id;
-    public $category;
+    public $topic;
+    public $category_id;
 
-    public function __construct($id, $category)
+    public function __construct($topic, $category_id)
+    {
+        $this->topic = $topic;
+        $this->category_id = $category_id;
+    }
+
+    public function set_id($id)
     {
         $this->id = $id;
-        $this->category = $category;
     }
 
     public static function get_all()
@@ -21,7 +26,7 @@ class Category
                 return $connection;
             }
 
-            $sql = 'SELECT * FROM categories';
+            $sql = 'SELECT * FROM topics';
 
             $stmt = $connection->prepare($sql);
             $stmt->execute();
@@ -31,13 +36,12 @@ class Category
             } else {
                 return $stmt->fetchAll(PDO::FETCH_OBJ);
             }
-
         } catch (PDOException $e) {
             return Connection::messages($e->getCode());
         }
     }
 
-    public static function count_topics($category_id)
+    public static function get_by_category($category_id)
     {
         try {
             $connection = Connection::Connection();
@@ -52,14 +56,18 @@ class Category
             $stmt->execute(array(
                 ':category_id' => $category_id
             ));
-            return $stmt->rowCount();
 
+            if ($stmt->rowCount() == 0) {
+                return false;
+            } else {
+                return $stmt->fetchAll(PDO::FETCH_OBJ);
+            }
         } catch (PDOException $e) {
             return Connection::messages($e->getCode());
         }
     }
 
-    public static function update($id, $category)
+    public static function count_comments($topic_id)
     {
         try {
             $connection = Connection::Connection();
@@ -68,12 +76,35 @@ class Category
                 return $connection;
             }
 
-            $sql = 'UPDATE categories SET category = :category WHERE id = :id';
+            $sql = 'SELECT * FROM comments WHERE topic_id = :topic_id';
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(
-                ':category' => $category,
-                ':id' => $id
+                ':topic_id' => $topic_id
+            ));
+            return $stmt->rowCount();
+
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
+
+    public static function update($topic)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'UPDATE topics SET topic = :topic, category_id = :category_id WHERE id = :id';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':topic' => $topic->topic,
+                ':category_id' => $topic->category_id,
+                ':id' => $topic->id
             ));
 
             return true;
@@ -83,7 +114,7 @@ class Category
         }
     }
 
-    public static function create($category)
+    public static function create($topic)
     {
         try {
             $connection = Connection::Connection();
@@ -92,11 +123,12 @@ class Category
                 return $connection;
             }
 
-            $sql = 'INSERT INTO categories (category) VALUES (:category)';
+            $sql = 'INSERT INTO topics (topic, category_id) VALUES (:topic, :category_id)';
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(
-                ':category' => $category
+                ':topic' => $topic->topic,
+                ':category_id' => $topic->category_id
             ));
 
             return true;
@@ -115,7 +147,7 @@ class Category
                 return $connection;
             }
 
-            $sql = 'DELETE FROM categories WHERE id = :id';
+            $sql = 'DELETE FROM topics WHERE id = :id';
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(

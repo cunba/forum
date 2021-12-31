@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
     session_destroy();
     header('Location:login.php');
 } else {
-    require_once('../controllers/Category_controller.php');
+    require_once('../controllers/Category_controller_admin.php');
 
     if (isset($_POST['back'])) {
         header('Location:categories-view.php');
@@ -36,7 +36,7 @@ if (!isset($_SESSION['user'])) {
 
     if (isset($_POST['delete'])) {
         $category_delete_id = $_POST['id'];
-        Category_controller::delete($category_delete_id);
+        Category_controller_admin::delete($category_delete_id);
         header('Location:categories-view.php');
     }
     ?>
@@ -85,7 +85,7 @@ if (!isset($_SESSION['user'])) {
                     <input type="submit" name="create-category" value="AÑADIR">
                     <input type="submit" name="back" value="ATRÁS">
                     <?php
-                    include("../controllers/validate.php");
+                    include("../controllers/validate_admin.php");
                     ?>
                 </form>
             </div>
@@ -102,7 +102,7 @@ if (!isset($_SESSION['user'])) {
                     <input type="submit" name="update-category" value="MODIFICAR">
                     <input type="submit" name="back" value="ATRÁS">
                     <?php
-                    include("../controllers/validate.php");
+                    include("../controllers/validate_admin.php");
                     ?>
                 </form>
             </div>
@@ -113,7 +113,7 @@ if (!isset($_SESSION['user'])) {
                 <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create'); ?>">Añadir</a>
             </div>
             <?php
-            $categories = Category_controller::get_all();
+            $categories = Category_controller_admin::get_all();
             if (gettype($categories) == 'boolean') {
                 ?>
                 <div class="empty">
@@ -122,7 +122,7 @@ if (!isset($_SESSION['user'])) {
                 <?php
             } else {
                 foreach ($categories as $category) {
-                    $num_topics = Category_controller::count_topics($category->id);
+                    $num_topics = Category_controller_admin::count_topics($category->id);
                     ?>
                     <div class="list-item">
                         <div class="list-information">

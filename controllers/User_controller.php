@@ -29,9 +29,18 @@ class User_controller
         return User::get_by_id($id);
     }
 
+    public static function get_by_user($user)
+    {
+        return User::get_by_user($user);
+    }
+
     public static function get_all()
     {
         return User::get_all();
+    }
+
+    public static function create($user) {
+        return User::create($user);
     }
 
     public static function update_password($id, $password)
@@ -46,6 +55,6 @@ class User_controller
 
     public static function count_comments($user_id)
     {
-        return USer::count_comments($user_id);
+        return User::count_comments($user_id);
     }
 }

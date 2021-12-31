@@ -1,6 +1,6 @@
 <?php
 
-class Comment
+class Comment_admin
 {
     public $id;
     public $comment;

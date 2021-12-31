@@ -30,14 +30,14 @@ if (isset($_POST['submit-login'])) {
 </header>
 <section class="first form">
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
-        <h1>Login</h1>
+        <h1>Inicio de sesión</h1>
         <input type="text" name="user" value="<?php if (isset($user)) echo $user; ?>" placeholder="Usuario">
         <input type="password" name="password" value="<?php if (isset($password)) echo $password; ?>"
                placeholder="Contraseña">
 
         <input type="submit" name="submit-login" value="Iniciar sesión">
         <?php
-        include("../controllers/validate.php");
+        include("../controllers/validate_admin.php");
         ?>
     </form>
 </section>
