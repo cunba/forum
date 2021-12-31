@@ -1,8 +1,8 @@
 <?php
 
-require_once('db-properties.php');
+require_once('db-properties-admin.php');
 
-class Connection
+class Connection_admin
 {
     public function __construct()
     {

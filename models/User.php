@@ -101,6 +101,31 @@ class User
         }
     }
 
+    public static function get_id_by_user($user) {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'SELECT * FROM users WHERE user = :user';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':user' => $user
+            ));
+
+            if ($stmt->rowCount() == 0) {
+                return false;
+            } else {
+                return $stmt->fetch(PDO::FETCH_OBJ);
+            }
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
+
     public static function get_all()
     {
         try {
@@ -154,11 +179,11 @@ class User
             $password = self::cryptconmd5($user->password);
             $connection = Connection::Connection();
 
-            if (gettype($connection == 'string')) {
+            if (gettype($connection) == 'string') {
                 return $connection;
             }
 
-            $sql = 'INSERT INTO users (user, name, surname, email, password) VALUES (:user, :name, :surname, :email, :password)';
+            $sql = 'INSERT INTO users (user, name, surname, email, password, birthday) VALUES (:user, :name, :surname, :email, :password, :birthday)';
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(
@@ -166,12 +191,13 @@ class User
                 ':name' => $user->name,
                 ':surname' => $user->surname,
                 ':email' => $user->email,
-                ':password' => $password
+                ':password' => $password,
+                ':birthday' => $user->birthday
             ));
 
             return true;
         } catch (PDOException $e) {
-            return Connection::messages($e);
+            return Connection::messages($e->getCode());
         }
     }
 

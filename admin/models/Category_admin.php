@@ -1,5 +1,5 @@
 <?php
-require_once('connection/Connection.php');
+require_once('connection/Connection_admin.php');
 
 class Category_admin
 {
@@ -15,7 +15,7 @@ class Category_admin
     public static function get_all()
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -33,14 +33,14 @@ class Category_admin
             }
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function count_topics($category_id)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -55,14 +55,14 @@ class Category_admin
             return $stmt->rowCount();
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function update($id, $category)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -79,14 +79,14 @@ class Category_admin
             return true;
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function create($category)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -102,14 +102,14 @@ class Category_admin
             return true;
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function delete($id)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -125,7 +125,7 @@ class Category_admin
             return true;
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 }

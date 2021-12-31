@@ -48,7 +48,7 @@ if (!isset($_SESSION['user'])) {
 
     if (isset($_POST['delete'])) {
         $topic_delete_id = $_POST['id'];
-        Topic_controllerAdmin::delete($topic_delete_id);
+        Topic_controller_admin::delete($topic_delete_id);
         header('Location:topics-view.php');
     }
     ?>
@@ -85,7 +85,7 @@ if (!isset($_SESSION['user'])) {
         <div class="left-list">
             <h1>Categorías</h1>
             <?php
-            $categories = Category_controllerAdmin::get_all();
+            $categories = Category_controller_admin::get_all();
             if (gettype($categories) == 'boolean') {
                 ?>
                 <div class="empty">
@@ -94,7 +94,7 @@ if (!isset($_SESSION['user'])) {
                 <?php
             } else {
                 foreach ($categories as $category) {
-                    $num_topics = Category_controllerAdmin::count_topics($category->id);
+                    $num_topics = Category_controller_admin::count_topics($category->id);
 
                     if ($_SESSION['category_id_selected'] == $category->id) {
                         ?>
@@ -132,7 +132,7 @@ if (!isset($_SESSION['user'])) {
                        placeholder="Categoría">
                 <select name="category_id">
                 <?php
-                $categories = Category_controllerAdmin::get_all();
+                $categories = Category_controller_admin::get_all();
                 if (gettype($categories) == 'boolean') {
                     ?>
                     <option value="">No hay categorías</option>
@@ -174,7 +174,7 @@ if (!isset($_SESSION['user'])) {
                                value="<?php if (isset($topic)) echo $topic; else echo $topic_update_topic; ?>">
                         <select name="category_id">
                             <?php
-                            $categories = Category_controllerAdmin::get_all();
+                            $categories = Category_controller_admin::get_all();
                             if (gettype($categories) == 'boolean') {
                                 ?>
                                 <option value="">No hay categorías</option>
@@ -211,7 +211,7 @@ if (!isset($_SESSION['user'])) {
                 <div class="new"><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create'); ?>">Añadir</a>
                 </div>
                 <?php
-                $topics = Topic_controllerAdmin::get_by_category($_SESSION['category_id_selected']);
+                $topics = Topic_controller_admin::get_by_category($_SESSION['category_id_selected']);
                 if (gettype($topics) == 'boolean') {
                     ?>
                     <div class="empty">
@@ -220,7 +220,7 @@ if (!isset($_SESSION['user'])) {
                     <?php
                 } else {
                     foreach ($topics as $topic) {
-                        $num_topics = Topic_controllerAdmin::count_comments($topic->id);
+                        $num_topics = Topic_controller_admin::count_comments($topic->id);
                         ?>
                         <div class="list-item">
                             <div class="list-information">

@@ -1,5 +1,5 @@
 <?php
-require_once('connection/Connection.php');
+require_once('connection/Connection_admin.php');
 
 class User_admin
 {
@@ -30,7 +30,7 @@ class User_admin
     {
         try {
             $password = self::cryptconmd5($password);
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -50,14 +50,14 @@ class User_admin
                 return $stmt->fetch(PDO::FETCH_OBJ);
             }
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function get_by_id($id)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -72,14 +72,14 @@ class User_admin
 
             return $stmt->fetch(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function get_all()
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -97,14 +97,14 @@ class User_admin
             }
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function count_comments($user_id)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -119,7 +119,7 @@ class User_admin
             return $stmt->rowCount();
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
@@ -127,7 +127,7 @@ class User_admin
     {
         try {
             $password = self::cryptconmd5($password);
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -144,14 +144,14 @@ class User_admin
             return true;
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function delete($id)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -167,7 +167,7 @@ class User_admin
             return true;
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 

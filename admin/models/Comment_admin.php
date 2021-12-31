@@ -1,4 +1,5 @@
 <?php
+require_once('connection/Connection_admin.php');
 
 class Comment_admin
 {
@@ -20,7 +21,7 @@ class Comment_admin
     public static function get_by_topic($topic_id)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -39,14 +40,14 @@ class Comment_admin
                 return $stmt->fetchAll(PDO::FETCH_OBJ);
             }
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function create($comment)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -63,14 +64,14 @@ class Comment_admin
             return true;
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function delete($id)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -86,7 +87,7 @@ class Comment_admin
             return true;
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 }

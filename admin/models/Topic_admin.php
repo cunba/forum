@@ -1,4 +1,5 @@
 <?php
+require_once('connection/Connection_admin.php');
 
 class Topic_admin
 {
@@ -20,7 +21,7 @@ class Topic_admin
     public static function get_all()
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -37,14 +38,14 @@ class Topic_admin
                 return $stmt->fetchAll(PDO::FETCH_OBJ);
             }
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function get_by_category($category_id)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -63,14 +64,14 @@ class Topic_admin
                 return $stmt->fetchAll(PDO::FETCH_OBJ);
             }
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function count_comments($topic_id)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -85,14 +86,14 @@ class Topic_admin
             return $stmt->rowCount();
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function update($topic)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -110,14 +111,14 @@ class Topic_admin
             return true;
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function create($topic)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -134,14 +135,14 @@ class Topic_admin
             return true;
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 
     public static function delete($id)
     {
         try {
-            $connection = Connection::Connection();
+            $connection = Connection_admin::Connection();
 
             if (gettype($connection) == 'string') {
                 return $connection;
@@ -157,7 +158,7 @@ class Topic_admin
             return true;
 
         } catch (PDOException $e) {
-            return Connection::messages($e->getCode());
+            return Connection_admin::messages($e->getCode());
         }
     }
 }

@@ -1,4 +1,9 @@
 <?php
 session_start();
 session_destroy();
-header("Location:../views/login.php");
+
+session_start();
+$_SESSION['category_id_selected'] = 1;
+$_SESSION['topic_id_selected'] = 1;
+
+header('Location:../views/home.php');

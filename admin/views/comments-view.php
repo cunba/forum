@@ -35,7 +35,7 @@ if (!isset($_SESSION['user'])) {
 
     if (isset($_POST['delete'])) {
         $comment_delete_id = $_POST['id'];
-        Comment_controllerAdmin::delete($comment_delete_id);
+        Comment_controller_admin::delete($comment_delete_id);
         header('Location:comments-view.php');
     }
     ?>
@@ -78,7 +78,7 @@ if (!isset($_SESSION['user'])) {
         <div class="left-list">
             <h1>Temas</h1>
             <?php
-            $categories = Category_controllerAdmin::get_all();
+            $categories = Category_controller_admin::get_all();
             if (gettype($categories) == 'boolean') {
                 ?>
                 <div class="empty comments">
@@ -92,7 +92,7 @@ if (!isset($_SESSION['user'])) {
                         <h2><?php echo $category->category; ?></h2>
                     </div>
                     <?php
-                    $topics = Topic_controllerAdmin::get_by_category($category->id);
+                    $topics = Topic_controller_admin::get_by_category($category->id);
                     if (gettype($topics) == 'boolean') {
                         ?>
                         <div class="empty">
@@ -144,7 +144,7 @@ if (!isset($_SESSION['user'])) {
                         <textarea type="text" name="comment" placeholder="Comentario"></textarea>
                         <select name="topic_id">
                             <?php
-                            $topics = Topic_controllerAdmin::get_all();
+                            $topics = Topic_controller_admin::get_all();
                             if (gettype($topics) == 'boolean') {
                                 ?>
                                 <option value="">No hay categorías</option>
@@ -182,7 +182,7 @@ if (!isset($_SESSION['user'])) {
                             href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create'); ?>">Añadir</a>
                 </div>
                 <?php
-                $comments = Comment_controllerAdmin::get_by_topic($_SESSION['topic_id_selected']);
+                $comments = Comment_controller_admin::get_by_topic($_SESSION['topic_id_selected']);
                 if (gettype($comments) == 'boolean') {
                     ?>
                     <div class="empty">
@@ -191,7 +191,7 @@ if (!isset($_SESSION['user'])) {
                     <?php
                 } else {
                     foreach ($comments as $comment) {
-                        $user = User_controllerAdmin::get_by_id($comment->user_id);
+                        $user = User_controller_admin::get_by_id($comment->user_id);
                         ?>
                         <div class="list-item comment">
                             <div class="comment-header">
