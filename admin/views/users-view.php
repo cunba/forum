@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
     session_destroy();
     header('Location:login.php');
 } else {
-    require_once('../controllers/User_controller.php');
+    require_once('../controllers/User_controller_admin.php');
 
     if (isset($_POST['atras'])) {
         header('Location:users-view.php');
@@ -32,7 +32,7 @@ if (!isset($_SESSION['user'])) {
 
     if (isset($_POST['delete'])) {
         $user_delete_id = $_POST['id'];
-        User_controller::delete($user_delete_id);
+        User_controller_admin::delete($user_delete_id);
         header('Location:users-view.php');
     }
     ?>
@@ -70,7 +70,7 @@ if (!isset($_SESSION['user'])) {
     <section class="first list">
         <h1>Usuarios</h1>
         <?php
-        $users = User_controller::get_all();
+        $users = User_controller_admin::get_all();
         if (gettype($users) == 'boolean') {
             ?>
             <div class="empty">
@@ -79,7 +79,7 @@ if (!isset($_SESSION['user'])) {
             <?php
         } else {
             foreach ($users as $user) {
-                $num_comments = User_controller::count_comments($user->id);
+                $num_comments = User_controller_admin::count_comments($user->id);
                 ?>
                 <div class="list-item">
                     <div class="list-information">

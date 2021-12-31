@@ -9,16 +9,14 @@ class User
     public $surname;
     public $email;
     public $password;
-    public $birthday;
 
-    public function __construct($user, $name, $surname, $email, $password, $birthday)
+    public function __construct($user, $name, $surname, $email, $password)
     {
         $this->user = $user;
         $this->name = $name;
         $this->surname = $surname;
         $this->email = $email;
         $this->password = $password;
-        $this->birthday = $birthday;
     }
 
     public function set_id($id)
@@ -76,6 +74,33 @@ class User
         }
     }
 
+    public static function get_by_user($user)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'SELECT * FROM users WHERE user = :user';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':user' => $user
+            ));
+
+            if ($stmt->rowCount() == 0) {
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
+
     public static function get_all()
     {
         try {
@@ -120,6 +145,33 @@ class User
 
         } catch (PDOException $e) {
             return Connection::messages($e->getCode());
+        }
+    }
+
+    public static function create($user)
+    {
+        try {
+            $password = self::cryptconmd5($user->password);
+            $connection = Connection::Connection();
+
+            if (gettype($connection == 'string')) {
+                return $connection;
+            }
+
+            $sql = 'INSERT INTO users (user, name, surname, email, password) VALUES (:user, :name, :surname, :email, :password)';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':user' => $user->user,
+                ':name' => $user->name,
+                ':surname' => $user->surname,
+                ':email' => $user->email,
+                ':password' => $password
+            ));
+
+            return true;
+        } catch (PDOException $e) {
+            return Connection::messages($e);
         }
     }
 

@@ -9,8 +9,11 @@ if (isset($_SESSION['user'])) {
     }
 } else {
 
-    if (isset($_POST['submit-login'])) {
+    if (isset($_POST['submit-register'])) {
         $user = $_POST['user'];
+        $name = $_POST['name'];
+        $surname = $_POST['surname'];
+        $email = $_POST['email'];
         $password = $_POST['password'];
     }
     ?>
@@ -62,13 +65,18 @@ if (isset($_SESSION['user'])) {
         </div>
     </header>
     <section class="first form">
-        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
-            <h1>Inicio de sesión</h1>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?submit-register') ?>" method="post">
+            <h1>Registro</h1>
             <input type="text" name="user" value="<?php if (isset($user)) echo $user; ?>" placeholder="Usuario">
+            <input type="text" name="name" value="<?php if (isset($name)) echo $name; ?>" placeholder="Nombre">
+            <input type="text" name="surname" value="<?php if (isset($surname)) echo $surname; ?>"
+                   placeholder="Apellidos">
+            <input type="email" name="email" value="<?php if (isset($email)) echo $email; ?>"
+                   placeholder="Correo electrónico">
             <input type="password" name="password" value="<?php if (isset($password)) echo $password; ?>"
                    placeholder="Contraseña">
 
-            <input type="submit" name="submit-login" value="ENTRAR">
+            <input type="submit" name="submit-register" value="REGISTRARSE">
             <?php
             include("../controllers/validate.php");
             ?>
