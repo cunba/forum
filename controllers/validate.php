@@ -16,7 +16,6 @@ if (isset($_POST['submit-login'])) {
         if (gettype($response) == 'boolean') {
             echo "<p class='error'>* Usuario y/o contraseña incorrectos</p>";
         } else {
-            session_start();
             $_SESSION['user'] = $user;
             $_SESSION['password'] = $password;
             header('Location:home.php');
@@ -79,17 +78,27 @@ if (isset($_POST['submit-register'])) {
         $validate = true;
     }
 
-    if ($validate) {
-        $user = new User($user, $name, $surname, $email, $password);
-        $response = User_controller::create($user);
+    if (empty($confirmation_password)) {
+        echo "<p class='error'>* Debe repetir la contraseña</p>";
+        $validate = false;
+    } elseif (!($password == $confirmation_password)) {
+        echo "<p class='error'>* Las contraseñas no coinciden</p>";
+        $validate = false;
+    } elseif ($validate) {
+        $validate = true;
+    }
 
-        if (gettype($response) == 'boolean') {
+    if ($validate) {
+        $new_user = new User($user, $name, $surname, $email, $password);
+        $response = User_controller::create($new_user);
+
+        if (!$response) {
             echo "<p class='error'>* Ha ocurrido un error, inténtelo más tarde</p>";
-//        } else {
-//            session_start();
-//            $_SESSION['user'] = $user;
-//            $_SESSION['password'] = $password;
-//            header('Location:home.php');
+        } else {
+            session_start();
+            $_SESSION['user'] = $user;
+            $_SESSION['password'] = $password;
+            header('Location:home.php');
         }
     }
 }
@@ -97,16 +106,12 @@ if (isset($_POST['submit-register'])) {
 if (isset($_POST['create-comment'])) {
     if (empty($comment)) {
         echo "<p class='error'>* El campo comentario no puede estar vacío</p>";
-    } elseif (!preg_match("/^[ äÄëËïÏöÖüÜáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ!-¡]{2,400}+$/", $comment)) {
-        echo '<p class="error">* El campo comentario tiene un mínimo de 3 y máximo de 400 caracteres</p>';
     } elseif (empty($topic_id)) {
         echo "<p class='error'>* El campo tema no puede estar vacío</p>";
     } else {
-        $comment = new Comment($comment, $topic_id);
-        if (!Comment_controller::create($comment)) {
+        $new_comment = new Comment($comment, $topic_id, $user_id);
+        if (!Comment_controller::create($new_comment)) {
             echo '<p class="error">* No se ha podido crear el comentario, inténtelo de nuevo.</p>';
-        } else {
-            echo '<p class="success">Comentario creado con éxito.</p>';
         }
     }
 }

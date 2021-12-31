@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-header('Location:views/home.php');
+include('controllers/logout.php');
 
-$_SESSION['category_id_selected'] = 1;
-$_SESSION['topic_id_selected'] = 1;
+header('Location:views/home.php');

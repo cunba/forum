@@ -3,7 +3,7 @@ session_start();
 
 if (isset($_SESSION['user'])) {
     if ($_SESSION['user'] == 'admin' || $_SESSION['user'] == 'comments_admin') {
-        session_destroy();
+        include('../controllers/logout.php');
     } else {
         header('Location:home.php');
     }
@@ -15,6 +15,8 @@ if (isset($_SESSION['user'])) {
         $surname = $_POST['surname'];
         $email = $_POST['email'];
         $password = $_POST['password'];
+        $confirmation_password = $_POST['confirmation-password'];
+        $birthday = $_POST['birthday'];
     }
     ?>
 
@@ -71,10 +73,14 @@ if (isset($_SESSION['user'])) {
             <input type="text" name="name" value="<?php if (isset($name)) echo $name; ?>" placeholder="Nombre">
             <input type="text" name="surname" value="<?php if (isset($surname)) echo $surname; ?>"
                    placeholder="Apellidos">
-            <input type="email" name="email" value="<?php if (isset($email)) echo $email; ?>"
+            <input type="date" name="birthday" value="<?php if (isset($birthday)) echo $birthday; ?>">
+            <input type="text" name="email" value="<?php if (isset($email)) echo $email; ?>"
                    placeholder="Correo electrónico">
             <input type="password" name="password" value="<?php if (isset($password)) echo $password; ?>"
                    placeholder="Contraseña">
+            <input type="password" name="confirmation-password"
+                   value="<?php if (isset($confirmation_password)) echo $confirmation_password; ?>"
+                   placeholder="Repite la contraseña">
 
             <input type="submit" name="submit-register" value="REGISTRARSE">
             <?php

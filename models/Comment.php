@@ -5,11 +5,13 @@ class Comment
     public $id;
     public $comment;
     public $topic_id;
+    public $user_id;
 
-    public function __construct($comment, $topic_id)
+    public function __construct($comment, $topic_id, $user_id)
     {
         $this->comment = $comment;
         $this->topic_id = $topic_id;
+        $this->user_id = $user_id;
     }
 
     public function set_id($id)
@@ -52,12 +54,13 @@ class Comment
                 return $connection;
             }
 
-            $sql = 'INSERT INTO comments (comment, topic_id, user_id) VALUES (:comment, :topic_id, 1)';
+            $sql = 'INSERT INTO comments (comment, topic_id, user_id) VALUES (:comment, :topic_id, :user_id)';
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(
                 ':comment' => $comment->comment,
-                ':topic_id' => $comment->topic_id
+                ':topic_id' => $comment->topic_id,
+                ':user_id' => $comment->user_id
             ));
 
             return true;

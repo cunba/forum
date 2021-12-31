@@ -34,12 +34,17 @@ class User_controller
         return User::get_by_user($user);
     }
 
+    public static function get_id_by_user($user) {
+        return User::get_id_by_user($user);
+    }
+
     public static function get_all()
     {
         return User::get_all();
     }
 
-    public static function create($user) {
+    public static function create($user)
+    {
         return User::create($user);
     }
 
