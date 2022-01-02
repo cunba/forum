@@ -1,10 +1,8 @@
 <?php
 session_start();
 
-if (isset($_SESSION['user'])) {
-    if ($_SESSION['user'] == 'admin' || $_SESSION['user'] == 'comments_admin') {
-        include('../controllers/logout.php');
-    }
+if (!isset($_SESSION['user']) || $_SESSION['user'] == 'admin' || $_SESSION['user'] == 'comments_admin') {
+    include('../controllers/logout.php');
 }
 
 require_once("../controllers/Comment_controller.php");
@@ -57,21 +55,13 @@ if (isset($_POST['create-comment'])) {
     </nav>
     <h1>MERAKI</h1>
     <div class="login-register">
-        <?php
-        if (!(isset($_SESSION['user']))) {
-            ?>
-            <div class="login"><a href="login.php">Iniciar sesión</a></div>
-            <div class="register"><a href="register.php">Registrarse</a></div>
-            <?php
-        }
-        ?>
     </div>
 </header>
 <section class="first left">
     <div class="left-list">
         <h1>Temas</h1>
         <?php
-        $categories = Category_controller::get_all();
+        $categories = Category_controller::get_by_user($_SESSION['user_id']);
         if (gettype($categories) == 'boolean') {
             ?>
             <div class="empty comments">
@@ -85,7 +75,7 @@ if (isset($_POST['create-comment'])) {
                 }
                 if (!($_SESSION['category_id_selected_topic'] == $category->id) && !($_SESSION['category_id_selected'] == $category->id)) {
                     ?>
-                    <a class="left-list-item comments" href="home.php?selected-category-<?php echo $category->id; ?>">
+                    <a class="left-list-item comments" href="comments.php?selected-category-<?php echo $category->id; ?>">
                         <h2><?php echo $category->category ?> ▸</h2>
                     </a>
                     <?php
@@ -97,7 +87,7 @@ if (isset($_POST['create-comment'])) {
                     <?php
                 }
                 if ($category->id == $_SESSION['category_id_selected'] || $category->id == $_SESSION['category_id_selected_topic']) {
-                    $topics = Topic_controller::get_by_category($category->id);
+                    $topics = Topic_controller::get_by_user($category->id, $_SESSION['user_id']);
                     if (gettype($topics) == 'boolean') {
                         ?>
                         <div class="empty">
@@ -109,7 +99,7 @@ if (isset($_POST['create-comment'])) {
                             if (isset($_GET['selected-topic-' . $topic->id])) {
                                 $_SESSION['topic_id_selected'] = $topic->id;
                                 $_SESSION['category_id_selected_topic'] = $category->id;
-                                echo "<meta http-equiv='refresh' content='0; url=home.php' >";
+                                echo "<meta http-equiv='refresh' content='0; url=comments.php' >";
                             }
                             if ($_SESSION['topic_id_selected'] == $topic->id) {
                                 ?>
@@ -123,7 +113,7 @@ if (isset($_POST['create-comment'])) {
                                 ?>
                                 <div class="subitem">
                                     <a class="left-list-item color"
-                                       href="home.php?selected-topic-<?php echo $topic->id ?>">
+                                       href="comments.php?selected-topic-<?php echo $topic->id ?>">
                                         <p><?php echo $topic->topic ?></p>
                                     </a>
                                 </div>
@@ -139,21 +129,11 @@ if (isset($_POST['create-comment'])) {
     <div class="right-list">
         <h1>Comentarios</h1>
         <?php
-        $comments = Comment_controller::get_by_topic($_SESSION['topic_id_selected']);
+        $comments = Comment_controller::get_by_topic_and_user($_SESSION['topic_id_selected'], $_SESSION['user_id']);
         if (gettype($comments) == 'boolean') {
             ?>
             <div class="empty">
-                <?php
-                if (!isset($_SESSION['user'])) {
-                    ?>
-                    <p>No hay comentarios para mostrar</p>
-                    <?php
-                } else {
-                    ?>
-                    <p>¡Sé el primero en comentar!</p>
-                    <?php
-                }
-                ?>
+                <p>No hay comentarios para mostrar</p>
             </div>
             <?php
         } else {
@@ -161,7 +141,7 @@ if (isset($_POST['create-comment'])) {
                 if (isset($_GET['delete-confirmation-' . $comment->id])) {
                     Comment_controller::delete($comment->id);
                     echo "<h3 class='success' style='padding-left: 8px; padding-bottom: 20px'>Comentario eliminado con éxito</h3>";
-                    echo "<meta http-equiv='refresh' content='1.5; url=home.php' >";
+                    echo "<meta http-equiv='refresh' content='1.5; url=comments.php' >";
                 }
 
                 $user = User_controller::get_by_id($comment->user_id);
@@ -173,7 +153,7 @@ if (isset($_POST['create-comment'])) {
                         if (isset($_SESSION['user'])) {
                             if ($_SESSION['user'] == $user->user) {
                                 ?>
-                                <a class="icons" href="home.php?delete-<?php echo $comment->id ?>">
+                                <a class="icons" href="comments.php?delete-<?php echo $comment->id ?>">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
                                 <?php
@@ -190,8 +170,8 @@ if (isset($_POST['create-comment'])) {
                     <div class="delete">
                         <p>¿Estás seguro que quieres eliminar el comentario?</p>
                         <div class='buttons'>
-                            <a class="yes" href="home.php?delete-confirmation-<?php echo $comment->id ?>">Sí</a>
-                            <a class="no" href="home.php">No</a>
+                            <a class="yes" href="comments.php?delete-confirmation-<?php echo $comment->id ?>">Sí</a>
+                            <a class="no" href="comments.php">No</a>
                         </div>
                     </div>
                     <?php

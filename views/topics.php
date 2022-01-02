@@ -27,7 +27,7 @@ require_once("../controllers/Topic_controller.php");
                 <?php
                 if (isset($_SESSION['user'])) {
                     ?>
-                    <li><a href="comments.php">Comentarios</a></li>
+                    <li><a href="comments.php">Tus comentarios</a></li>
                     <li><a href="user-panel.php">Panel de usuario</a></li>
                     <li><a href="../controllers/logout.php">Cerrar sesión</a></li>
                     <?php

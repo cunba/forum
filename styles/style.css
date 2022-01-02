@@ -486,6 +486,7 @@ textarea {
 
 .yes {
     background-color: var(--text-error-color);
+    width: fit-content;
     padding: 5px 10px;
 }
 
@@ -495,6 +496,7 @@ textarea {
 
 .no {
     background-color: var(--left-list-color);
+    width: fit-content;
     padding: 5px 10px;
 }
 

@@ -18,4 +18,9 @@ class Category_controller
     {
         return Category::count_topics($category_id);
     }
+
+    public static function get_by_user($user_id)
+    {
+        return Category::get_by_user($user_id);
+    }
 }

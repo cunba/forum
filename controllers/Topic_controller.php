@@ -23,4 +23,9 @@ class Topic_controller
     {
         return Topic::count_comments($topic_id);
     }
+
+    public static function get_by_user($category_id, $user_id)
+    {
+        return Topic::get_by_user($category_id, $user_id);
+    }
 }
