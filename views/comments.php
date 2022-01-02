@@ -127,7 +127,7 @@ if (isset($_POST['create-comment'])) {
         ?>
     </div>
     <div class="right-list">
-        <h1>Comentarios</h1>
+        <h1>Tus comentarios</h1>
         <?php
         $comments = Comment_controller::get_by_topic_and_user($_SESSION['topic_id_selected'], $_SESSION['user_id']);
         if (gettype($comments) == 'boolean') {
