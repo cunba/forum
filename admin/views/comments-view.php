@@ -31,12 +31,17 @@ if (!isset($_SESSION['user'])) {
 
     if (isset($_POST['selected'])) {
         $_SESSION['topic_id_selected'] = $_POST['topic_id_selected'];
+        $_SESSION['category_id_selected_topic'] = $_POST['category_id_selected_topic'];
     }
 
     if (isset($_POST['delete'])) {
         $comment_delete_id = $_POST['id'];
         Comment_controller_admin::delete($comment_delete_id);
         header('Location:comments-view.php');
+    }
+
+    if (isset($_POST['selected-category'])) {
+        $_SESSION['category_id_selected'] = $_POST['category_id_selected'];
     }
     ?>
 
@@ -87,44 +92,62 @@ if (!isset($_SESSION['user'])) {
                 <?php
             } else {
                 foreach ($categories as $category) {
-                    ?>
-                    <div class="left-list-item comments">
-                        <h2><?php echo $category->category; ?></h2>
-                    </div>
-                    <?php
-                    $topics = Topic_controller_admin::get_by_category($category->id);
-                    if (gettype($topics) == 'boolean') {
+                    if (!($_SESSION['category_id_selected_topic'] == $category->id) && !($_SESSION['category_id_selected'] == $category->id)) {
                         ?>
-                        <div class="empty">
-                            <p>No hay temas para mostrar</p>
+                        <div class="left-list-item comments">
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?selected-category') ?>"
+                                  method="post">
+                                <input type="hidden" name="category_id_selected"
+                                       value="<?php echo $category->id; ?>">
+
+                                <input type="submit" name="selected-category" value="">
+                                <label><?php echo "<h2>{$category->category} ▸</h2>"; ?></label>
+                            </form>
                         </div>
                         <?php
                     } else {
-                        foreach ($topics as $topic) {
-                            if ($_SESSION['topic_id_selected'] == $topic->id) {
-                                ?>
-                                <div class="subitem">
-                                    <div class="left-list-item selected">
-                                        <p><?php echo $topic->topic; ?></p>
+                        ?>
+                        <div class="left-list-item comments">
+                            <h2><?php echo $category->category; ?> ▾</h2>
+                        </div>
+                        <?php
+                    }
+                    if ($category->id == $_SESSION['category_id_selected'] || $category->id == $_SESSION['category_id_selected_topic']) {
+                        $topics = Topic_controller_admin::get_by_category($category->id);
+                        if (gettype($topics) == 'boolean') {
+                            ?>
+                            <div class="empty">
+                                <p>No hay temas para mostrar</p>
+                            </div>
+                            <?php
+                        } else {
+                            foreach ($topics as $topic) {
+                                if ($_SESSION['topic_id_selected'] == $topic->id) {
+                                    ?>
+                                    <div class="subitem">
+                                        <div class="left-list-item selected">
+                                            <p><?php echo $topic->topic; ?></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <?php
-                            } else {
-                                ?>
-                                <div class="subitem">
-                                    <div class="left-list-item">
-                                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?selected') ?>"
-                                              method="post">
-                                            <input type="hidden" name="topic_id_selected"
-                                                   value="<?php echo $topic->id; ?>"
-                                                   placeholder="Categoría">
+                                    <?php
+                                } else {
+                                    ?>
+                                    <div class="subitem">
+                                        <div class="left-list-item">
+                                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?selected') ?>"
+                                                  method="post">
+                                                <input type="hidden" name="topic_id_selected"
+                                                       value="<?php echo $topic->id; ?>">
+                                                <input type="hidden" name="category_id_selected_topic"
+                                                       value="<?php echo $category->id; ?>">
 
-                                            <input type="submit" name="selected" value="">
-                                            <label><?php echo "<p>{$topic->topic}</p>"; ?></label>
-                                        </form>
+                                                <input type="submit" name="selected" value="">
+                                                <label><?php echo "<p>{$topic->topic}</p>"; ?></label>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
-                                <?php
+                                    <?php
+                                }
                             }
                         }
                     }

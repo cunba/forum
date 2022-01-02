@@ -25,7 +25,8 @@
     --left-list-color: var(--Ash-Gray);
     --list-subitem-color: var(--Floral-White-light);
     --list-empty-color: var(--Ash-Gray-light-translucid);
-    --border-color-left-list: var(--Ash-Gray-dark)
+    --border-color-left-list: var(--Ash-Gray-dark);
+    --delete-button-hover-color: var(--Terra-Cotta-light);
 }
 
 body {
@@ -252,6 +253,9 @@ input[type='submit']:hover {
     border-right-color: var(--header-color);
     border-right-width: 3px;
     border-right-style: solid;
+    border-bottom-color: var(--header-color);
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
     padding-left: 2%;
     padding-right: 2%
 }
@@ -405,7 +409,6 @@ textarea {
 }
 
 
-
 .icons {
     font-size: 25px;
     width: 20%;
@@ -438,12 +441,55 @@ textarea {
     background-color: var(--header-hover-color);
 }
 
-.icons form input[name='delete-category-form'], input[name='delete-topic-form'],
-input[name='delete-comment-form'], input[name='delete-user-form'] {
+.icons form input[name='delete-comment-form'] {
     background-color: var(--text-error-color);
 }
 
-.icons form input[name='delete-category-form']:hover, input[name='delete-topic-form']:hover,
-input[name='delete-comment-form']:hover, input[name='delete-user-form']:hover {
+.icons form input[name='delete-comment-form']:hover {
     background-color: var(--delete-button-hover-color);
+}
+
+.buttons input[name='back'] {
+    width: 50px;
+    margin-left: 80px;
+    padding-right: 5px;
+    background-color: var(--header-color);
+}
+
+.buttons input[name='back']:hover {
+    background-color: var(--header-hover-color);
+}
+
+.buttons input[name='delete'] {
+    width: 50px;
+    padding-right: 5px;
+    background-color: var(--text-error-color);
+}
+
+.buttons input[name='delete']:hover {
+    background-color: var(--delete-button-hover-color);
+}
+
+.delete {
+    margin-top: -30px;
+    padding-left: 8px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 50%;
+    height: 50px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete p {
+    padding-bottom: 10px;
 }

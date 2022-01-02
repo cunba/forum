@@ -14,13 +14,27 @@ require_once("../controllers/User_controller.php");
 
 if (isset($_POST['selected'])) {
     $_SESSION['topic_id_selected'] = $_POST['topic_id_selected'];
+    $_SESSION['category_id_selected_topic'] = $_POST['category_id_selected_topic'];
+}
+
+if (isset($_POST['selected-category'])) {
+    $_SESSION['category_id_selected'] = $_POST['category_id_selected'];
 }
 
 if (isset($_POST['create-comment'])) {
-    $comment = $_POST['comment'];
+    $new_comment = $_POST['new_comment'];
     $topic_id = $_SESSION['topic_id_selected'];
-    $user = User_controller::get_id_by_user($_SESSION['user']);
-    $user_id = strval($user->id);
+    $user_id = $_SESSION['user_id'];
+}
+
+if (isset($_POST['delete-comment-form'])) {
+    $comment_delete_id = $_POST['comment_delete_id'];
+}
+
+if (isset($_POST['delete'])) {
+    $comment_delete_id = $_POST['id'];
+    Comment_controller::delete($comment_delete_id);
+    header('Location:home.php');
 }
 ?>
 
@@ -84,44 +98,62 @@ if (isset($_POST['create-comment'])) {
             <?php
         } else {
             foreach ($categories as $category) {
-                ?>
-                <div class="left-list-item comments">
-                    <h2><?php echo $category->category; ?></h2>
-                </div>
-                <?php
-                $topics = Topic_controller::get_by_category($category->id);
-                if (gettype($topics) == 'boolean') {
+                if (!($_SESSION['category_id_selected_topic'] == $category->id) && !($_SESSION['category_id_selected'] == $category->id)) {
                     ?>
-                    <div class="empty">
-                        <p>No hay temas para mostrar</p>
+                    <div class="left-list-item comments">
+                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?selected-category') ?>"
+                              method="post">
+                            <input type="hidden" name="category_id_selected"
+                                   value="<?php echo $category->id; ?>">
+
+                            <input type="submit" name="selected-category" value="">
+                            <label><?php echo "<h2>{$category->category} ▸</h2>"; ?></label>
+                        </form>
                     </div>
                     <?php
                 } else {
-                    foreach ($topics as $topic) {
-                        if ($_SESSION['topic_id_selected'] == $topic->id) {
-                            ?>
-                            <div class="subitem">
-                                <div class="left-list-item color selected">
-                                    <p><?php echo $topic->topic; ?></p>
+                    ?>
+                    <div class="left-list-item comments">
+                        <h2><?php echo $category->category; ?> ▾</h2>
+                    </div>
+                    <?php
+                }
+                if ($category->id == $_SESSION['category_id_selected'] || $category->id == $_SESSION['category_id_selected_topic']) {
+                    $topics = Topic_controller::get_by_category($category->id);
+                    if (gettype($topics) == 'boolean') {
+                        ?>
+                        <div class="empty">
+                            <p>No hay temas para mostrar</p>
+                        </div>
+                        <?php
+                    } else {
+                        foreach ($topics as $topic) {
+                            if ($_SESSION['topic_id_selected'] == $topic->id) {
+                                ?>
+                                <div class="subitem">
+                                    <div class="left-list-item color selected">
+                                        <p><?php echo $topic->topic; ?></p>
+                                    </div>
                                 </div>
-                            </div>
-                            <?php
-                        } else {
-                            ?>
-                            <div class="subitem">
-                                <div class="left-list-item color">
-                                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?selected') ?>"
-                                          method="post">
-                                        <input type="hidden" name="topic_id_selected"
-                                               value="<?php echo $topic->id; ?>"
-                                               placeholder="Categoría">
+                                <?php
+                            } else {
+                                ?>
+                                <div class="subitem">
+                                    <div class="left-list-item color">
+                                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?selected') ?>"
+                                              method="post">
+                                            <input type="hidden" name="topic_id_selected"
+                                                   value="<?php echo $topic->id; ?>">
+                                            <input type="hidden" name="category_id_selected_topic"
+                                                   value="<?php echo $category->id; ?>">
 
-                                        <input type="submit" name="selected" value="">
-                                        <label><?php echo "<p>{$topic->topic}</p>"; ?></label>
-                                    </form>
+                                            <input type="submit" name="selected" value="">
+                                            <label><?php echo "<p>{$topic->topic}</p>"; ?></label>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-                            <?php
+                                <?php
+                            }
                         }
                     }
                 }
@@ -165,10 +197,6 @@ if (isset($_POST['create-comment'])) {
                                           method="post">
                                         <input type="hidden" name="comment_delete_id"
                                                value="<?php echo $comment->id; ?>">
-                                        <input type="hidden" name="comment_delete_comment"
-                                               value="<?php echo $comment->comment; ?>">
-                                        <input type="hidden" name="selected_topic_id"
-                                               value="<?php echo $_SESSION['topic_id_selected'] ?>">
 
                                         <input type="submit" name="delete-comment-form" value="ELIMINAR">
                                     </form>
@@ -182,14 +210,30 @@ if (isset($_POST['create-comment'])) {
                     <p><?php echo $comment->comment; ?></p>
                 </div>
                 <?php
+                if (isset($_GET['delete-comment-form']) && $comment_delete_id == $comment->id) {
+                    ?>
+                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
+                          method="post">
+                        <div class="delete">
+                            <p>¿Estás seguro que quieres eliminar el comentario?</p>
+                            <input type="hidden" name="id" value="<?php echo $comment->id; ?>">
+
+                            <div class='buttons'>
+                                <input type="submit" name="delete" value="SÍ">
+                                <input type="submit" name="back" value="NO">
+                            </div>
+                        </div>
+                    </form>
+                    <?php
+                }
             }
         }
         if (isset($_SESSION['user'])) {
             ?>
             <div class="form-comment">
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?create-comment') ?>"
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>"
                       method="post">
-                    <textarea type="text" id="textarea" name="comment" placeholder="Comentario"></textarea>
+                    <textarea type="text" name="new_comment" placeholder="Comentario"></textarea>
 
                     <input type="submit" name="create-comment" value="AÑADIR COMENTARIO">
                     <?php
