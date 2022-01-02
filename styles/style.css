@@ -512,3 +512,46 @@ textarea {
     padding-top: 10px;
     padding-bottom: 20px;
 }
+
+/* USER PANEL */
+
+.information h1 {
+
+}
+
+.information-user {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: left;
+    padding-bottom: 20px;
+    margin-left: 30%;
+    margin-right: 20%;
+}
+
+.information-user p {
+    padding-left: 30px;
+}
+
+.information-user h3 {
+    text-align: right;
+}
+
+.update {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 5px;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.update a {
+    background-color: var(--button-color);
+    color: var(--header-text-color);
+    margin-top: 20px;
+    padding: 7px 0;
+}
