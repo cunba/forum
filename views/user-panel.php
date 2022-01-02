@@ -6,7 +6,6 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] == 'admin' || $_SESSION['user
 }
 
 require_once('../controllers/User_controller.php');
-require_once('../models/User.php');
 
 $user = User_controller::get_user($_SESSION['user'], $_SESSION['password']);
 
@@ -20,7 +19,7 @@ if (isset($_POST['update-password'])) {
     $confirmation_password = $_POST['confirmation-password'];
 }
 
-if (isset($_POST['update-password'])) {
+if (isset($_POST['update-user'])) {
     $user = $_POST['user'];
     $name = $_POST['name'];
     $surname = $_POST['surname'];
@@ -90,28 +89,6 @@ if (isset($_POST['update-password'])) {
             </form>
         </div>
         <?php
-    } elseif (isset($_GET['update-password'])) {
-        ?>
-        <div class="form user">
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-password') ?>" method="post">
-                <input type="password" name="old-password"
-                       value="<?php if (isset($old_password)) echo $old_password; ?>"
-                       placeholder="Contraseña">
-                <input type="password" name="new-password"
-                       value="<?php if (isset($new_password)) echo $new_password; ?>"
-                       placeholder="Nueva contraseña">
-                <input type="password" name="confirmation-password"
-                       value="<?php if (isset($confirmation_password)) echo $confirmation_password; ?>"
-                       placeholder="Cofirmar contraseña">
-
-                <input type="submit" name="update-password" value="MODIFICAR CONTRASEÑA">
-                <input type="submit" name="back" value="ATRÁS">
-                <?php
-                include("../controllers/validate.php");
-                ?>
-            </form>
-        </div>
-        <?php
     } else {
         ?>
         <div class="information-user-first information-user">
@@ -142,15 +119,41 @@ if (isset($_POST['update-password'])) {
             <h3>Fecha de creación:</h3>
             <p><?php echo date('H:i d/m/Y', strtotime($user->creation_date)); ?></p>
         </div>
-        <div class="update">
-            <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-user') ?>">
-                Modificar usuario
-            </a>
-            <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-password') ?>">
-                Modificar contraseña
-            </a>
-        </div>
         <?php
+        if (isset($_GET['update-password'])) {
+            ?>
+            <div class="form user">
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-password') ?>" method="post">
+                    <input type="password" name="old-password"
+                           value="<?php if (isset($old_password)) echo $old_password; ?>"
+                           placeholder="Contraseña">
+                    <input type="password" name="new-password"
+                           value="<?php if (isset($new_password)) echo $new_password; ?>"
+                           placeholder="Nueva contraseña">
+                    <input type="password" name="confirmation-password"
+                           value="<?php if (isset($confirmation_password)) echo $confirmation_password; ?>"
+                           placeholder="Cofirmar contraseña">
+
+                    <input type="submit" name="update-password" value="MODIFICAR CONTRASEÑA">
+                    <input type="submit" name="back" value="ATRÁS">
+                    <?php
+                    include("../controllers/validate.php");
+                    ?>
+                </form>
+            </div>
+            <?php
+        } else {
+            ?>
+            <div class="update">
+                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-user') ?>">
+                    Modificar usuario
+                </a>
+                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-password') ?>">
+                    Modificar contraseña
+                </a>
+            </div>
+            <?php
+        }
     }
     ?>
 </section>

@@ -73,7 +73,7 @@ if (isset($_POST['submit-register'])) {
         echo "<p class='error'>* El campo contraseña no puede estar vacío</p>";
         $validate = false;
     } elseif (!preg_match("/^[ñÑ!-¡]{4,20}+$/", $password)) {
-        echo "<p class='error'>* Has introducido caracteres no soportados (debe contener mñinimo 3, máximo 50)</p>";
+        echo "<p class='error'>* La contraseña debe tener entre 4 y 20 caracteres</p>";
         $validate = false;
     } elseif ($validate) {
         $validate = true;
@@ -135,7 +135,7 @@ if (isset($_POST['update-password'])) {
         echo "<p class='error'>* Los campos no pueden estar vacíos</p>";
     } elseif (!($_SESSION['password'] == $old_password)) {
         echo "<p class='error'>* Contraseña actual incorrecta</p>";
-    } elseif (strlen($new_password) < 4 || strlen($new_password > 20)) {
+    } elseif (!preg_match("/^[ñÑ!-¡]{4,20}+$/", $new_password)) {
         echo "<p class='error'>* La nueva contraseña debe tener entre 4 y 20 caracteres</p>";
     } elseif (!($new_password == $confirmation_password)) {
         echo "<p class='error'>* Las contraseñas nueva y de confirmación deben coincidir</p>";
@@ -148,6 +148,65 @@ if (isset($_POST['update-password'])) {
             echo "<meta http-equiv='refresh' content='1.5; url=user-panel.php' >";
         } else {
             echo '<p class="error">* No se ha podido modificar la contraseña, inténtelo de nuevo.</p>';
+        }
+    }
+}
+
+$validate = false;
+if (isset($_POST['update-user'])) {
+    if (empty($user)) {
+        echo "<p class='error'>* El campo usuario no puede estar vacío</p>";
+    } elseif (User_controller::get_by_user($user)) {
+        echo "<p class='error'>* El usuario ya existe</p>";
+    } elseif (!preg_match('/^[a-zñÑ.-_]{3,20}+$/', $user)) {
+        echo "<p class='error'>* El campo usuario sólo puede contener letras, números y caracterees como . y _ (mñinimo 3, máximo 20)</p>";
+    } else {
+        $validate = true;
+    }
+
+    if (empty($name)) {
+        echo "<p class='error'>* El campo nombre no puede estar vacío</p>";
+        $validate = false;
+    } elseif (!preg_match('/^[A-Za-zäÄëËïÏöÖüÜáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ]{3,50}+$/', $name)) {
+        echo "<p class='error'>* El campo nombre sólo puede contener letras (mñinimo 3, máximo 50)</p>";
+        $validate = false;
+    } elseif ($validate) {
+        $validate = true;
+    }
+
+    if (empty($surname)) {
+        echo "<p class='error'>* El campo apellido no puede estar vacío</p>";
+        $validate = false;
+    } elseif (!preg_match('/^[A-Za-zäÄëËïÏöÖüÜáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ]{3,50}+$/', $surname)) {
+        echo "<p class='error'>* El campo apellido sólo puede contener letras (mñinimo 3, máximo 50)</p>";
+        $validate = false;
+    } elseif ($validate) {
+        $validate = true;
+    }
+
+    if (empty($email)) {
+        echo "<p class='error'>* El campo correo no puede estar vacío</p>";
+        $validate = false;
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "<p class='error'>* Debes introducir un correo válido</p>";
+        $validate = false;
+    } elseif (strlen($email) > 100) {
+        echo "<p class='error'>* Debes introducir un correo válido</p>";
+        $validate = false;
+    } elseif ($validate) {
+        $validate = true;
+    }
+
+    if ($validate) {
+        $new_user = new User($user, $name, $surname, $birthday, $email, $_SESSION['password']);
+        $response = User_controller::update($new_user);
+
+        if (!$response) {
+            echo "<p class='error'>* Ha ocurrido un error, inténtelo más tarde</p>";
+        } else {
+            $_SESSION['user'] = $user;
+            echo "<p class='success'>Usuario registrado con éxito</p>";
+            echo "<meta http-equiv='refresh' content='2; url=home.php' >";
         }
     }
 }
