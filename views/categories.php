@@ -22,10 +22,10 @@ require_once('../controllers/Category_controller.php');
                 <li><a href="home.php">Inicio</a></li>
                 <li><a href="categories.php">Categorías</a></li>
                 <li><a href="topics.php">Temas</a></li>
-                <li><a href="comments.php">Comentarios</a></li>
                 <?php
                 if (isset($_SESSION['user'])) {
                     ?>
+                    <li><a href="comments.php">Comentarios</a></li>
                     <li><a href="user-panel.php">Panel de usuario</a></li>
                     <li><a href="../controllers/logout.php">Cerrar sesión</a></li>
                     <?php
@@ -60,8 +60,8 @@ require_once('../controllers/Category_controller.php');
                  as $category) {
             $num_topics = Category_controller::count_topics($category->id);
             ?>
-            <div class="list-item">
-                <a class="list-information a" href="categories.php?selected<?php echo $category->id ?>">
+            <div class="list-item hover">
+                <a href="categories.php?selected<?php echo $category->id ?>">
                     <h2><?php echo $category->category; ?></h2>
                     <p><?php echo "Contiene {$num_topics} temas" ?></p>
                 </a>
@@ -72,7 +72,6 @@ require_once('../controllers/Category_controller.php');
                 $_SESSION['category_id_selected_topic'] = $category->id;
                 header('Location:topics.php');
             }
-
         }
     }
     ?>
