@@ -228,6 +228,34 @@ class User
         }
     }
 
+    public static function update($user)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'UPDATE users SET user = :user, name = :name, surname = :surname, birthday = :birthday, email = :email  WHERE id = :id';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':user' => $user->user,
+                ':name' => $user->name,
+                ':surname' => $user->surname,
+                ':birthday' => $user->birthday,
+                ':email' => $user->email,
+                ':id' => $user->id
+            ));
+
+            return true;
+
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
+
     public static function delete($id)
     {
         try {

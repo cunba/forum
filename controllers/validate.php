@@ -199,6 +199,7 @@ if (isset($_POST['update-user'])) {
 
     if ($validate) {
         $new_user = new User($user, $name, $surname, $birthday, $email, $_SESSION['password']);
+        $new_user->set_id($_SESSION['user_id']);
         $response = User_controller::update($new_user);
 
         if (!$response) {

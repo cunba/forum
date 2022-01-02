@@ -34,7 +34,8 @@ class User_controller
         return User::get_by_user($user);
     }
 
-    public static function get_id_by_user($user) {
+    public static function get_id_by_user($user)
+    {
         return User::get_id_by_user($user);
     }
 
@@ -61,5 +62,10 @@ class User_controller
     public static function count_comments($user_id)
     {
         return User::count_comments($user_id);
+    }
+
+    public static function update($user)
+    {
+        return User::update($user);
     }
 }

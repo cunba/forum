@@ -68,8 +68,58 @@ if (isset($_POST['update-user'])) {
 </header>
 <section class="first list information">
     <h1>Panel de usuario</h1>
+    <div class="information-user-first information-user">
+        <h3>Usuario:</h3>
+        <p><?php echo $user->user ?></p>
+    </div>
+    <div class="information-user">
+        <h3>Nombre:</h3>
+        <p><?php echo $user->name ?></p>
+    </div>
+    <div class="information-user">
+        <h3>Apellido:</h3>
+        <p><?php echo $user->surname ?></p>
+    </div>
+    <div class="information-user">
+        <h3>Fecha de nacimiento:</h3>
+        <p><?php echo date('d/m/Y', strtotime($user->birthday)); ?></p>
+    </div>
+    <div class="information-user">
+        <h3>Correo:</h3>
+        <p><?php echo $user->email ?></p>
+    </div>
+    <div class="information-user">
+        <h3>Contraseña:</h3>
+        <p>***********</p>
+    </div>
+    <div class="information-user">
+        <h3>Fecha de creación:</h3>
+        <p><?php echo date('H:i d/m/Y', strtotime($user->creation_date)); ?></p>
+    </div>
     <?php
-    if (isset($_GET['update-user'])) {
+    if (isset($_GET['update-password'])) {
+        ?>
+        <div class="form user">
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-password') ?>" method="post">
+                <input type="password" name="old-password"
+                       value="<?php if (isset($old_password)) echo $old_password; ?>"
+                       placeholder="Contraseña">
+                <input type="password" name="new-password"
+                       value="<?php if (isset($new_password)) echo $new_password; ?>"
+                       placeholder="Nueva contraseña">
+                <input type="password" name="confirmation-password"
+                       value="<?php if (isset($confirmation_password)) echo $confirmation_password; ?>"
+                       placeholder="Cofirmar contraseña">
+
+                <input type="submit" name="update-password" value="MODIFICAR CONTRASEÑA">
+                <input type="submit" name="back" value="ATRÁS">
+                <?php
+                include("../controllers/validate.php");
+                ?>
+            </form>
+        </div>
+        <?php
+    } elseif (isset($_GET['update-user'])) {
         ?>
         <div class="form user">
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
@@ -91,69 +141,15 @@ if (isset($_POST['update-user'])) {
         <?php
     } else {
         ?>
-        <div class="information-user-first information-user">
-            <h3>Usuario:</h3>
-            <p><?php echo $user->user ?></p>
-        </div>
-        <div class="information-user">
-            <h3>Nombre:</h3>
-            <p><?php echo $user->name ?></p>
-        </div>
-        <div class="information-user">
-            <h3>Apellido:</h3>
-            <p><?php echo $user->surname ?></p>
-        </div>
-        <div class="information-user">
-            <h3>Fecha de nacimiento:</h3>
-            <p><?php echo date('d/m/Y', strtotime($user->birthday)); ?></p>
-        </div>
-        <div class="information-user">
-            <h3>Correo:</h3>
-            <p><?php echo $user->email ?></p>
-        </div>
-        <div class="information-user">
-            <h3>Contraseña:</h3>
-            <p>***********</p>
-        </div>
-        <div class="information-user">
-            <h3>Fecha de creación:</h3>
-            <p><?php echo date('H:i d/m/Y', strtotime($user->creation_date)); ?></p>
+        <div class="update">
+            <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-user') ?>">
+                Modificar usuario
+            </a>
+            <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-password') ?>">
+                Modificar contraseña
+            </a>
         </div>
         <?php
-        if (isset($_GET['update-password'])) {
-            ?>
-            <div class="form user">
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-password') ?>" method="post">
-                    <input type="password" name="old-password"
-                           value="<?php if (isset($old_password)) echo $old_password; ?>"
-                           placeholder="Contraseña">
-                    <input type="password" name="new-password"
-                           value="<?php if (isset($new_password)) echo $new_password; ?>"
-                           placeholder="Nueva contraseña">
-                    <input type="password" name="confirmation-password"
-                           value="<?php if (isset($confirmation_password)) echo $confirmation_password; ?>"
-                           placeholder="Cofirmar contraseña">
-
-                    <input type="submit" name="update-password" value="MODIFICAR CONTRASEÑA">
-                    <input type="submit" name="back" value="ATRÁS">
-                    <?php
-                    include("../controllers/validate.php");
-                    ?>
-                </form>
-            </div>
-            <?php
-        } else {
-            ?>
-            <div class="update">
-                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-user') ?>">
-                    Modificar usuario
-                </a>
-                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update-password') ?>">
-                    Modificar contraseña
-                </a>
-            </div>
-            <?php
-        }
     }
     ?>
 </section>
