@@ -23,4 +23,8 @@ class Comment_controller
     {
         Comment::delete($id);
     }
+
+    public static function get_by_topic_and_user($topic_id, $user_id) {
+        return Comment::get_by_topic_and_user($topic_id, $user_id);
+    }
 }

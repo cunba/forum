@@ -58,4 +58,31 @@ class Category
             return Connection::messages($e->getCode());
         }
     }
+
+    public static function get_by_user($user_id)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'SELECT * FROM categories WHERE id IN (SELECT category_id FROM topics WHERE id IN (SELECT topic_id FROM comments WHERE user_id = :user_id))';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':user_id' => $user_id
+            ));
+
+            if ($stmt->rowCount() == 0) {
+                return false;
+            } else {
+                return $stmt->fetchAll(PDO::FETCH_OBJ);
+            }
+
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
 }

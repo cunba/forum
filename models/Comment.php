@@ -45,6 +45,33 @@ class Comment
         }
     }
 
+    public static function get_by_topic_and_user($topic_id, $user_id)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'SELECT * FROM comments WHERE topic_id = :topic_id AND user_id = :user_id ORDER BY creation_date ASC';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':topic_id' => $topic_id,
+                ':user_id' => $user_id
+            ));
+
+            if ($stmt->rowCount() == 0) {
+                return false;
+            } else {
+                return $stmt->fetchAll(PDO::FETCH_OBJ);
+            }
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
+
     public static function create($comment)
     {
         try {
