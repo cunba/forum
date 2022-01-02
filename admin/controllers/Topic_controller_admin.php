@@ -37,8 +37,10 @@ class Topic_controller_admin
     public static function delete($id)
     {
         $comments = Comment_admin::get_by_topic($id);
-        foreach($comments as $comment) {
-            Comment_admin::delete($comment->id);
+        if (!(gettype($comments) == 'boolean')) {
+            foreach ($comments as $comment) {
+                Comment_admin::delete($comment->id);
+            }
         }
         Topic_admin::delete($id);
     }

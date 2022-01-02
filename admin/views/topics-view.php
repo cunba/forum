@@ -30,31 +30,6 @@ if (!isset($_SESSION['user'])) {
         $category_id = $_POST['category_id'];
     }
 
-    if (isset($_POST['update'])) {
-        $_SESSION['category_id_selected'] = $_POST['selected_category_id'];
-        $_SESSION['category_id_selected_topic'] = $_POST['selected_category_id'];
-        $topic_update_id = $_POST['topic_update_id'];
-        $topic_update_topic = $_POST['topic_update_topic'];
-
-    }
-
-    if (isset($_POST['delete-topic-form'])) {
-        $_SESSION['category_id_selected'] = $_POST['selected_category_id'];
-        $_SESSION['category_id_selected_topic'] = $_POST['selected_category_id'];
-        $topic_delete_id = $_POST['topic_delete_id'];
-        $topic_delete_topic = $_POST['topic_delete_topic'];
-    }
-
-    if (isset($_POST['selected'])) {
-        $_SESSION['category_id_selected'] = $_POST['category_id_selected'];
-        $_SESSION['category_id_selected_topic'] = $_POST['category_id_selected'];
-    }
-
-    if (isset($_POST['delete'])) {
-        $topic_delete_id = $_POST['id'];
-        Topic_controller_admin::delete($topic_delete_id);
-        header('Location:topics-view.php');
-    }
     ?>
 
     <!DOCTYPE html>
@@ -62,6 +37,7 @@ if (!isset($_SESSION['user'])) {
     <link rel="stylesheet" href="../styles/style.css">
     <head>
         <meta charset="UTF-8">
+        <script src="https://kit.fontawesome.com/6d2edab8c4.js" crossorigin="anonymous"></script>
         <title>Foro</title>
     </head>
     <body>
@@ -97,7 +73,10 @@ if (!isset($_SESSION['user'])) {
                 <?php
             } else {
                 foreach ($categories as $category) {
-                    $num_topics = Category_controller_admin::count_topics($category->id);
+                    if (isset($_GET['selected-' . $category->id])) {
+                        $_SESSION['category_id_selected'] = $category->id;
+                        echo "<meta http-equiv='refresh' content='0; url=topics-view.php' >";
+                    }
 
                     if ($_SESSION['category_id_selected'] == $category->id) {
                         ?>
@@ -107,16 +86,9 @@ if (!isset($_SESSION['user'])) {
                         <?php
                     } else {
                         ?>
-                        <div class="left-list-item">
-                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?selected') ?>"
-                                  method="post">
-                                <input type="hidden" name="category_id_selected" value="<?php echo $category->id; ?>"
-                                       placeholder="Categoría">
-
-                                <input type="submit" name="selected" value="">
-                                <label><?php echo "<h3>{$category->category}</h3>"; ?></label>
-                            </form>
-                        </div>
+                        <a class="left-list-item" href="topics-view.php?selected-<?php echo $category->id ?>">
+                            <h3><?php echo $category->category ?></h3>
+                        </a>
                         <?php
                     }
                 }
@@ -172,9 +144,9 @@ if (!isset($_SESSION['user'])) {
                 <div class="form">
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update') ?>" method="post">
                         <h2>Añadir nueva categoría</h2>
-                        <input type="hidden" name="id" value="<?php echo $topic_update_id; ?>">
+                        <input type="hidden" name="id" value="<?php echo $_SESSION['update_id']; ?>">
                         <input type="text" name="topic"
-                               value="<?php if (isset($topic)) echo $topic; else echo $topic_update_topic; ?>">
+                               value="<?php if (isset($topic)) echo $topic; else echo $_SESSION['update_topic']; ?>">
                         <select name="category_id">
                             <?php
                             $categories = Category_controller_admin::get_all();
@@ -223,6 +195,20 @@ if (!isset($_SESSION['user'])) {
                     <?php
                 } else {
                     foreach ($topics as $topic) {
+                        if (isset($_GET['update-' . $topic->id])) {
+                            $_SESSION['update_id'] = $topic->id;
+                            $_SESSION['update_topic'] = $topic->topic;
+                            echo "<meta http-equiv='refresh' content='0; url=topics-view.php?update' >";
+                        }
+
+                        if (isset($_GET['delete-confirmation-' . $topic->id])) {
+                            $true = Topic_controller_admin::delete($topic->id);
+                            if ($true) {
+                                echo "<h3 class='success' style='padding-left: 8px; padding-bottom: 20px'>Tema eliminado con éxito</h3>";
+                                echo "<meta http-equiv='refresh' content='1.5; url=topics-view.php' >";
+                            }
+                        }
+
                         $num_topics = Topic_controller_admin::count_comments($topic->id);
                         ?>
                         <div class="list-item">
@@ -231,44 +217,25 @@ if (!isset($_SESSION['user'])) {
                                 <p><?php echo "Contiene {$num_topics} comentarios" ?></p>
                             </div>
                             <div class="icons">
-                                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update') ?>"
-                                      method="post">
-                                    <input type="hidden" name="topic_update_id" value="<?php echo $topic->id; ?>">
-                                    <input type="hidden" name="topic_update_topic"
-                                           value="<?php echo $topic->topic; ?>">
-                                    <input type="hidden" name="selected_category_id"
-                                           value="<?php echo $_SESSION['category_id_selected'] ?>">
-
-                                    <input type="submit" name="update" value="MODIFICAR">
-                                </form>
-                                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete-topic-form') ?>"
-                                      method="post">
-                                    <input type="hidden" name="topic_delete_id" value="<?php echo $topic->id; ?>">
-                                    <input type="hidden" name="topic_delete_topic"
-                                           value="<?php echo $topic->topic; ?>">
-                                    <input type="hidden" name="selected_category_id"
-                                           value="<?php echo $_SESSION['category_id_selected'] ?>">
-
-                                    <input type="submit" name="delete-topic-form" value="ELIMINAR">
-                                </form>
+                                <a class="update-icon" href="topics-view.php?update-<?php echo $topic->id ?>">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a class="delete-icon" href="topics-view.php?delete-<?php echo $topic->id ?>">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
                             </div>
                         </div>
                         <?php
-                        if (isset($_GET['delete-topic-form']) && $topic_delete_id == $topic->id) {
+                        if (isset($_GET['delete-' . $topic->id])) {
                             ?>
-                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
-                                  method="post">
-                                <div class="delete">
-                                    <p>¿Estás seguro que quieres eliminar el tema <?php echo $topic->topic ?>,
-                                        incluyendo los comentarios añadidos?</p>
-                                    <input type="hidden" name="id" value="<?php echo $topic->id; ?>">
-
-                                    <div class='buttons'>
-                                        <input type="submit" name="delete" value="SÍ">
-                                        <input type="submit" name="back" value="NO">
-                                    </div>
+                            <div class="delete">
+                                <p>¿Estás seguro que quieres eliminar el tema, incluyendo sus comentarios?</p>
+                                <div class='buttons'>
+                                    <a class="yes"
+                                       href="topics-view.php?delete-confirmation-<?php echo $topic->id ?>">Sí</a>
+                                    <a class="no" href="topics-view.php">No</a>
                                 </div>
-                            </form>
+                            </div>
                             <?php
                         }
                     }

@@ -51,6 +51,8 @@ if (isset($_POST['create-category'])) {
         echo "<p class='error'>* El campo categoría no puede estar vacío</p>";
     } elseif (!preg_match("/^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙñÑ0-9]{3,100}+$/", $category)) {
         echo '<p class="error">* El campo categoría sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
+    } elseif (empty($id)) {
+
     } else {
         if (Category_controller_admin::update($id, $category)) {
             echo '<p class="success">Categoría modificada con éxito</p>';
@@ -73,6 +75,7 @@ if (isset($_POST['create-topic'])) {
         if (!Topic_controller_admin::create($topic)) {
             echo '<p class="error">* No se ha podido crear el tema, inténtelo de nuevo.</p>';
         } else {
+            $_SESSION['category_id_selected'] = $category_id;
             echo '<p class="success">Tema creado con éxito</p>';
             echo "<meta http-equiv='refresh' content='1.5; url=topics-view.php' >";
         }
@@ -86,6 +89,8 @@ if (isset($_POST['create-topic'])) {
         $topic = new Topic_admin($topic, $category_id);
         $topic->set_id($id);
         if (Topic_controller_admin::update($topic)) {
+            $_SESSION['category_id_selected'] = $category_id;
+
             echo '<p class="success">Tema modificado con éxito.</p>';
             echo "<meta http-equiv='refresh' content='1.5; url=topics-view.php' >";
         } else {
