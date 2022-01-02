@@ -46,7 +46,6 @@ if (!isset($_SESSION['user'])) {
     <link rel="stylesheet" href="../styles/style.css">
     <head>
         <meta charset="UTF-8">
-        <script src="https://kit.fontawesome.com/6d2edab8c4.js" crossorigin="anonymous"></script>
         <title>Foro</title>
     </head>
     <body>
