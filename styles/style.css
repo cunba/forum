@@ -41,6 +41,11 @@ a {
     color: var(--text-color);
 }
 
+section a {
+    width: 100%;
+    height: 100%;
+}
+
 /* HEADER */
 
 .header-login {
@@ -456,18 +461,6 @@ textarea {
     align-items: flex-end;
 }
 
-.icons form {
-    margin-top: 0;
-}
-
-.icons form input[type='submit'] {
-    height: 30px;
-    width: 80px;
-    margin-bottom: 0;
-    padding-left: 0;
-    border-radius: 2px;
-}
-
 .delete {
     padding-left: 8px;
     padding-bottom: 20px;
@@ -507,4 +500,13 @@ textarea {
 
 .no:hover {
     background-color: var(--list-empty-color);
+}
+
+.hover:hover {
+    border-width: 6px;
+}
+
+.hover p {
+    padding-top: 10px;
+    padding-bottom: 20px;
 }
