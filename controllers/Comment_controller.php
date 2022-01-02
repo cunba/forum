@@ -1,6 +1,7 @@
 <?php
 
 require_once('../models/Comment.php');
+require_once('../models/User.php');
 
 class Comment_controller
 {

@@ -21,6 +21,7 @@ if (!isset($_SESSION['user'])) {
         $topic = $_POST['topic'];
         $category_id = $_POST['category_id'];
         $_SESSION['category_id_selected'] = $category_id;
+        $_SESSION['category_id_selected_topic'] = $category_id;
     }
 
     if (isset($_POST['update-topic'])) {
@@ -31,6 +32,7 @@ if (!isset($_SESSION['user'])) {
 
     if (isset($_POST['update'])) {
         $_SESSION['category_id_selected'] = $_POST['selected_category_id'];
+        $_SESSION['category_id_selected_topic'] = $_POST['selected_category_id'];
         $topic_update_id = $_POST['topic_update_id'];
         $topic_update_topic = $_POST['topic_update_topic'];
 
@@ -38,12 +40,14 @@ if (!isset($_SESSION['user'])) {
 
     if (isset($_POST['delete-topic-form'])) {
         $_SESSION['category_id_selected'] = $_POST['selected_category_id'];
+        $_SESSION['category_id_selected_topic'] = $_POST['selected_category_id'];
         $topic_delete_id = $_POST['topic_delete_id'];
         $topic_delete_topic = $_POST['topic_delete_topic'];
     }
 
     if (isset($_POST['selected'])) {
         $_SESSION['category_id_selected'] = $_POST['category_id_selected'];
+        $_SESSION['category_id_selected_topic'] = $_POST['category_id_selected'];
     }
 
     if (isset($_POST['delete'])) {

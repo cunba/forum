@@ -18,6 +18,7 @@ if (isset($_POST['submit-login'])) {
         } else {
             $_SESSION['user'] = $user;
             $_SESSION['password'] = $password;
+            $_SESSION['user_id'] = $response->id;
             header('Location:home.php');
         }
     }
@@ -87,31 +88,44 @@ if (isset($_POST['submit-register'])) {
     } elseif ($validate) {
         $validate = true;
     }
+    if (empty($birthday)) {
+        echo "<p class='error'>* El campo fecha de nacimiento no puede estar vacío</p>";
+        $validate = false;
+    }
 
     if ($validate) {
-        $new_user = new User($user, $name, $surname, $email, $password);
+        $new_user = new User($user, $name, $surname, $birthday, $email, $password);
         $response = User_controller::create($new_user);
 
         if (!$response) {
             echo "<p class='error'>* Ha ocurrido un error, inténtelo más tarde</p>";
         } else {
-            session_start();
+            $response = User_controller::login($user, $password);
             $_SESSION['user'] = $user;
             $_SESSION['password'] = $password;
-            header('Location:home.php');
+            $_SESSION['user_id'] = $response->id;
+            echo "<p class='success'>Usuario registrado con éxito</p>";
+            echo "<meta http-equiv='refresh' content='2; url=home.php' >";
         }
     }
 }
 
 if (isset($_POST['create-comment'])) {
-    if (empty($comment)) {
+    if (empty($new_comment)) {
         echo "<p class='error'>* El campo comentario no puede estar vacío</p>";
+    } elseif (strlen($new_comment) < 3 || strlen($new_comment) > 400) {
+        echo '<p class="error">* El campo comentario tiene un mínimo de 3 y</p><p class="error">máximo de 400 caracteres</p>';
     } elseif (empty($topic_id)) {
         echo "<p class='error'>* El campo tema no puede estar vacío</p>";
+    } elseif (empty($user_id)) {
+        echo "<p class='error'>* El campo usuario no puede estar vacío</p>";
     } else {
-        $new_comment = new Comment($comment, $topic_id, $user_id);
+        $new_comment = new Comment($new_comment, $topic_id, $user_id);
         if (!Comment_controller::create($new_comment)) {
-            echo '<p class="error">* No se ha podido crear el comentario, inténtelo de nuevo.</p>';
+            echo '<p class="error">* No se ha podido crear el comentario, inténtelo de nuevo</p>';
+        } else {
+            echo '<p class="success">Comentario creado con éxito</p>';
+            echo "<meta http-equiv='refresh' content='1.5'>";
         }
     }
 }
@@ -130,6 +144,7 @@ if (isset($_POST['update-password'])) {
     } else {
         if (User_controller::update_password($user->id, $new_password)) {
             echo '<p class="success">Contraseña modificada con éxito.</p>';
+            echo "<meta http-equiv='refresh' content='1.5; url=user-panel.php' >";
             $_SESSION['password'] = $new_password;
         } else {
             echo '<p class="error">* No se ha podido modificar la contraseña, inténtelo de nuevo.</p>';

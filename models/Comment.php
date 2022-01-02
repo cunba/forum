@@ -28,7 +28,7 @@ class Comment
                 return $connection;
             }
 
-            $sql = 'SELECT * FROM comments WHERE topic_id = :topic_id ORDER BY creation_date DESC';
+            $sql = 'SELECT * FROM comments WHERE topic_id = :topic_id ORDER BY creation_date ASC';
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(

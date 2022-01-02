@@ -378,11 +378,6 @@ input[name='delete-comment-form']:hover, input[name='delete-user-form']:hover {
     background-color: var(--delete-button-hover-color);
 }
 
-i:hover {
-    cursor: pointer;
-    color: var(--i-hover);
-}
-
 form h2 {
     font-size: 27px;
     padding-bottom: 20px;
@@ -428,13 +423,6 @@ form h2 {
     padding-bottom: 10px;
 }
 
-.delete a {
-    text-decoration: none;
-    margin-right: 20px;
-    color: var(--header-text);
-    padding: 5px 10px;
-}
-
 .buttons input[name='back'] {
     width: 50px;
     margin-left: 80px;
@@ -478,7 +466,10 @@ form h2 {
     border-right-color: var(--header-color);
     border-right-width: 3px;
     border-right-style: solid;
-    margin-left: 2%;
+    border-bottom-color: var(--header-color);
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    padding-left: 2%;
     padding-right: 2%
 }
 

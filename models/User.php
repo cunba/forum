@@ -7,14 +7,16 @@ class User
     public $user;
     public $name;
     public $surname;
+    public $birthday;
     public $email;
     public $password;
 
-    public function __construct($user, $name, $surname, $email, $password)
+    public function __construct($user, $name, $surname, $birthday, $email, $password)
     {
         $this->user = $user;
         $this->name = $name;
         $this->surname = $surname;
+        $this->birthday = $birthday;
         $this->email = $email;
         $this->password = $password;
     }
@@ -183,16 +185,16 @@ class User
                 return $connection;
             }
 
-            $sql = 'INSERT INTO users (user, name, surname, email, password, birthday) VALUES (:user, :name, :surname, :email, :password, :birthday)';
+            $sql = 'INSERT INTO users (user, name, surname, birthday, email, password) VALUES (:user, :name, :surname, :birthday, :email, :password)';
 
             $stmt = $connection->prepare($sql);
             $stmt->execute(array(
                 ':user' => $user->user,
                 ':name' => $user->name,
                 ':surname' => $user->surname,
+                ':birthday' => $user->birthday,
                 ':email' => $user->email,
                 ':password' => $password,
-                ':birthday' => $user->birthday
             ));
 
             return true;

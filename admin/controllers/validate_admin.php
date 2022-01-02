@@ -19,6 +19,7 @@ if (isset($_POST['submit-login'])) {
                 $_SESSION['password'] = $password;
                 $_SESSION['category_id_selected'] = 1;
                 $_SESSION['topic_id_selected'] = 1;
+                $_SESSION['category_id_selected_topic'] = 1;
 
                 if ($user == 'admin') {
                     header("Location:home.php");
@@ -39,7 +40,8 @@ if (isset($_POST['create-category'])) {
         echo '<p class="error">* El campo categoría sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
     } else {
         if (Category_controller_admin::create($category)) {
-            header('Location:categories-view.php');
+            echo '<p class="success">Categoría creada con éxito</p>';
+            echo "<meta http-equiv='refresh' content='1.5; url=categories-view.php' >";
         } else {
             echo '<p class="error">* No se ha podido crear la categoría, inténtelo de nuevo.</p>';
         }
@@ -51,7 +53,8 @@ if (isset($_POST['create-category'])) {
         echo '<p class="error">* El campo categoría sólo permite letras y números (mínimo 3 y máximo 100 caracteres)</p>';
     } else {
         if (Category_controller_admin::update($id, $category)) {
-            header('Location:categories-view.php');
+            echo '<p class="success">Categoría modificada con éxito</p>';
+            echo "<meta http-equiv='refresh' content='1.5; url=categories-view.php' >";
         } else {
             echo '<p class="error">* No se ha podido actualizar la categoría, inténtelo de nuevo.</p>';
         }
@@ -70,7 +73,8 @@ if (isset($_POST['create-topic'])) {
         if (!Topic_controller_admin::create($topic)) {
             echo '<p class="error">* No se ha podido crear el tema, inténtelo de nuevo.</p>';
         } else {
-            echo '<p class="success">Tema creado con éxito.</p>';
+            echo '<p class="success">Tema creado con éxito</p>';
+            echo "<meta http-equiv='refresh' content='1.5; url=topics-view.php' >";
         }
     }
 } elseif (isset($_POST['update-topic'])) {
@@ -83,6 +87,7 @@ if (isset($_POST['create-topic'])) {
         $topic->set_id($id);
         if (Topic_controller_admin::update($topic)) {
             echo '<p class="success">Tema modificado con éxito.</p>';
+            echo "<meta http-equiv='refresh' content='1.5; url=topics-view.php' >";
         } else {
             echo '<p class="error">* No se ha podido crear el tema, inténtelo de nuevo.</p>';
         }
@@ -97,11 +102,12 @@ if (isset($_POST['create-comment'])) {
     } elseif (empty($topic_id)) {
         echo "<p class='error'>* El campo tema no puede estar vacío</p>";
     } else {
-        $comment = new Comment_admin($comment, $topic_id);
-        if (!Comment_controller_admin::create($comment)) {
+        $new_comment = new Comment_admin($comment, $topic_id);
+        if (!Comment_controller_admin::create($new_comment)) {
             echo '<p class="error">* No se ha podido crear el comentario, inténtelo de nuevo.</p>';
         } else {
             echo '<p class="success">Comentario creado con éxito.</p>';
+            echo "<meta http-equiv='refresh' content='1.5; url=comments-view.php' >";
         }
     }
 }
@@ -120,6 +126,7 @@ if (isset($_POST['update-password'])) {
     } else {
         if (User_controller_admin::update_password($user->id, $new_password)) {
             echo '<p class="success">Contraseña modificada con éxito.</p>';
+            echo "<meta http-equiv='refresh' content='1.5; url=user-panel.php' >";
             $_SESSION['password'] = $new_password;
         } else {
             echo '<p class="error">* No se ha podido modificar la contraseña, inténtelo de nuevo.</p>';
