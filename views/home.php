@@ -12,30 +12,12 @@ require_once("../controllers/Topic_controller.php");
 require_once("../controllers/Category_controller.php");
 require_once("../controllers/User_controller.php");
 
-if (isset($_POST['selected'])) {
-    $_SESSION['topic_id_selected'] = $_POST['topic_id_selected'];
-    $_SESSION['category_id_selected_topic'] = $_POST['category_id_selected_topic'];
-}
-
-if (isset($_POST['selected-category'])) {
-    $_SESSION['category_id_selected'] = $_POST['category_id_selected'];
-}
-
 if (isset($_POST['create-comment'])) {
     $new_comment = $_POST['new_comment'];
     $topic_id = $_SESSION['topic_id_selected'];
     $user_id = $_SESSION['user_id'];
 }
 
-if (isset($_POST['delete-comment-form'])) {
-    $comment_delete_id = $_POST['comment_delete_id'];
-}
-
-if (isset($_POST['delete'])) {
-    $comment_delete_id = $_POST['id'];
-    Comment_controller::delete($comment_delete_id);
-    header('Location:home.php');
-}
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +25,7 @@ if (isset($_POST['delete'])) {
 <link rel="stylesheet" href="../styles/style.css">
 <head>
     <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/6d2edab8c4.js" crossorigin="anonymous"></script>
     <title>Foro</title>
 </head>
 <body>
@@ -97,18 +80,14 @@ if (isset($_POST['delete'])) {
             <?php
         } else {
             foreach ($categories as $category) {
+                if (isset($_GET['selected-category-' . $category->id])) {
+                    $_SESSION['category_id_selected'] = $category->id;
+                }
                 if (!($_SESSION['category_id_selected_topic'] == $category->id) && !($_SESSION['category_id_selected'] == $category->id)) {
                     ?>
-                    <div class="left-list-item comments">
-                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?selected-category') ?>"
-                              method="post">
-                            <input type="hidden" name="category_id_selected"
-                                   value="<?php echo $category->id; ?>">
-
-                            <input type="submit" name="selected-category" value="">
-                            <label><?php echo "<h2>{$category->category} ▸</h2>"; ?></label>
-                        </form>
-                    </div>
+                    <a class="left-list-item comments" href="home.php?selected-category-<?php echo $category->id; ?>">
+                        <h2><?php echo $category->category ?> ▸</h2>
+                    </a>
                     <?php
                 } else {
                     ?>
@@ -127,6 +106,11 @@ if (isset($_POST['delete'])) {
                         <?php
                     } else {
                         foreach ($topics as $topic) {
+                            if (isset($_GET['selected-topic-' . $topic->id])) {
+                                $_SESSION['topic_id_selected'] = $topic->id;
+                                $_SESSION['category_id_selected_topic'] = $category->id;
+                                echo "<meta http-equiv='refresh' content='0; url=home.php' >";
+                            }
                             if ($_SESSION['topic_id_selected'] == $topic->id) {
                                 ?>
                                 <div class="subitem">
@@ -138,18 +122,10 @@ if (isset($_POST['delete'])) {
                             } else {
                                 ?>
                                 <div class="subitem">
-                                    <div class="left-list-item color">
-                                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?selected') ?>"
-                                              method="post">
-                                            <input type="hidden" name="topic_id_selected"
-                                                   value="<?php echo $topic->id; ?>">
-                                            <input type="hidden" name="category_id_selected_topic"
-                                                   value="<?php echo $category->id; ?>">
-
-                                            <input type="submit" name="selected" value="">
-                                            <label><?php echo "<p>{$topic->topic}</p>"; ?></label>
-                                        </form>
-                                    </div>
+                                    <a class="left-list-item color"
+                                       href="home.php?selected-topic-<?php echo $topic->id ?>">
+                                        <p><?php echo $topic->topic ?></p>
+                                    </a>
                                 </div>
                                 <?php
                             }
@@ -182,6 +158,12 @@ if (isset($_POST['delete'])) {
             <?php
         } else {
             foreach ($comments as $comment) {
+                if (isset($_GET['delete-confirmation-' . $comment->id])) {
+                    Comment_controller::delete($comment->id);
+                    echo "<h3 class='success' style='padding-left: 8px; padding-bottom: 20px'>Comentario eliminado con éxito</h3>";
+                    echo "<meta http-equiv='refresh' content='1.5; url=home.php' >";
+                }
+
                 $user = User_controller::get_by_id($comment->user_id);
                 ?>
                 <div class="list-item comment">
@@ -191,15 +173,9 @@ if (isset($_POST['delete'])) {
                         if (isset($_SESSION['user'])) {
                             if ($_SESSION['user'] == $user->user) {
                                 ?>
-                                <div class="icons">
-                                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete-comment-form') ?>"
-                                          method="post">
-                                        <input type="hidden" name="comment_delete_id"
-                                               value="<?php echo $comment->id; ?>">
-
-                                        <input type="submit" name="delete-comment-form" value="ELIMINAR">
-                                    </form>
-                                </div>
+                                <a class="icons" href="home.php?delete-<?php echo $comment->id ?>">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
                                 <?php
                             }
                         }
@@ -209,20 +185,15 @@ if (isset($_POST['delete'])) {
                     <p><?php echo $comment->comment; ?></p>
                 </div>
                 <?php
-                if (isset($_GET['delete-comment-form']) && $comment_delete_id == $comment->id) {
+                if (isset($_GET['delete-' . $comment->id])) {
                     ?>
-                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
-                          method="post">
-                        <div class="delete">
-                            <p>¿Estás seguro que quieres eliminar el comentario?</p>
-                            <input type="hidden" name="id" value="<?php echo $comment->id; ?>">
-
-                            <div class='buttons'>
-                                <input type="submit" name="delete" value="SÍ">
-                                <input type="submit" name="back" value="NO">
-                            </div>
+                    <div class="delete">
+                        <p>¿Estás seguro que quieres eliminar el comentario?</p>
+                        <div class='buttons'>
+                            <a class="yes" href="home.php?delete-confirmation-<?php echo $comment->id ?>">Sí</a>
+                            <a class="no" href="home.php">No</a>
                         </div>
-                    </form>
+                    </div>
                     <?php
                 }
             }

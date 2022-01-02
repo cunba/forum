@@ -38,6 +38,7 @@ body {
 
 a {
     text-decoration: none;
+    color: var(--text-color);
 }
 
 /* HEADER */
@@ -356,6 +357,11 @@ input[type='submit']:hover {
     width: 100%;
 }
 
+.comment-header a {
+    width: auto;
+    height: auto;
+}
+
 /* LIST */
 
 .list h1 {
@@ -380,7 +386,7 @@ input[type='submit']:hover {
     padding-bottom: 20px;
 }
 
-.list-item a {
+.a {
     height: 100%;
     width: 100%;
     color: var(--text-color);
@@ -462,47 +468,9 @@ textarea {
     border-radius: 2px;
 }
 
-.icons form input[name='update'] {
-    background-color: var(--header-color);
-    margin-bottom: 5px;
-}
-
-.icons form input[name='update']:hover {
-    background-color: var(--header-hover-color);
-}
-
-.icons form input[name='delete-comment-form'] {
-    background-color: var(--text-error-color);
-}
-
-.icons form input[name='delete-comment-form']:hover {
-    background-color: var(--delete-button-hover-color);
-}
-
-.buttons input[name='back'] {
-    width: 50px;
-    margin-left: 80px;
-    padding-right: 5px;
-    background-color: var(--header-color);
-}
-
-.buttons input[name='back']:hover {
-    background-color: var(--header-hover-color);
-}
-
-.buttons input[name='delete'] {
-    width: 50px;
-    padding-right: 5px;
-    background-color: var(--text-error-color);
-}
-
-.buttons input[name='delete']:hover {
-    background-color: var(--delete-button-hover-color);
-}
-
 .delete {
-    margin-top: -30px;
     padding-left: 8px;
+    padding-bottom: 20px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -513,13 +481,30 @@ textarea {
 .buttons {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
-    width: 50%;
-    height: 50px;
+    flex-direction: row;
+    width: 30%;
     justify-content: space-between;
     align-items: center;
 }
 
 .delete p {
     padding-bottom: 10px;
+}
+
+.yes {
+    background-color: var(--text-error-color);
+    padding: 5px 10px;
+}
+
+.yes:hover {
+    background-color: var(--delete-button-hover-color);
+}
+
+.no {
+    background-color: var(--left-list-color);
+    padding: 5px 10px;
+}
+
+.no:hover {
+    background-color: var(--list-empty-color);
 }

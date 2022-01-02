@@ -10,31 +10,7 @@ if (!isset($_SESSION['user'])) {
     header('Location:login.php');
 } else {
     require_once('../controllers/User_controller_admin.php');
-
-    if (isset($_POST['atras'])) {
-        header('Location:users-view.php');
-    }
-
-    if (isset($_POST['create-user']) || isset($_POST['update-user'])) {
-        $id = $_POST['id'];
-        $user = $_POST['user'];
-    }
-
-    if (isset($_POST['update'])) {
-        $user_update_id = $_POST['user_update_id'];
-        $user_update_user = $_POST['user_update_user'];
-    }
-
-    if (isset($_POST['delete-user-form'])) {
-        $user_delete_id = $_POST['user_delete_id'];
-        $user_delete_user = $_POST['user_delete_user'];
-    }
-
-    if (isset($_POST['delete'])) {
-        $user_delete_id = $_POST['id'];
-        User_controller_admin::delete($user_delete_id);
-        header('Location:users-view.php');
-    }
+    
     ?>
 
     <!DOCTYPE html>
@@ -42,6 +18,7 @@ if (!isset($_SESSION['user'])) {
     <link rel="stylesheet" href="../styles/style.css">
     <head>
         <meta charset="UTF-8">
+        <script src="https://kit.fontawesome.com/6d2edab8c4.js" crossorigin="anonymous"></script>
         <title>Foro</title>
     </head>
     <body>
@@ -78,6 +55,12 @@ if (!isset($_SESSION['user'])) {
             <?php
         } else {
             foreach ($users as $user) {
+                if (isset($_GET['delete-confirmation-' . $user->id])) {
+                    User_controller_admin::delete($user->id);
+                    echo "<h3 class='success' style='padding-left: 8px; padding-bottom: 20px'>Usuario eliminado con éxito</h3>";
+                    echo "<meta http-equiv='refresh' content='1.5; url=users-view.php' >";
+                }
+
                 $num_comments = User_controller_admin::count_comments($user->id);
                 ?>
                 <div class="list-item">
@@ -85,33 +68,20 @@ if (!isset($_SESSION['user'])) {
                         <h2><?php echo $user->user; ?></h2>
                         <p><?php echo "Tiene {$num_comments} comentarios" ?></p>
                     </div>
-                    <div class="icons">
-                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete-user-form') ?>"
-                              method="post">
-                            <input type="hidden" name="user_delete_id" value="<?php echo $user->id; ?>">
-                            <input type="hidden" name="user_delete_user"
-                                   value="<?php echo $user->user; ?>">
-
-                            <input type="submit" name="delete-user-form" value="ELIMINAR">
-                        </form>
-                    </div>
+                    <a class="icons" href="users-view.php?delete-<?php echo $user->id ?>">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
                 </div>
                 <?php
-                if (isset($_GET['delete-user-form']) && $user_delete_id == $user->id) {
+                if (isset($_GET['delete-' . $user->id])) {
                     ?>
-                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>"
-                          method="post">
-                        <div class="delete">
-                            <p>¿Estás seguro que quieres eliminar el usuario <?php echo $user->user ?>,
-                                incluyendo los comentarios añadidos?</p>
-                            <input type="hidden" name="id" value="<?php echo $user->id; ?>">
-
-                            <div class='buttons'>
-                                <input type="submit" name="delete" value="SÍ">
-                                <input type="submit" name="back" value="NO">
-                            </div>
+                    <div class="delete">
+                        <p>¿Estás seguro que quieres eliminar el comentario?</p>
+                        <div class='buttons'>
+                            <a class="yes" href="users-view.php?delete-confirmation-<?php echo $user->id ?>">Sí</a>
+                            <a class="no" href="users-view.php">No</a>
                         </div>
-                    </form>
+                    </div>
                     <?php
                 }
             }

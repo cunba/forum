@@ -1,5 +1,6 @@
 <?php
 require_once('../models/User_admin.php');
+require_once('../models/Comment_admin.php');
 
 class User_controller_admin
 {
@@ -41,6 +42,12 @@ class User_controller_admin
 
     public static function delete($id)
     {
+        $comments = Comment_admin::get_by_topic($id);
+        if (!(gettype($comments) == 'boolean')) {
+            foreach ($comments as $comment) {
+                Comment_admin::delete($comment->id);
+            }
+        }
         return User_admin::delete($id);
     }
 

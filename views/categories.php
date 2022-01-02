@@ -3,34 +3,6 @@ session_start();
 
 require_once('../controllers/Category_controller.php');
 
-if (isset($_POST['back'])) {
-    header('Location:categories.php');
-}
-
-if (isset($_POST['create-category'])) {
-    $category = $_POST['category'];
-}
-
-if (isset($_POST['update-category'])) {
-    $id = $_POST['id'];
-    $category = $_POST['category'];
-}
-
-if (isset($_POST['update'])) {
-    $category_update_id = $_POST['category_update_id'];
-    $category_update_category = $_POST['category_update_category'];
-}
-
-if (isset($_POST['delete-category-form'])) {
-    $category_delete_id = $_POST['category_delete_id'];
-    $category_delete_category = $_POST['category_delete_category'];
-}
-
-if (isset($_POST['delete'])) {
-    $category_delete_id = $_POST['id'];
-    Category_controller::delete($category_delete_id);
-    header('Location:categories.php');
-}
 ?>
 
 <!DOCTYPE html>
@@ -89,7 +61,7 @@ if (isset($_POST['delete'])) {
             $num_topics = Category_controller::count_topics($category->id);
             ?>
             <div class="list-item">
-                <a class="list-information absolute" href="categories.php?selected<?php echo $category->id ?>">
+                <a class="list-information a" href="categories.php?selected<?php echo $category->id ?>">
                     <h2><?php echo $category->category; ?></h2>
                     <p><?php echo "Contiene {$num_topics} temas" ?></p>
                 </a>

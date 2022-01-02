@@ -24,21 +24,6 @@ if (!isset($_SESSION['user'])) {
         $category = $_POST['category'];
     }
 
-    if (isset($_POST['update'])) {
-        $category_update_id = $_POST['category_update_id'];
-        $category_update_category = $_POST['category_update_category'];
-    }
-
-    if (isset($_POST['delete-category-form'])) {
-        $category_delete_id = $_POST['category_delete_id'];
-        $category_delete_category = $_POST['category_delete_category'];
-    }
-
-    if (isset($_POST['delete'])) {
-        $category_delete_id = $_POST['id'];
-        Category_controller_admin::delete($category_delete_id);
-        header('Location:categories-view.php');
-    }
     ?>
 
     <!DOCTYPE html>
@@ -46,6 +31,7 @@ if (!isset($_SESSION['user'])) {
     <link rel="stylesheet" href="../styles/style.css">
     <head>
         <meta charset="UTF-8">
+        <script src="https://kit.fontawesome.com/6d2edab8c4.js" crossorigin="anonymous"></script>
         <title>Foro</title>
     </head>
     <body>
@@ -94,9 +80,9 @@ if (!isset($_SESSION['user'])) {
             <div class="form">
                 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update') ?>" method="post">
                     <h2>Añadir nueva categoría</h2>
-                    <input type="hidden" name="id" value="<?php echo $category_update_id; ?>">
+                    <input type="hidden" name="id" value="<?php echo $_SESSION['update_id']; ?>">
                     <input type="text" name="category"
-                           value="<?php if (isset($category)) echo $category; else echo $category_update_category; ?>">
+                           value="<?php if (isset($category)) echo $category; else echo $_SESSION['update_category']; ?>">
 
                     <input type="submit" name="update-category" value="MODIFICAR">
                     <input type="submit" name="back" value="ATRÁS">
@@ -121,6 +107,18 @@ if (!isset($_SESSION['user'])) {
                 <?php
             } else {
                 foreach ($categories as $category) {
+                    if (isset($_GET['update-' . $category->id])) {
+                        $_SESSION['update_id'] = $category->id;
+                        $_SESSION['update_category'] = $category->category;
+                        echo "<meta http-equiv='refresh' content='0; url=categories-view.php?update' >";
+                    }
+
+                    if (isset($_GET['delete-confirmation-' . $category->id])) {
+                        Category_controller_admin::delete($category->id);
+                        echo "<h3 class='success' style='padding-left: 8px; padding-bottom: 20px'>Comentario eliminado con éxito</h3>";
+                        echo "<meta http-equiv='refresh' content='1.5; url=categories-view.php' >";
+                    }
+                    
                     $num_topics = Category_controller_admin::count_topics($category->id);
                     ?>
                     <div class="list-item">
@@ -129,40 +127,26 @@ if (!isset($_SESSION['user'])) {
                             <p><?php echo "Contiene {$num_topics} temas" ?></p>
                         </div>
                         <div class="icons">
-                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?update') ?>"
-                                  method="post">
-                                <input type="hidden" name="category_update_id" value="<?php echo $category->id; ?>">
-                                <input type="hidden" name="category_update_category"
-                                       value="<?php echo $category->category; ?>">
-
-                                <input type="submit" name="update" value="MODIFICAR">
-                            </form>
-                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete-category-form') ?>"
-                                  method="post">
-                                <input type="hidden" name="category_delete_id" value="<?php echo $category->id; ?>">
-                                <input type="hidden" name="category_delete_category"
-                                       value="<?php echo $category->category; ?>">
-
-                                <input type="submit" name="delete-category-form" value="ELIMINAR">
-                            </form>
+                            <a class="update-icon" href="categories-view.php?update-<?php echo $category->id ?>">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <a class="delete-icon" href="categories-view.php?delete-<?php echo $category->id ?>">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
                         </div>
                     </div>
                     <?php
-                    if (isset($_GET['delete-category-form']) && $category_delete_id == $category->id) {
+                    if (isset($_GET['delete-' . $category->id])) {
                         ?>
-                        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?delete') ?>" method="post">
-                            <div class="delete">
-                                <p>¿Estás seguro que quieres eliminar la
-                                    categoría <?php echo $category_delete_category; ?>,
-                                    incluyendo sus temas y comentarios?</p>
-                                <input type="hidden" name="id" value="<?php echo $category->id; ?>">
-
-                                <div class='buttons'>
-                                    <input type="submit" name="delete" value="SÍ">
-                                    <input type="submit" name="back" value="NO">
-                                </div>
+                        <div class="delete">
+                            <p>¿Estás seguro que quieres eliminar la categoría, incluyendo sus temas y comentarios de
+                                cada tema?</p>
+                            <div class='buttons'>
+                                <a class="yes"
+                                   href="categories-view.php?delete-confirmation-<?php echo $category->id ?>">Sí</a>
+                                <a class="no" href="categories-view.php">No</a>
                             </div>
-                        </form>
+                        </div>
                         <?php
                     }
                 }

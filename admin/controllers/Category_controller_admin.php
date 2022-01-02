@@ -32,8 +32,10 @@ class Category_controller_admin
     public static function delete($id)
     {
         $topics = Topic_admin::get_by_category($id);
-        foreach($topics as $topic) {
-            Topic_admin::delete($topic->id);
+        if (!(gettype($topics) == 'boolean')) {
+            foreach ($topics as $topic) {
+                Topic_admin::delete($topic->id);
+            }
         }
         Category_admin::delete($id);
     }
