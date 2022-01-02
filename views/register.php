@@ -35,22 +35,11 @@ if (isset($_SESSION['user'])) {
                 <div class="btn-menu">Menú</div>
                 <ul class="ul-menu">
                     <li><a href="home.php">Inicio</a></li>
-                    <li><a href="categories-view.php">Categorías</a></li>
-                    <li><a href="topics-view.php">Temas</a></li>
-                    <li><a href="comments-view.php">Comentarios</a></li>
-                    <?php
-                    if (isset($_SESSION['user'])) {
-                        ?>
-                        <li><a href="user-panel.php">Panel de usuario</a></li>
-                        <li><a href="../controllers/logout.php">Cerrar sesión</a></li>
-                        <?php
-                    } else {
-                        ?>
-                        <li><a href="login.php">Iniciar sesión</a></li>
-                        <li><a href="register.php">Registrarse</a></li>
-                        <?php
-                    }
-                    ?>
+                    <li><a href="categories.php">Categorías</a></li>
+                    <li><a href="topics.php">Temas</a></li>
+                    <li><a href="comments.php">Comentarios</a></li>
+                    <li><a href="login.php">Iniciar sesión</a></li>
+                    <li><a href="register.php">Registrarse</a></li>
                 </ul>
             </label>
         </nav>

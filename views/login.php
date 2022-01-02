@@ -30,9 +30,9 @@ if (isset($_SESSION['user'])) {
                 <div class="btn-menu">Menú</div>
                 <ul class="ul-menu">
                     <li><a href="home.php">Inicio</a></li>
-                    <li><a href="categories-view.php">Categorías</a></li>
-                    <li><a href="topics-view.php">Temas</a></li>
-                    <li><a href="comments-view.php">Comentarios</a></li>
+                    <li><a href="categories.php">Categorías</a></li>
+                    <li><a href="topics.php">Temas</a></li>
+                    <li><a href="comments.php">Comentarios</a></li>
                     <?php
                     if (isset($_SESSION['user'])) {
                         ?>

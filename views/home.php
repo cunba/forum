@@ -43,7 +43,6 @@ if (isset($_POST['delete'])) {
 <link rel="stylesheet" href="../styles/style.css">
 <head>
     <meta charset="UTF-8">
-    <script src="https://kit.fontawesome.com/6d2edab8c4.js" crossorigin="anonymous"></script>
     <title>Foro</title>
 </head>
 <body>
@@ -54,9 +53,9 @@ if (isset($_POST['delete'])) {
             <div class="btn-menu">Menú</div>
             <ul class="ul-menu">
                 <li><a href="home.php">Inicio</a></li>
-                <li><a href="categories-view.php">Categorías</a></li>
-                <li><a href="topics-view.php">Temas</a></li>
-                <li><a href="comments-view.php">Comentarios</a></li>
+                <li><a href="categories.php">Categorías</a></li>
+                <li><a href="topics.php">Temas</a></li>
+                <li><a href="comments.php">Comentarios</a></li>
                 <?php
                 if (isset($_SESSION['user'])) {
                     ?>
