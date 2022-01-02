@@ -154,12 +154,15 @@ if (isset($_POST['update-password'])) {
 
 $validate = false;
 if (isset($_POST['update-user'])) {
-    if (empty($user)) {
+    if (empty($username)) {
         echo "<p class='error'>* El campo usuario no puede estar vacío</p>";
-    } elseif (User_controller::get_by_user($user)) {
+        $validate = false;
+    } elseif (!($username == $_SESSION['user']) && User_controller::get_by_user($username)) {
         echo "<p class='error'>* El usuario ya existe</p>";
-    } elseif (!preg_match('/^[a-zñÑ.-_]{3,20}+$/', $user)) {
+        $validate = false;
+    } elseif (!preg_match('/^[a-zñÑ.-_]{3,20}+$/', $username)) {
         echo "<p class='error'>* El campo usuario sólo puede contener letras, números y caracterees como . y _ (mñinimo 3, máximo 20)</p>";
+        $validate = false;
     } else {
         $validate = true;
     }
@@ -198,16 +201,16 @@ if (isset($_POST['update-user'])) {
     }
 
     if ($validate) {
-        $new_user = new User($user, $name, $surname, $birthday, $email, $_SESSION['password']);
+        $new_user = new User($username, $name, $surname, $birthday, $email, $_SESSION['password']);
         $new_user->set_id($_SESSION['user_id']);
         $response = User_controller::update($new_user);
 
         if (!$response) {
             echo "<p class='error'>* Ha ocurrido un error, inténtelo más tarde</p>";
         } else {
-            $_SESSION['user'] = $user;
-            echo "<p class='success'>Usuario registrado con éxito</p>";
-            echo "<meta http-equiv='refresh' content='2; url=home.php' >";
+            $_SESSION['user'] = $username;
+            echo "<p class='success'>Usuario modificado con éxito</p>";
+            echo "<meta http-equiv='refresh' content='1.5; url=user-panel.php' >";
         }
     }
 }

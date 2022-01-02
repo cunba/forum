@@ -10,12 +10,6 @@ require_once("../controllers/Topic_controller.php");
 require_once("../controllers/Category_controller.php");
 require_once("../controllers/User_controller.php");
 
-if (isset($_POST['create-comment'])) {
-    $new_comment = $_POST['new_comment'];
-    $topic_id = $_SESSION['topic_id_selected'];
-    $user_id = $_SESSION['user_id'];
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -36,20 +30,9 @@ if (isset($_POST['create-comment'])) {
                 <li><a href="home.php">Inicio</a></li>
                 <li><a href="categories.php">Categorías</a></li>
                 <li><a href="topics.php">Temas</a></li>
-                <?php
-                if (isset($_SESSION['user'])) {
-                    ?>
-                    <li><a href="comments.php">Tus comentarios</a></li>
-                    <li><a href="user-panel.php">Panel de usuario</a></li>
-                    <li><a href="../controllers/logout.php">Cerrar sesión</a></li>
-                    <?php
-                } else {
-                    ?>
-                    <li><a href="login.php">Iniciar sesión</a></li>
-                    <li><a href="register.php">Registrarse</a></li>
-                    <?php
-                }
-                ?>
+                <li><a href="comments.php">Tus comentarios</a></li>
+                <li><a href="user-panel.php">Panel de usuario</a></li>
+                <li><a href="../controllers/logout.php">Cerrar sesión</a></li>
             </ul>
         </label>
     </nav>
@@ -75,7 +58,8 @@ if (isset($_POST['create-comment'])) {
                 }
                 if (!($_SESSION['category_id_selected_topic'] == $category->id) && !($_SESSION['category_id_selected'] == $category->id)) {
                     ?>
-                    <a class="left-list-item comments" href="comments.php?selected-category-<?php echo $category->id; ?>">
+                    <a class="left-list-item comments"
+                       href="comments.php?selected-category-<?php echo $category->id; ?>">
                         <h2><?php echo $category->category ?> ▸</h2>
                     </a>
                     <?php
@@ -177,21 +161,6 @@ if (isset($_POST['create-comment'])) {
                     <?php
                 }
             }
-        }
-        if (isset($_SESSION['user'])) {
-            ?>
-            <div class="form-comment">
-                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>"
-                      method="post">
-                    <textarea type="text" name="new_comment" placeholder="Comentario"></textarea>
-
-                    <input type="submit" name="create-comment" value="AÑADIR COMENTARIO">
-                    <?php
-                    include("../controllers/validate.php");
-                    ?>
-                </form>
-            </div>
-            <?php
         }
         ?>
     </div>

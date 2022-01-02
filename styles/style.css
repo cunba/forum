@@ -516,23 +516,17 @@ textarea {
 /* USER PANEL */
 
 .information h1 {
-    position: absolute;
-    right: 30%;
-    left: 30%;
-}
 
-.information-user-first {
-    padding-top: 70px;
 }
 
 .information-user {
-    position: relative;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: left;
     padding-bottom: 20px;
-    left: 30%;
+    margin-left: 30%;
+    margin-right: 20%;
 }
 
 .information-user p {
@@ -559,5 +553,5 @@ textarea {
     background-color: var(--button-color);
     color: var(--header-text-color);
     margin-top: 20px;
-    padding: 10px 0;
+    padding: 7px 0;
 }

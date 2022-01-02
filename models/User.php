@@ -283,7 +283,6 @@ class User
     {
         //Crea un salt
         $salt = md5($password . "%*4!#$;.k~’(_@");
-        $password = md5($salt . $password . $salt);
-        return $password;
+        return md5($salt . $password . $salt);
     }
 }
