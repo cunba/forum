@@ -33,7 +33,7 @@ try {
         '<br><p>Saludos,</p><p>el equipo de Meraki</p>';
 
     $mail->send();
-    echo 'Correo enviado con éxito';
+    echo '<p class="success">Correo enviado con éxito</p>';
 } catch (Exception $e) {
-    echo "Ha ocurrido un error al enviar el correo: {$mail->ErrorInfo}";
+    echo "<p class='error'>Ha ocurrido un error al enviar el correo: {$mail->ErrorInfo}</p>";
 }
