@@ -116,4 +116,31 @@ class Topic
             return Connection::messages($e->getCode());
         }
     }
+
+    public static function get_first($category_id)
+    {
+        try {
+            $connection = Connection::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'SELECT * FROM topics WHERE category_id = :category_id ORDER BY id ASC LIMIT 1';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute(array(
+                ':category_id' => $category_id
+            ));
+
+            if ($stmt->rowCount() == 0) {
+                return false;
+            } else {
+                return $stmt->fetch(PDO::FETCH_OBJ);
+            }
+
+        } catch (PDOException $e) {
+            return Connection::messages($e->getCode());
+        }
+    }
 }

@@ -103,9 +103,9 @@ CREATE TABLE `users`
     `user`          varchar(20) NOT NULL,
     `name`          varchar(50)          DEFAULT NULL,
     `surname`       varchar(50)          DEFAULT NULL,
+    `birthday`      date                 DEFAULT NULL,
     `email`         varchar(100)         DEFAULT NULL,
     `password`      varchar(50) NOT NULL,
-    `birthday`      date                 DEFAULT NULL,
     `creation_date` datetime    NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -113,9 +113,9 @@ CREATE TABLE `users`
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `user`, `name`, `surname`, `email`, `password`, `creation_date`)
-VALUES (1, 'admin', NULL, NULL, NULL, 'd8dac4f5b1b5fa4a6d58beb9dfb48212', '2021-12-28 00:00:00'),
-       (2, 'comments_admin', NULL, NULL, NULL, '446c76dbcf932c16973a541b4fef5828', '2021-12-28 00:00:00');
+INSERT INTO `users` (`id`, `user`, `name`, `surname`, `birthday`, `email`, `password`, `creation_date`)
+VALUES (1, 'admin', NULL, NULL, NULL, 'admin@meraki.com', 'd8dac4f5b1b5fa4a6d58beb9dfb48212', '2021-12-28 00:00:00'),
+       (2, 'comments_admin', NULL, NULL, NULL, 'comments_admin@meraki.com', '446c76dbcf932c16973a541b4fef5828', '2021-12-28 00:00:00');
 
 --
 -- Índices para tablas volcadas

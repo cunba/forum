@@ -1,6 +1,8 @@
 <?php
 
 require_once('User_controller_admin.php');
+require_once('Category_controller_admin.php');
+require_once('Topic_controller_admin.php');
 
 if (isset($_POST['submit-login'])) {
     if (empty($user)) {
@@ -17,9 +19,13 @@ if (isset($_POST['submit-login'])) {
                 session_start();
                 $_SESSION['user'] = $user;
                 $_SESSION['password'] = $password;
-                $_SESSION['category_id_selected'] = 1;
-                $_SESSION['topic_id_selected'] = 1;
-                $_SESSION['category_id_selected_topic'] = 1;
+
+                $category = Category_controller_admin::get_first();
+                $topic = Topic_controller_admin::get_first($category->id);
+
+                $_SESSION['category_id_selected'] = $category->id;
+                $_SESSION['category_id_selected_topic'] = $category->id;
+                $_SESSION['topic_id_selected'] = $topic->id;
 
                 if ($user == 'admin') {
                     header("Location:home.php");

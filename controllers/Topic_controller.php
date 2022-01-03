@@ -1,7 +1,6 @@
 <?php
 
 require_once('../models/Topic.php');
-require_once('../models/Comment.php');
 
 class Topic_controller
 {
@@ -27,5 +26,10 @@ class Topic_controller
     public static function get_by_user($category_id, $user_id)
     {
         return Topic::get_by_user($category_id, $user_id);
+    }
+
+    public static function get_first($category_id)
+    {
+        return Topic::get_first($category_id);
     }
 }

@@ -19,6 +19,11 @@ class Topic_controller_admin
         return Topic_admin::get_by_category($category_id);
     }
 
+    public static function get_first($category_id)
+    {
+        return Topic_admin::get_first($category_id);
+    }
+
     public static function count_comments($topic_id)
     {
         return Topic_admin::count_comments($topic_id);
