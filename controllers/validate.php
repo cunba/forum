@@ -103,7 +103,11 @@ if (isset($_POST['submit-register'])) {
             $response = User_controller::login($user, $password);
             $_SESSION['user'] = $user;
             $_SESSION['password'] = $password;
+            $_SESSION['email'] = $email;
             $_SESSION['user_id'] = $response->id;
+
+            include('mail.php');
+
             echo "<p class='success'>Usuario registrado con éxito</p>";
             echo "<meta http-equiv='refresh' content='2; url=home.php' >";
         }
