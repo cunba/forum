@@ -1,7 +1,6 @@
 <?php
 
 require_once('../models/Category.php');
-require_once('../models/Topic.php');
 
 class Category_controller
 {
@@ -22,5 +21,10 @@ class Category_controller
     public static function get_by_user($user_id)
     {
         return Category::get_by_user($user_id);
+    }
+
+    public static function get_first()
+    {
+        return Category::get_first();
     }
 }

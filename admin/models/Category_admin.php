@@ -37,6 +37,31 @@ class Category_admin
         }
     }
 
+    public static function get_first()
+    {
+        try {
+            $connection = Connection_admin::Connection();
+
+            if (gettype($connection) == 'string') {
+                return $connection;
+            }
+
+            $sql = 'SELECT * FROM categories ORDER BY id ASC LIMIT 1';
+
+            $stmt = $connection->prepare($sql);
+            $stmt->execute();
+
+            if ($stmt->rowCount() == 0) {
+                return false;
+            } else {
+                return $stmt->fetch(PDO::FETCH_OBJ);
+            }
+
+        } catch (PDOException $e) {
+            return Connection_admin::messages($e->getCode());
+        }
+    }
+
     public static function count_topics($category_id)
     {
         try {

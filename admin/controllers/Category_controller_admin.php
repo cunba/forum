@@ -14,6 +14,11 @@ class Category_controller_admin
         return Category_admin::get_all();
     }
 
+    public static function get_first()
+    {
+        return Category_admin::get_first();
+    }
+
     public static function count_topics($category_id)
     {
         return Category_admin::count_topics($category_id);
